@@ -15,17 +15,17 @@ namespace FrbaHotel.DAO
 
         public Usuario Login(string user, string password)
         {
-            throw new NotImplementedException();
+            return null;
         }
 
         public List<Rol> GetRoles(int Id)
         {
-            throw new NotImplementedException();
+            return null;
         }
 
         public List<Hotel> GetHoteles(int Id)
         {
-            throw new NotImplementedException();
+            return null;a 
         }
     }
 }
