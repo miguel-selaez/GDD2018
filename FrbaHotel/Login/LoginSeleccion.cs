@@ -1,0 +1,52 @@
+﻿using FrbaHotel.Model;
+using FrbaHotel.DAO;
+using System;
+using System.Collections.Generic;
+using System.ComponentModel;
+using System.Data;
+using System.Drawing;
+using System.Linq;
+using System.Text;
+using System.Threading.Tasks;
+using System.Windows.Forms;
+
+namespace FrbaHotel.Login
+{
+    public partial class LoginSeleccion : Form
+    {
+        private Inicio _inicio;
+        private Usuario _user;
+
+        public LoginSeleccion(Inicio inicio, Usuario user)
+        {
+            InitializeComponent();
+            _inicio = inicio;
+            _user = user;
+
+            BindRoles();
+            BindHoteles();
+        }
+
+        private void BindHoteles()
+        {
+            cbHoteles.Items.AddRange(_user.HotelesAsignados.ToArray());
+            cbHoteles.SelectedIndex = 0;
+        }
+
+        private void BindRoles()
+        {
+            cbRoles.Items.AddRange(_user.Roles.ToArray());
+            cbRoles.SelectedIndex = 0;
+        }
+
+        private void btnContinue_Click(object sender, EventArgs e)
+        {
+            _inicio.SetUser(_user);
+            _inicio.Show();
+            Close();
+        }
+        
+
+
+    }
+}

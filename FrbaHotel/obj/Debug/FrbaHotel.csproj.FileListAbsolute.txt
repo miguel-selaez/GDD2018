@@ -1,0 +1,19 @@
+\\VBOXSVR\Hotel_Frba_1C2018\src\FrbaHotel\bin\Debug\FrbaHotel.exe.config
+\\VBOXSVR\Hotel_Frba_1C2018\src\FrbaHotel\bin\Debug\FrbaHotel.exe
+\\VBOXSVR\Hotel_Frba_1C2018\src\FrbaHotel\bin\Debug\FrbaHotel.pdb
+\\VBOXSVR\Hotel_Frba_1C2018\src\FrbaHotel\obj\Debug\FrbaHotel.csprojResolveAssemblyReference.cache
+\\VBOXSVR\Hotel_Frba_1C2018\src\FrbaHotel\obj\Debug\FrbaHotel.Properties.Resources.resources
+\\VBOXSVR\Hotel_Frba_1C2018\src\FrbaHotel\obj\Debug\FrbaHotel.csproj.GenerateResource.Cache
+\\VBOXSVR\Hotel_Frba_1C2018\src\FrbaHotel\obj\Debug\FrbaHotel.exe
+\\VBOXSVR\Hotel_Frba_1C2018\src\FrbaHotel\obj\Debug\FrbaHotel.pdb
+C:\Users\migue\Documents\Facultad\2018\GDD\TP\Aplicacion Desktop\FrbaHotel\bin\Debug\FrbaHotel.exe.config
+C:\Users\migue\Documents\Facultad\2018\GDD\TP\Aplicacion Desktop\FrbaHotel\bin\Debug\FrbaHotel.exe
+C:\Users\migue\Documents\Facultad\2018\GDD\TP\Aplicacion Desktop\FrbaHotel\bin\Debug\FrbaHotel.pdb
+C:\Users\migue\Documents\Facultad\2018\GDD\TP\Aplicacion Desktop\FrbaHotel\obj\Debug\FrbaHotel.csprojResolveAssemblyReference.cache
+C:\Users\migue\Documents\Facultad\2018\GDD\TP\Aplicacion Desktop\FrbaHotel\obj\Debug\FrbaHotel.Inicio.resources
+C:\Users\migue\Documents\Facultad\2018\GDD\TP\Aplicacion Desktop\FrbaHotel\obj\Debug\FrbaHotel.Login.Login.resources
+C:\Users\migue\Documents\Facultad\2018\GDD\TP\Aplicacion Desktop\FrbaHotel\obj\Debug\FrbaHotel.Login.LoginSeleccion.resources
+C:\Users\migue\Documents\Facultad\2018\GDD\TP\Aplicacion Desktop\FrbaHotel\obj\Debug\FrbaHotel.Properties.Resources.resources
+C:\Users\migue\Documents\Facultad\2018\GDD\TP\Aplicacion Desktop\FrbaHotel\obj\Debug\FrbaHotel.csproj.GenerateResource.Cache
+C:\Users\migue\Documents\Facultad\2018\GDD\TP\Aplicacion Desktop\FrbaHotel\obj\Debug\FrbaHotel.exe
+C:\Users\migue\Documents\Facultad\2018\GDD\TP\Aplicacion Desktop\FrbaHotel\obj\Debug\FrbaHotel.pdb
