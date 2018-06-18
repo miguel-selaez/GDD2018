@@ -47,7 +47,7 @@ namespace FrbaHotel.DAO
         /// <returns></returns>
         public string ArmarSentenciaSP(string nombreSp, string[] parametros)
         {
-            var sqlStatement = "EXEC " + nombreSp + " ";
+            var sqlStatement = "EXEC NPM." + nombreSp + " ";
             if (parametros.Length == 0)
             { // Agregado para llamar a SPs sin parametros de entrada
                 return sqlStatement + ";";
@@ -56,5 +56,15 @@ namespace FrbaHotel.DAO
             sqlStatement += string.Join(", ", parametros);
             return sqlStatement + ";";
         }
+        public string GetParam(string param) {
+            return "'" + param + "'";
+        }
+        public string GetParam(DateTime param) {
+            return "'" + Tools.ToDataBaseTime(param) + "'";
+        }
+        public string GetParam(int param) {
+            return param.ToString();
+        }
+            
     }
 }

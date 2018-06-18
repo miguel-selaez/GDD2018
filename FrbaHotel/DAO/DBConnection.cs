@@ -37,7 +37,7 @@ namespace FrbaHotel.DAO
         /// Esta función se encarga de ejecutar una sentencia sql que no realiza retorna valores
         /// </summary>
         /// <param name="query">Sentencia a ejecutar</param>
-        public void Execute(String query)
+        public void ExecuteNoQuery(String query)
         {
             try
             {
@@ -105,7 +105,7 @@ namespace FrbaHotel.DAO
         /// </summary>
         /// <param name="sentencia">sentencia a ejecutar - String</param>
         /// <returns>resultado de la consulta - dataTable</returns>
-        public DataTable ExecuteQueryDs(String query)
+        public DataTable ExecuteQuery(String query)
         {
 
             DataTable data = new DataTable();
@@ -144,7 +144,12 @@ namespace FrbaHotel.DAO
             }
         }
 
-        public DataSet ExecuteQuery(String sentencia)
+        /// <summary>
+        /// Ejecuta una sentencia sql y retorna un DataSet con los multiples resultados
+        /// </summary>
+        /// <param name="sentencia"></param>
+        /// <returns></returns>
+        public DataSet ExecuteMultipleResult(String sentencia)
         {
 
             DataSet data = new DataSet();

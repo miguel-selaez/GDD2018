@@ -3,6 +3,7 @@ using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
+using System.Data;
 using System.Threading.Tasks;
 
 namespace FrbaHotel.DAO
@@ -15,7 +16,12 @@ namespace FrbaHotel.DAO
 
         public Usuario Login(string user, string password)
         {
-            return null;
+            var query = ArmarSentenciaSP("P_LOGIN", new [] { 
+                GetParam(user), 
+                GetParam(password) 
+            });
+            var result = Connection.ExecuteQuery(query);
+            return result.Rows.Count > 0 ? new Usuario(result.Rows[0]) : null;
         }
 
         public List<Rol> GetRoles(int Id)
@@ -25,7 +31,7 @@ namespace FrbaHotel.DAO
 
         public List<Hotel> GetHoteles(int Id)
         {
-            return null;a 
+            return null;
         }
     }
 }

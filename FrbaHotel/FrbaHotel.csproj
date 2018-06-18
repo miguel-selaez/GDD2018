@@ -115,6 +115,7 @@
     <Compile Include="Login\LoginSeleccion.Designer.cs">
       <DependentUpon>LoginSeleccion.cs</DependentUpon>
     </Compile>
+    <Compile Include="Model\BaseData.cs" />
     <Compile Include="Model\Consumible.cs" />
     <Compile Include="Model\Cliente.cs" />
     <Compile Include="Model\Consumo.cs" />
