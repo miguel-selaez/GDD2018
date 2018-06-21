@@ -29,13 +29,15 @@ namespace FrbaHotel.Login
 
         private void BindHoteles()
         {
-            cbHoteles.Items.AddRange(_user.HotelesAsignados.ToArray());
+            cbHoteles.DataSource = _user.HotelesAsignados;
+            cbHoteles.DisplayMember = "Nombre";
             cbHoteles.SelectedIndex = 0;
         }
 
         private void BindRoles()
         {
-            cbRoles.Items.AddRange(_user.Roles.ToArray());
+            cbRoles.DataSource = _user.Roles;
+            cbRoles.DisplayMember = "Descripcion";
             cbRoles.SelectedIndex = 0;
         }
 

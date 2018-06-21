@@ -53,7 +53,7 @@ namespace FrbaHotel.Login
             var hasMoreThanOneHotel = currentUser.HotelesAsignados.Count > 1;
 
             Form nextForm;
-            if (hasMoreThanOneRole && hasMoreThanOneHotel) {
+            if (hasMoreThanOneRole || hasMoreThanOneHotel) {
                 nextForm = new LoginSeleccion(_inicio, currentUser);
             } else{
                 _inicio.SetUser(currentUser);

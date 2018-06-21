@@ -148,7 +148,7 @@ namespace FrbaHotel.DAO
         /// Ejecuta una sentencia sql y retorna un DataSet con los multiples resultados
         /// </summary>
         /// <param name="sentencia"></param>
-        /// <returns></returns>
+        /// <returns>resultado de la consulta - dataSet</returns>
         public DataSet ExecuteMultipleResult(String sentencia)
         {
 

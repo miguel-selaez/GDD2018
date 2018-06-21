@@ -31,10 +31,10 @@ namespace FrbaHotel.Model
         }
 
         public List<Rol> Roles {
-            get{ return _roles ?? (_roles = DAOFactory.UsuarioDAO.GetRoles(Id));}
+            get{ return _roles ?? (_roles = DAOFactory.RolDAO.GetRolesByUserId(Id));}
         }
         public List<Hotel> HotelesAsignados {
-            get{ return _hoteles ?? (_hoteles = DAOFactory.UsuarioDAO.GetHoteles(Id));}
+            get{ return _hoteles ?? (_hoteles = DAOFactory.HotelDAO.GetHotelesByUserId(Id));}
         }
     }
 }

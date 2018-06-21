@@ -23,15 +23,5 @@ namespace FrbaHotel.DAO
             var result = Connection.ExecuteQuery(query);
             return result.Rows.Count > 0 ? new Usuario(result.Rows[0]) : null;
         }
-
-        public List<Rol> GetRoles(int Id)
-        {
-            return null;
-        }
-
-        public List<Hotel> GetHoteles(int Id)
-        {
-            return null;
-        }
     }
 }
