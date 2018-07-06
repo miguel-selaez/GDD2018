@@ -45,17 +45,47 @@
     <Reference Include="System.Xml" />
   </ItemGroup>
   <ItemGroup>
-    <Compile Include="AbmCliente\Form1.cs">
+    <Compile Include="AbmCliente\Cliente.cs">
       <SubType>Form</SubType>
     </Compile>
-    <Compile Include="AbmCliente\Form1.Designer.cs">
-      <DependentUpon>Form1.cs</DependentUpon>
+    <Compile Include="AbmCliente\Cliente.Designer.cs">
+      <DependentUpon>Cliente.cs</DependentUpon>
     </Compile>
-    <Compile Include="AbmHabitacion\Form1.cs">
+    <Compile Include="AbmCliente\ListadoCliente.cs">
       <SubType>Form</SubType>
     </Compile>
-    <Compile Include="AbmHabitacion\Form1.Designer.cs">
-      <DependentUpon>Form1.cs</DependentUpon>
+    <Compile Include="AbmCliente\ListadoCliente.Designer.cs">
+      <DependentUpon>ListadoCliente.cs</DependentUpon>
+    </Compile>
+    <Compile Include="AbmHabitacion\Habitacion.cs">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="AbmHabitacion\Habitacion.Designer.cs">
+      <DependentUpon>Habitacion.cs</DependentUpon>
+    </Compile>
+    <Compile Include="AbmHabitacion\ListadoHabitacion.cs">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="AbmHabitacion\ListadoHabitacion.Designer.cs">
+      <DependentUpon>ListadoHabitacion.cs</DependentUpon>
+    </Compile>
+    <Compile Include="AbmHotel\BajaHotel.cs">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="AbmHotel\BajaHotel.Designer.cs">
+      <DependentUpon>BajaHotel.cs</DependentUpon>
+    </Compile>
+    <Compile Include="AbmHotel\Hotel.cs">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="AbmHotel\Hotel.Designer.cs">
+      <DependentUpon>Hotel.cs</DependentUpon>
+    </Compile>
+    <Compile Include="AbmHotel\ListadoHotel.cs">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="AbmHotel\ListadoHotel.Designer.cs">
+      <DependentUpon>ListadoHotel.cs</DependentUpon>
     </Compile>
     <Compile Include="AbmRegimen\Form1.cs">
       <SubType>Form</SubType>
@@ -63,17 +93,35 @@
     <Compile Include="AbmRegimen\Form1.Designer.cs">
       <DependentUpon>Form1.cs</DependentUpon>
     </Compile>
-    <Compile Include="AbmRol\Form1.cs">
+    <Compile Include="AbmRol\ListadoRol.cs">
       <SubType>Form</SubType>
     </Compile>
-    <Compile Include="AbmRol\Form1.Designer.cs">
-      <DependentUpon>Form1.cs</DependentUpon>
+    <Compile Include="AbmRol\ListadoRol.Designer.cs">
+      <DependentUpon>ListadoRol.cs</DependentUpon>
     </Compile>
-    <Compile Include="CancelarReserva\Form1.cs">
+    <Compile Include="AbmRol\Rol.cs">
       <SubType>Form</SubType>
     </Compile>
-    <Compile Include="CancelarReserva\Form1.Designer.cs">
-      <DependentUpon>Form1.cs</DependentUpon>
+    <Compile Include="AbmRol\Rol.Designer.cs">
+      <DependentUpon>Rol.cs</DependentUpon>
+    </Compile>
+    <Compile Include="AbmUsuario\ListadoUsuario.cs">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="AbmUsuario\ListadoUsuario.Designer.cs">
+      <DependentUpon>ListadoUsuario.cs</DependentUpon>
+    </Compile>
+    <Compile Include="AbmUsuario\Usuario.cs">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="AbmUsuario\Usuario.Designer.cs">
+      <DependentUpon>Usuario.cs</DependentUpon>
+    </Compile>
+    <Compile Include="CancelarReserva\CancelarReserva.cs">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="CancelarReserva\CancelarReserva.Designer.cs">
+      <DependentUpon>CancelarReserva.cs</DependentUpon>
     </Compile>
     <Compile Include="DAO\BaseDAO.cs" />
     <Compile Include="DAO\DAOFactory.cs" />
@@ -97,11 +145,11 @@
     <Compile Include="GenerarModificacionReserva\Form1.Designer.cs">
       <DependentUpon>Form1.cs</DependentUpon>
     </Compile>
-    <Compile Include="ListadoEstadistico\Form1.cs">
+    <Compile Include="ListadoEstadistico\Estadisticas.cs">
       <SubType>Form</SubType>
     </Compile>
-    <Compile Include="ListadoEstadistico\Form1.Designer.cs">
-      <DependentUpon>Form1.cs</DependentUpon>
+    <Compile Include="ListadoEstadistico\Estadisticas.Designer.cs">
+      <DependentUpon>Estadisticas.cs</DependentUpon>
     </Compile>
     <Compile Include="Login\Login.cs">
       <SubType>Form</SubType>
@@ -115,6 +163,7 @@
     <Compile Include="Login\LoginSeleccion.Designer.cs">
       <DependentUpon>LoginSeleccion.cs</DependentUpon>
     </Compile>
+    <Compile Include="MenuCreator.cs" />
     <Compile Include="Model\BaseData.cs" />
     <Compile Include="Model\Consumible.cs" />
     <Compile Include="Model\Cliente.cs" />
@@ -132,23 +181,54 @@
     <Compile Include="Model\Regimen.cs" />
     <Compile Include="Model\Reserva.cs" />
     <Compile Include="Model\Rol.cs" />
+    <Compile Include="Model\Session.cs" />
     <Compile Include="Model\TipoDocumento.cs" />
     <Compile Include="Model\TipoHabitacion.cs" />
     <Compile Include="Model\TipoPago.cs" />
     <Compile Include="Model\Usuario.cs" />
     <Compile Include="Program.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
-    <Compile Include="RegistrarConsumible\Form1.cs">
+    <Compile Include="RegistrarConsumible\Consumo.cs">
       <SubType>Form</SubType>
     </Compile>
-    <Compile Include="RegistrarConsumible\Form1.Designer.cs">
-      <DependentUpon>Form1.cs</DependentUpon>
+    <Compile Include="RegistrarConsumible\Consumo.Designer.cs">
+      <DependentUpon>Consumo.cs</DependentUpon>
     </Compile>
-    <Compile Include="RegistrarEstadia\Form1.cs">
+    <Compile Include="RegistrarConsumible\Facturacion.cs">
       <SubType>Form</SubType>
     </Compile>
-    <Compile Include="RegistrarEstadia\Form1.Designer.cs">
-      <DependentUpon>Form1.cs</DependentUpon>
+    <Compile Include="RegistrarConsumible\Facturacion.Designer.cs">
+      <DependentUpon>Facturacion.cs</DependentUpon>
+    </Compile>
+    <Compile Include="RegistrarConsumible\ListadoConsumos.cs">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="RegistrarConsumible\ListadoConsumos.Designer.cs">
+      <DependentUpon>ListadoConsumos.cs</DependentUpon>
+    </Compile>
+    <Compile Include="RegistrarEstadia\Estadia.cs">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="RegistrarEstadia\Estadia.Designer.cs">
+      <DependentUpon>Estadia.cs</DependentUpon>
+    </Compile>
+    <Compile Include="RegistrarEstadia\ListadoEstadia.cs">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="RegistrarEstadia\ListadoEstadia.Designer.cs">
+      <DependentUpon>ListadoEstadia.cs</DependentUpon>
+    </Compile>
+    <Compile Include="Reservas\ListadoReserva.cs">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="Reservas\ListadoReserva.Designer.cs">
+      <DependentUpon>ListadoReserva.cs</DependentUpon>
+    </Compile>
+    <Compile Include="Reservas\Reserva.cs">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="Reservas\Reserva.Designer.cs">
+      <DependentUpon>Reserva.cs</DependentUpon>
     </Compile>
     <Compile Include="Tools.cs" />
     <EmbeddedResource Include="Inicio.resx">

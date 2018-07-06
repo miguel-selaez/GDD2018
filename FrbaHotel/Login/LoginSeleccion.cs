@@ -43,7 +43,9 @@ namespace FrbaHotel.Login
 
         private void btnContinue_Click(object sender, EventArgs e)
         {
-            _inicio.SetUser(_user);
+            var selectedHotel = (Hotel) cbHoteles.SelectedValue;
+            var selectedRol = (Rol) cbRoles.SelectedValue;
+            _inicio.SetSession(_user, selectedHotel , selectedRol);
             _inicio.Show();
             Close();
         }

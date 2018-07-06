@@ -13,6 +13,8 @@ namespace FrbaHotel
 {
     public partial class Inicio : Form
     {
+        private Session _session;
+
         public Inicio()
         {
             InitializeComponent();
@@ -43,9 +45,34 @@ namespace FrbaHotel
 
         }
 
-        public void SetUser(Usuario user)
-        { 
-        
+        public void SetSession(Usuario user, Hotel hotel, Rol rol)
+        {
+            _session = new Session() { 
+                User = user, 
+                Main = this,
+                Hotel = hotel,
+                Rol = rol
+            };
+
+            SetMenu();
+        }
+
+        private void SetMenu()
+        {
+            var menuCreator = new MenuCreator(_session);
+
+            foreach (var funcion in _session.Rol.Funciones)
+            {
+                var itemFuncion = menuCreator.GetItemMenu(funcion);
+                mainMenu.MdiWindowListItem = itemFuncion;
+                mainMenu.Items.Add(itemFuncion);
+            }   
+
+            // Dock the MenuStrip to the top of the form.
+            mainMenu.Dock = DockStyle.Top;
+
+            // The Form.MainMenuStrip property determines the merge target.
+            this.MainMenuStrip = mainMenu;
         }
     }
 }

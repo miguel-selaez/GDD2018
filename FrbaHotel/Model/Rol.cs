@@ -1,4 +1,5 @@
-﻿using System;
+﻿using FrbaHotel.DAO;
+using System;
 using System.Collections.Generic;
 using System.Data;
 using System.Linq;
@@ -13,7 +14,12 @@ namespace FrbaHotel.Model
         public string Descripcion { get; set; }
         public bool Baja { get; set; }
 
-        public List<Funcion> Funciones;
+        private List<Funcion> _funciones;
+
+        public List<Funcion> Funciones
+        {
+            get { return _funciones ?? (_funciones = DAOFactory.FuncionDAO.GetFuncionesByRol(Id)); }
+        }
 
         public Rol(DataRow row) {
             Row = row;

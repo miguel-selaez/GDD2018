@@ -56,7 +56,10 @@ namespace FrbaHotel.Login
             if (hasMoreThanOneRole || hasMoreThanOneHotel) {
                 nextForm = new LoginSeleccion(_inicio, currentUser);
             } else{
-                _inicio.SetUser(currentUser);
+                var selectedRol = currentUser.Roles.First();
+                var selectedHotel = currentUser.HotelesAsignados.First();
+
+                _inicio.SetSession(currentUser, selectedHotel, selectedRol);
                 nextForm = _inicio;
             }
 
@@ -81,6 +84,14 @@ namespace FrbaHotel.Login
         {
             _inicio.Show();
             Close();            
+        }
+
+        private void txtPassword_KeyDown(object sender, KeyEventArgs e)
+        {
+            if (e.KeyCode == Keys.Enter)
+            {
+                btnLogin.PerformClick();
+            }
         }
     }
 }

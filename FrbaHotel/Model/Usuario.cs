@@ -36,5 +36,9 @@ namespace FrbaHotel.Model
         public List<Hotel> HotelesAsignados {
             get{ return _hoteles ?? (_hoteles = DAOFactory.HotelDAO.GetHotelesByUserId(Id));}
         }
+
+        public List<Funcion> Funciones{
+            get { return Roles.SelectMany(r => r.Funciones).ToList(); }
+        }
     }
 }
