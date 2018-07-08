@@ -10,6 +10,8 @@ namespace FrbaHotel.DAO
 {
     public class FuncionDAO : BaseDAO<Funcion>
     {
+        public FuncionDAO(DBConnection con) : base(con) { }
+
         public List<Funcion> GetFuncionesByRol(int rolId)
         {
             var list = new List<Funcion>();

@@ -10,6 +10,8 @@ namespace FrbaHotel.DAO
 {
     public class UsuarioDAO : BaseDAO<Usuario>
     {
+        public UsuarioDAO(DBConnection con) : base(con) { }
+
         public override void CreateOrUpdate(Usuario user) { 
             
         }

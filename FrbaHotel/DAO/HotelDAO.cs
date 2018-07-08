@@ -10,6 +10,7 @@ namespace FrbaHotel.DAO
 {
     public class HotelDAO : BaseDAO<Hotel>
     {
+        public HotelDAO(DBConnection con) : base(con) { }
 
         public List<Hotel> GetHotelesByUserId(int Id)
         {

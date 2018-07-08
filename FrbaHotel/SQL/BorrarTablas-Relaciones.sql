@@ -5,10 +5,6 @@ GO
 ALTER TABLE [NPM].[Cierre_Temporal]  DROP CONSTRAINT [FK_Cierre_Temporal_Hotel]
 GO
 
-
-ALTER TABLE [NPM].[Cierre_Temporal]  DROP CONSTRAINT [FK_Cierre_Temporal_Motivo_Cierre] 
-GO
-
 -- CLIENTE 
 ALTER TABLE [NPM].[Cliente]  DROP CONSTRAINT [FK_Cliente_Persona] 
 GO
@@ -44,6 +40,9 @@ GO
 ALTER TABLE [NPM].[Factura]  DROP CONSTRAINT [FK_Factura_Tipo_Pago] 
 GO
 
+ALTER TABLE [NPM].[Factura]  DROP CONSTRAINT [FK_Factura_Estadia] 
+GO
+
 -- FUNCIONES X ROL
 ALTER TABLE [NPM].[Funciones_x_Rol]  DROP CONSTRAINT [FK_Funciones_x_Rol_Funcion]
 GO
@@ -54,6 +53,9 @@ GO
 
 -- HABITACION
 ALTER TABLE [NPM].[Habitacion]  DROP CONSTRAINT [FK_Habitacion_Tipo_Habitacion] 
+GO
+
+ALTER TABLE [NPM].[Habitacion]  DROP CONSTRAINT [FK_Habitacion_Hotel] 
 GO
 
 -- HABITACION RESERVADA
@@ -115,6 +117,9 @@ GO
 ALTER TABLE [NPM].[Reserva_Cancelada]  DROP CONSTRAINT [FK_Reserva_Cancelada_Usuario]
 GO
 
+ALTER TABLE [NPM].[Reserva]  DROP  CONSTRAINT [FK_Reserva_Usuario] 
+GO
+
 -- RESERVA MODIFICADA
 ALTER TABLE [NPM].[Reserva_Modificada]  DROP CONSTRAINT [FK_Reserva_Modificada_Reserva] 
 GO
@@ -155,7 +160,6 @@ TRUNCATE TABLE NPM.Habitacion_Reservada
 TRUNCATE TABLE NPM.Hotel
 TRUNCATE TABLE NPM.Huesped_x_Estadia
 TRUNCATE TABLE NPM.Item_Factura
-TRUNCATE TABLE NPM.Motivo_Cierre
 TRUNCATE TABLE NPM.Pais
 GO
 TRUNCATE TABLE NPM.Persona
@@ -190,7 +194,6 @@ DROP TABLE NPM.Habitacion_Reservada
 DROP TABLE NPM.Hotel
 DROP TABLE NPM.Huesped_x_Estadia
 DROP TABLE NPM.Item_Factura
-DROP TABLE NPM.Motivo_Cierre
 DROP TABLE NPM.Pais
 GO
 DROP TABLE NPM.Persona

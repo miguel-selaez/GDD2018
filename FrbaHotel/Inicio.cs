@@ -13,16 +13,15 @@ namespace FrbaHotel
 {
     public partial class Inicio : Form
     {
-        private Session _session;
+        public Session session;
+
+        private MenuCreator _menuCreator;
 
         public Inicio()
         {
             InitializeComponent();
-        }
-
-        private void cerrarToolStripMenuItem_Click(object sender, EventArgs e)
-        {
-            Close();
+            _menuCreator = new MenuCreator(this);
+            SetInitMenu();
         }
 
         private void btnLogin_Click(object sender, EventArgs e)
@@ -30,11 +29,7 @@ namespace FrbaHotel
             OpenLogin();
         }
 
-        private void iniciarSesiónToolStripMenuItem_Click(object sender, EventArgs e)
-        {
-            OpenLogin();
-        }
-        private void OpenLogin() {
+        public void OpenLogin() {
             Hide();
             var login = new Login.Login(this);
             login.Show();
@@ -45,33 +40,42 @@ namespace FrbaHotel
 
         }
 
-        public void SetSession(Usuario user, Hotel hotel, Rol rol)
+        public void Set_session(Usuario user, Hotel hotel, Rol rol)
         {
-            _session = new Session() { 
+            session = new Session() { 
                 User = user, 
                 Main = this,
                 Hotel = hotel,
                 Rol = rol
             };
 
-            SetMenu();
+            SetLoggedMenu();
         }
 
-        private void SetMenu()
+        private void SetLoggedMenu()
         {
-            var menuCreator = new MenuCreator(_session);
+            this.MainMenuStrip.Items.Clear();
+            var itemDefault = _menuCreator.GetItemMenu("LOGGED");
+            mainMenu.MdiWindowListItem = itemDefault;
+            mainMenu.Items.Add(itemDefault);
 
-            foreach (var funcion in _session.Rol.Funciones)
+            foreach (var funcion in session.Rol.Funciones)
             {
-                var itemFuncion = menuCreator.GetItemMenu(funcion);
+                var itemFuncion = _menuCreator.GetItemMenu(funcion.Descripcion);
                 mainMenu.MdiWindowListItem = itemFuncion;
                 mainMenu.Items.Add(itemFuncion);
             }   
 
-            // Dock the MenuStrip to the top of the form.
             mainMenu.Dock = DockStyle.Top;
+            this.MainMenuStrip = mainMenu;
+        }
 
-            // The Form.MainMenuStrip property determines the merge target.
+        public void SetInitMenu() {
+            var itemDefault = _menuCreator.GetItemMenu("INIT");
+            mainMenu.MdiWindowListItem = itemDefault;
+            mainMenu.Items.Add(itemDefault);
+
+            mainMenu.Dock = DockStyle.Top;
             this.MainMenuStrip = mainMenu;
         }
     }

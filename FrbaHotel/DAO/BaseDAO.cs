@@ -8,10 +8,10 @@ namespace FrbaHotel.DAO
 {
     public abstract class BaseDAO<T>
     {
-        private DBConnection _connection;
+        protected DBConnection Connection;
 
-        protected DBConnection Connection { 
-            get {   return _connection ?? (_connection = new DBConnection("Hotel")); }
+        protected BaseDAO(DBConnection connection){
+            Connection = connection;
         }
 
         public virtual void CreateOrUpdate(T obj) { }

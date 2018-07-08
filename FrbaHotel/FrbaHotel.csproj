@@ -126,6 +126,7 @@
     <Compile Include="DAO\BaseDAO.cs" />
     <Compile Include="DAO\DAOFactory.cs" />
     <Compile Include="DAO\DBConnection.cs" />
+    <Compile Include="DAO\ItemFacturaDAO.cs" />
     <Compile Include="Exceptions\DBConnectionException.cs" />
     <Compile Include="DAO\FuncionDAO.cs" />
     <Compile Include="DAO\HotelDAO.cs" />

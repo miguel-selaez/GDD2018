@@ -28,7 +28,7 @@ namespace FrbaHotel.Model
             Direccion = new Direccion(row);
             Estrellas = GetValue<decimal>("estrellas");
             FechaCreacion = GetDate("fecha_creacion");
-            Baja = GetValue<bool>("baja");
+            Baja = GetValue<bool>("baja_ho");
         }
     }
 }

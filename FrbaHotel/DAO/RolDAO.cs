@@ -10,6 +10,7 @@ namespace FrbaHotel.DAO
 {
     public class RolDAO : BaseDAO<Rol>
     {
+        public RolDAO(DBConnection con) : base(con) { }
 
         public List<Rol> GetRolesByUserId(int userId)
         {

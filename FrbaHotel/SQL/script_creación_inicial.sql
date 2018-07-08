@@ -10,7 +10,7 @@ CREATE TABLE NPM.Usuario(
 	id_usuario int NOT NULL IDENTITY,
 	nombre_usuario nvarchar(255) NOT NULL,
 	pass varbinary(256) NOT NULL,
-	baja bit NOT NULL DEFAULT 1,
+	baja_u bit NOT NULL DEFAULT 1,
 	intentos_fallidos int NULL,
 	id_persona int NULL,
 	PRIMARY KEY(id_usuario)
@@ -52,7 +52,7 @@ CREATE TABLE NPM.Habitacion(
 	piso numeric(18,0) NOT NULL,
 	frente nvarchar(50) NOT NULL,
 	id_tipo_habitacion numeric(18,0) NOT NULL,
-	baja bit NULL,
+	baja_ha bit NULL,
 	PRIMARY KEY(id_habitacion)
 )
 
@@ -60,9 +60,9 @@ GO
 
 CREATE TABLE NPM.Tipo_Habitacion(
 	id_tipo_habitacion numeric(18,0) NOT NULL, 
-	descripcion nvarchar(255) NULL, 
+	descripcion_th nvarchar(255) NULL, 
 	porcentual numeric(18,2) NOT NULL,
-	baja bit NOT NULL DEFAULT 1,
+	baja_th bit NOT NULL DEFAULT 1,
 	PRIMARY KEY(id_tipo_habitacion)
 )
 
@@ -81,7 +81,7 @@ CREATE TABLE NPM.Cliente(
 	id_cliente int NOT NULL IDENTITY,
 	id_persona int NULL,
 	puntos int NULL,
-	baja bit NOT NULL,
+	baja_cl bit NOT NULL,
 	PRIMARY KEY(id_cliente)
 )
 
@@ -106,8 +106,8 @@ GO
 
 CREATE TABLE NPM.Tipo_Documento(
 	id_tipo_documento int NOT NULL IDENTITY,
-	descripcion nvarchar(50),
-	baja bit NOT NULL,
+	descripcion_td nvarchar(50),
+	baja_td bit NOT NULL,
 	PRIMARY KEY(id_tipo_documento)
 )
 
@@ -121,7 +121,7 @@ GO
 
 CREATE TABLE NPM.Consumible(
 	id_consumible numeric(18,0) NOT NULL,
-	descripcion nvarchar(255) NULL,
+	descripcion_cb nvarchar(255) NULL,
 	precio numeric(18,2) NULL,
 	PRIMARY KEY(id_consumible)
 )
@@ -167,8 +167,8 @@ GO
 
 CREATE TABLE NPM.Tipo_Pago(
 	id_tipo_pago int NOT NULL IDENTITY,
-	descripcion nvarchar(50) NULL,
-	baja bit NOT NULL DEFAULT 1,
+	descripcion_tp nvarchar(50) NULL,
+	baja_tp bit NOT NULL DEFAULT 1,
 	PRIMARY KEY(id_tipo_pago)
 )
 
@@ -176,9 +176,9 @@ GO
 
 CREATE TABLE NPM.Regimen(
 	id_regimen int NOT NULL IDENTITY,
-	descripcion nvarchar(255) NULL,
+	descripcion_r nvarchar(255) NULL,
 	precio numeric(18,2) NOT NULL,
-	baja bit NOT NULL,
+	baja_r bit NOT NULL,
 	PRIMARY KEY (id_regimen)
 )
 
@@ -192,7 +192,7 @@ CREATE TABLE NPM.Hotel(
 	id_direccion int NOT NULL,
 	estrellas numeric(18,0) NOT NULL,
 	fecha_creacion datetime NOT NULL,
-	baja bit NOT NULL DEFAULT 1,
+	baja_ho bit NOT NULL DEFAULT 1,
 	PRIMARY KEY (id_hotel)
 )
 
@@ -208,19 +208,10 @@ GO
 
 CREATE TABLE NPM.Cierre_Temporal(
 	id_hotel int NOT NULL IDENTITY,
-	id_motivo_cierre int NOT NULL,
+	motivo_cierre nvarchar(100) NOT NULL,
 	fecha_inicio datetime NOT NULL,
 	fecha_fin datetime NULL,
 	PRIMARY KEY (id_hotel, fecha_inicio)
-)
-
-GO
-
-CREATE TABLE NPM.Motivo_Cierre(
-	id_motivo_cierre int NOT NULL IDENTITY,
-	descripcion nvarchar(50),
-	baja bit NOT NULL DEFAULT 1,
-	PRIMARY KEY(id_motivo_cierre)
 )
 
 GO
@@ -240,9 +231,9 @@ GO
 	
 CREATE TABLE NPM.Pais(
 	id_pais int NOT NULL IDENTITY,
-	descripcion nvarchar(50),
+	descripcion_pa nvarchar(50),
 	nacionalidad nvarchar(255),
-	baja bit NOT NULL DEFAULT 1,
+	baja_pa bit NOT NULL DEFAULT 1,
 	PRIMARY KEY(id_pais)
 )
 
@@ -275,8 +266,8 @@ GO
 
 CREATE TABLE NPM.Estado_Reserva(
 	id_estado int NOT NULL IDENTITY,
-	descripcion nvarchar(255) NOT NULL,
-	baja bit NOT NULL DEFAULT 1,
+	descripcion_er nvarchar(255) NOT NULL,
+	bajar_er bit NOT NULL DEFAULT 1,
 	PRIMARY KEY (id_estado)
 )
 
@@ -292,8 +283,8 @@ GO
 
 CREATE TABLE NPM.Funcion(
 	id_funcion int NOT NULL IDENTITY,
-	descripcion nvarchar(255) NOT NULL,
-	baja bit NOT NULL DEFAULT 1,
+	descripcion_f nvarchar(255) NOT NULL,
+	baja_f bit NOT NULL DEFAULT 1,
 	PRIMARY KEY(id_funcion)
 )
 
@@ -309,8 +300,8 @@ GO
 
 CREATE TABLE NPM.Rol(
 	id_rol int NOT NULL IDENTITY,
-	descripcion nvarchar(255) NOT NULL,
-	baja bit NOT NULL DEFAULT 1,
+	descripcion_rl nvarchar(255) NOT NULL,
+	baja_rl bit NOT NULL DEFAULT 1,
 	PRIMARY KEY(id_rol)
 )
 
@@ -390,7 +381,7 @@ AS
 BEGIN 
 	IF @id IS NULL
 	BEGIN 
-		INSERT INTO NPM.Hotel (nombre,mail,telefono,id_direccion,estrellas,fecha_creacion,baja)
+		INSERT INTO NPM.Hotel (nombre,mail,telefono,id_direccion,estrellas,fecha_creacion,baja_ho)
 		VALUES (@nombre,@mail,@telefono,@id_direccion,@estrellas,@fecha_creacion,@baja)
 
 		SELECT @id_out = @@IDENTITY
@@ -405,7 +396,7 @@ BEGIN
 			id_direccion = @id_direccion, 
 			estrellas = @estrellas,
 			fecha_creacion = @fecha_creacion,
-			baja = @baja
+			baja_ho = @baja
 		WHERE 
 			id_hotel = @id;
 
@@ -494,7 +485,7 @@ BEGIN
 	WHERE
 		UPPER(u.nombre_usuario) = UPPER(@user)
 		AND u.pass = @pass_enc
-		AND u.baja = 0
+		AND u.baja_u = 0
 	 	
 END
 
@@ -516,9 +507,9 @@ BEGIN
 			ON R.id_rol = RU.id_rol
 	WHERE 
 		RU.id_usuario = @id
-		AND R.baja = 0
+		AND R.baja_rl = 0
 	ORDER BY
-		R.descripcion
+		R.descripcion_rl
 
 END
 
@@ -539,7 +530,7 @@ BEGIN
 		H.telefono, 
 		H.estrellas,
 		CONVERT(varchar(10), H.fecha_creacion, 112) as 'fecha_creacion',
-		H.baja,
+		H.baja_ho,
 		D.*
 	FROM 
 		NPM.Hotel as H
@@ -549,7 +540,7 @@ BEGIN
 			ON D.id_direccion = H.id_direccion
 	WHERE 
 		HU.id_usuario = @id
-		AND H.baja = 0
+		AND H.baja_ho = 0
 	ORDER BY
 		H.Nombre
 
@@ -573,9 +564,9 @@ BEGIN
 			ON F.id_funcion = FR.id_funcion
 	WHERE 
 		FR.id_rol = @id
-		AND F.baja = 0
+		AND F.baja_f = 0
 	ORDER BY
-		F.descripcion
+		F.descripcion_f
 
 END
 
@@ -926,7 +917,7 @@ INNER JOIN #RegXHotel rh
 UPDATE #RegXHotel 
 SET id_regimen = r.id_regimen 
 FROM NPM.Regimen r
-JOIN #RegXHotel rh ON r.descripcion = rh.reg_descripcion AND
+JOIN #RegXHotel rh ON r.descripcion_r = rh.reg_descripcion AND
 					  r.precio = rh.reg_precio 
 
 INSERT INTO NPM.Regimen_x_Hotel
@@ -984,7 +975,7 @@ JOIN #Reserva r ON  d.calle = r.r_Calle AND
 
 UPDATE #Reserva SET r_id_regimen = rg.id_regimen
 FROM NPM.Regimen rg
-JOIN #Reserva rs ON rg.descripcion = rs.r_Descripcion
+JOIN #Reserva rs ON rg.descripcion_r = rs.r_Descripcion
 
 SELECT 
 	R.r_Codigo,
@@ -1113,13 +1104,6 @@ GO
 ALTER TABLE [NPM].[Cierre_Temporal] CHECK CONSTRAINT [FK_Cierre_Temporal_Hotel]
 GO
 
-ALTER TABLE [NPM].[Cierre_Temporal]  WITH CHECK ADD  CONSTRAINT [FK_Cierre_Temporal_Motivo_Cierre] FOREIGN KEY([id_motivo_cierre])
-REFERENCES [NPM].[Motivo_Cierre] ([id_motivo_cierre])
-GO
-
-ALTER TABLE [NPM].[Cierre_Temporal] CHECK CONSTRAINT [FK_Cierre_Temporal_Motivo_Cierre]
-GO
-
 -- CLIENTE 
 ALTER TABLE [NPM].[Cliente]  WITH CHECK ADD  CONSTRAINT [FK_Cliente_Persona] FOREIGN KEY([id_persona])
 REFERENCES [NPM].[Persona] ([id_persona])
@@ -1195,6 +1179,14 @@ GO
 ALTER TABLE [NPM].[Factura] CHECK CONSTRAINT [FK_Factura_Tipo_Pago]
 GO
 
+ALTER TABLE [NPM].[Factura]  WITH CHECK ADD  CONSTRAINT [FK_Factura_Estadia] FOREIGN KEY([id_estadia])
+REFERENCES [NPM].[Estadia] ([id_estadia])
+GO
+
+ALTER TABLE [NPM].[Factura] CHECK CONSTRAINT [FK_Factura_Estadia]
+GO
+
+
 -- FUNCIONES X ROL
 ALTER TABLE [NPM].[Funciones_x_Rol]  WITH CHECK ADD  CONSTRAINT [FK_Funciones_x_Rol_Funcion] FOREIGN KEY([id_funcion])
 REFERENCES [NPM].[Funcion] ([id_funcion])
@@ -1216,6 +1208,13 @@ REFERENCES [NPM].[Tipo_Habitacion] ([id_tipo_habitacion])
 GO
 
 ALTER TABLE [NPM].[Habitacion] CHECK CONSTRAINT [FK_Habitacion_Tipo_Habitacion]
+GO
+
+ALTER TABLE [NPM].[Habitacion]  WITH CHECK ADD  CONSTRAINT [FK_Habitacion_Hotel] FOREIGN KEY([id_hotel])
+REFERENCES [NPM].[Hotel] ([id_hotel])
+GO
+
+ALTER TABLE [NPM].[Habitacion] CHECK CONSTRAINT [FK_Habitacion_Hotel]
 GO
 
 -- HABITACION RESERVADA
@@ -1329,6 +1328,14 @@ GO
 
 ALTER TABLE [NPM].[Reserva] CHECK CONSTRAINT [FK_Reserva_Regimen_x_Hotel]
 GO
+
+ALTER TABLE [NPM].[Reserva]  WITH CHECK ADD  CONSTRAINT [FK_Reserva_Usuario] FOREIGN KEY([id_usuario_creacion])
+REFERENCES [NPM].[Usuario] ([id_usuario])
+GO
+
+ALTER TABLE [NPM].[Reserva] CHECK CONSTRAINT [FK_Reserva_Usuario]
+GO
+
 
 -- RESERVA CANCELADA
 ALTER TABLE [NPM].[Reserva_Cancelada]  WITH CHECK ADD  CONSTRAINT [FK_Reserva_Cancelada_Reserva] FOREIGN KEY([id_reserva])

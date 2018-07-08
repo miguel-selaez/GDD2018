@@ -25,8 +25,8 @@ namespace FrbaHotel.Model
             Row = row;
 
             Id = GetValue<int>("id_rol");
-            Descripcion = GetValue<string>("descripcion");
-            Baja = GetValue<bool>("baja");
+            Descripcion = GetValue<string>("descripcion_rl");
+            Baja = GetValue<bool>("baja_rl");
         }
     }
 }

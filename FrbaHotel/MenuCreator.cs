@@ -10,18 +10,18 @@ namespace FrbaHotel
 {
     public class MenuCreator
     {
-        private Session _session;
+        private Inicio _main;
 
-        public MenuCreator(Session sesion)
+        public MenuCreator(Inicio main)
         {
-            _session = sesion;
+            _main = main;
         }
 
-        public ToolStripMenuItem GetItemMenu(Funcion funcion)
+        public ToolStripMenuItem GetItemMenu(string funcion)
         {
             ToolStripMenuItem itemMenu = new ToolStripMenuItem();
 
-            switch (funcion.Descripcion) { 
+            switch (funcion) { 
                 case "ABM ROL":
                     itemMenu.Text = "Rol";
 
@@ -102,6 +102,22 @@ namespace FrbaHotel
                 case "LISTADO ESTADISTICO":
                     itemMenu = new ToolStripMenuItem("Estadísticas", null, new EventHandler(estadisticas_Click));
                     break;
+                case "LOGGED":
+                    itemMenu.Text = "Archivo";
+                    ToolStripMenuItem cerrarSesion = new ToolStripMenuItem("Cerrar Sessión", null, new EventHandler(cerrarSesion_Click));
+                    itemMenu.DropDownItems.Add(cerrarSesion);
+
+                    ToolStripMenuItem cerrarL = new ToolStripMenuItem("Cerrar", null, new EventHandler(cerrar_Click));
+                    itemMenu.DropDownItems.Add(cerrarL);
+                    break;
+                default:
+                    itemMenu.Text = "Archivo";
+                    ToolStripMenuItem iniciarSesion = new ToolStripMenuItem("Iniciar Sesión", null, new EventHandler(iniciarSesion_Click));
+                    itemMenu.DropDownItems.Add(iniciarSesion);
+
+                    ToolStripMenuItem cerrarD = new ToolStripMenuItem("Cerrar", null, new EventHandler(cerrar_Click));
+                    itemMenu.DropDownItems.Add(cerrarD);
+                    break;
             }
            
             ((ToolStripDropDownMenu)(itemMenu.DropDown)).ShowImageMargin = false;
@@ -110,143 +126,158 @@ namespace FrbaHotel
             return itemMenu;
         }
 
+        private void cerrar_Click(object sender, EventArgs e)
+        {
+            _main.Close();
+        }
+
+        private void cerrarSesion_Click(object sender, EventArgs e)
+        {
+            _main.session = null;
+            _main.MainMenuStrip.Items.Clear();
+
+            _main.SetInitMenu();
+        }
+
+        private void iniciarSesion_Click(object sender, EventArgs e)
+        {
+            _main.OpenLogin();
+        }
+
         private void cancelaReserva_Click(object sender, EventArgs e)
         {
-            var cancelacion = new CancelarReserva.CancelarReserva(_session);
-            _session.Main.Hide();
+            var cancelacion = new CancelarReserva.CancelarReserva(_main.session);
+            
             cancelacion.Show();
         }
 
         private void bajaHotel_Click(object sender, EventArgs e)
         {
-            var baja = new AbmHotel.BajaHotel(_session);
-            _session.Main.Hide();
+            var baja = new AbmHotel.BajaHotel(_main.session);
+            
             baja.Show();
         }
 
         private void estadisticas_Click(object sender, EventArgs e)
         {
-            var estadisticas = new ListadoEstadistico.Estadisticas(_session);
-            _session.Main.Hide();
+            var estadisticas = new ListadoEstadistico.Estadisticas(_main.session);
+            
             estadisticas.Show();
         }
 
         private void facturacion_Click(object sender, EventArgs e)
         {
-            var facturacion = new RegistrarConsumible.Facturacion(_session);
-            _session.Main.Hide();
+            var facturacion = new RegistrarConsumible.Facturacion(_main.session);
+            
             facturacion.Show();
         }
 
         private void nuevoConsumo_Click(object sender, EventArgs e)
         {
-            var nuevo = new RegistrarConsumible.Consumo(_session);
-            _session.Main.Hide();
+            var nuevo = new RegistrarConsumible.Consumo(_main.session);
+            
             nuevo.Show();
         }
 
         private void listadoConsumos_Click(object sender, EventArgs e)
         {
-            var listado = new RegistrarConsumible.ListadoConsumos(_session);
-            _session.Main.Hide();
+            var listado = new RegistrarConsumible.ListadoConsumos(_main.session);
+            
             listado.Show();
         }
 
         private void nuevaEstadia_Click(object sender, EventArgs e)
         {
-            var nuevo = new RegistrarEstadia.Estadia(_session);
-            _session.Main.Hide();
+            var nuevo = new RegistrarEstadia.Estadia(_main.session);
+            
             nuevo.Show();
         }
 
         private void listadoEstadia_Click(object sender, EventArgs e)
         {
-            var listado = new RegistrarEstadia.ListadoEstadia(_session);
-            _session.Main.Hide();
+            var listado = new RegistrarEstadia.ListadoEstadia(_main.session);
+            
             listado.Show();
         }
 
         private void nuevaReserva_Click(object sender, EventArgs e)
         {
-            var nuevo = new Reservas.Reserva(_session);
-            _session.Main.Hide();
+            var nuevo = new Reservas.Reserva(_main.session);
+            
             nuevo.Show();
         }
 
         private void listadoReserva_Click(object sender, EventArgs e)
         {
-            var listado = new Reservas.ListadoReserva(_session);
-            _session.Main.Hide();
+            var listado = new Reservas.ListadoReserva(_main.session);
+            
             listado.Show();
         }
 
         private void nuevaHabitacion_Click(object sender, EventArgs e)
         {
-            var nuevo = new AbmHabitacion.Habitacion(_session);
-            _session.Main.Hide();
+            var nuevo = new AbmHabitacion.Habitacion(_main.session);
+            
             nuevo.Show();
         }
 
         private void listadoHabitacion_Click(object sender, EventArgs e)
         {
-            var listado = new AbmHabitacion.ListadoHabitacion(_session);
-            _session.Main.Hide();
+            var listado = new AbmHabitacion.ListadoHabitacion(_main.session);
+            
             listado.Show();
         }
 
         private void nuevoHotel_Click(object sender, EventArgs e)
         {
-            var nuevo = new AbmHotel.Hotel(_session);
-            _session.Main.Hide();
+            var nuevo = new AbmHotel.Hotel(_main.session);
+            
             nuevo.Show();
         }
 
         private void listadoHotel_Click(object sender, EventArgs e)
         {
-            var listado = new AbmHotel.ListadoHotel(_session);
-            _session.Main.Hide();
+            var listado = new AbmHotel.ListadoHotel(_main.session);
+            
             listado.Show();
         }
 
         private void nuevoCliente_Click(object sender, EventArgs e)
         {
-            var nuevo = new AbmCliente.Cliente(_session);
-            _session.Main.Hide();
+            var nuevo = new AbmCliente.Cliente(_main.session);
+            
             nuevo.Show();
         }
 
         private void listadoCliente_Click(object sender, EventArgs e)
         {
-            var listado = new AbmCliente.ListadoCliente(_session);
-            _session.Main.Hide();
+            var listado = new AbmCliente.ListadoCliente(_main.session);
+            
             listado.Show();
         }
 
         private void nuevoUsuario_Click(object sender, EventArgs e)
         {
-            var nuevo = new AbmUsuario.Usuario(_session);
-            _session.Main.Hide();
+            var nuevo = new AbmUsuario.Usuario(_main.session);
+            
             nuevo.Show();
         }
 
         private void listadoUsuario_Click(object sender, EventArgs e)
         {
-            var listado = new AbmUsuario.ListadoUsuario(_session);
-            _session.Main.Hide();
+            var listado = new AbmUsuario.ListadoUsuario(_main.session);
             listado.Show();
         }
 
         private void nuevoRol_Click(object sender, EventArgs e)
         {
-            var nuevoRol = new AbmRol.Rol(_session);
-            _session.Main.Hide();
+            var nuevoRol = new AbmRol.Rol(_main.session);
             nuevoRol.Show();
         }
 
         private void listadoRol_Click(object sender, EventArgs e)
         {
-            var listado = new AbmRol.ListadoRol(_session);
-            _session.Main.Hide();
+            var listado = new AbmRol.ListadoRol(_main.session);
             listado.Show();
         }
     }

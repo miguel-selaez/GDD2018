@@ -25,7 +25,7 @@ namespace FrbaHotel.Model
 
             Id = GetValue<int>("id_usuario");
             NombreUsuario = GetValue<string>("nombre_usuario");
-            Baja = GetValue<bool>("baja");
+            Baja = GetValue<bool>("baja_u");
             IntentosFallidos = GetValue<int>("intentos_fallidos");
             Persona = new Persona(row);
         }
