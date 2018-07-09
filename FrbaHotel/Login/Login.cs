@@ -59,7 +59,7 @@ namespace FrbaHotel.Login
                 var selectedRol = currentUser.Roles.First();
                 var selectedHotel = currentUser.HotelesAsignados.First();
 
-                _inicio.Set_session(currentUser, selectedHotel, selectedRol);
+                _inicio.SetSession(currentUser, selectedHotel, selectedRol);
                 nextForm = _inicio;
             }
 

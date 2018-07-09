@@ -56,14 +56,25 @@ namespace FrbaHotel.DAO
             sqlStatement += string.Join(", ", parametros);
             return sqlStatement + ";";
         }
+        public string GetParam(bool param)
+        {
+            return param ? "1" : "0";
+        }
         public string GetParam(string param) {
-            return "'" + param + "'";
+            return !string.IsNullOrEmpty(param) ? "'" + param + "'" : "null";
         }
         public string GetParam(DateTime param) {
-            return "'" + Tools.ToDataBaseTime(param) + "'";
+            return param != null ? "'" + Tools.ToDataBaseTime(param) + "'" : "null";
         }
         public string GetParam(int param) {
             return param.ToString();
+        }
+        public string GetParamVigencia(string param) {
+            return param == "Todos"
+                ? "null"
+                : param == "No"
+                    ? "1"
+                    : "0";
         }
             
     }

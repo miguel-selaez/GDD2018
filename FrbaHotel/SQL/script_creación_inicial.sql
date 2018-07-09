@@ -572,6 +572,29 @@ END
 
 GO
 
+IF EXISTS (SELECT 1 FROM sysobjects WHERE name='P_Obtener_Roles')
+	DROP PROCEDURE NPM.P_Obtener_Roles
+GO 	
+
+CREATE PROCEDURE NPM.P_Obtener_Roles  
+	@descripcion nvarchar(255),
+	@baja bit
+AS
+BEGIN 
+	SELECT 
+		R.*
+	FROM 
+		NPM.Rol as R
+	WHERE
+		(R.descripcion_rl like '%'+ @descripcion + '%' OR @descripcion IS NULL)
+		AND (R.baja_rl = @baja OR @baja IS NULL)
+	ORDER BY
+		R.descripcion_rl
+
+END
+
+GO
+
 print (CONCAT('INSERTS ', CONVERT(VARCHAR, GETDATE(), 114)))
 ---------------------------------- INSERTS ------------------------------
 BEGIN TRY
@@ -597,6 +620,7 @@ INSERT INTO NPM.Funcion VALUES
 
 -- USUARIO
 DECLARE @id_persona_usuario int 
+DECLARE @id_persona_gen int 
 
 EXEC NPM.P_Alta_Persona 
 	null,
@@ -612,9 +636,25 @@ EXEC NPM.P_Alta_Persona
 	0,
 	@id_persona_usuario OUTPUT
 
+EXEC NPM.P_Alta_Persona 
+	null,
+	'Usuario Generico',
+	null,
+	null,
+	null,
+	null,
+	1,
+	null,
+	null,
+	null,
+	0,
+	@id_persona_gen OUTPUT
+
 INSERT INTO NPM.Usuario VALUES
-('admin', HASHBYTES('SHA2_256', CONVERT(nvarchar(50), 'w23e')), 0, 0, @id_persona_usuario)
+('admin', HASHBYTES('SHA2_256', CONVERT(nvarchar(50), 'w23e')), 0, 0, @id_persona_usuario),
+('generico', HASHBYTES('SHA2_256', CONVERT(nvarchar(50), 'gen123*')), 0, 0, @id_persona_gen)
  
+ select * from NPM.Usuario
 -- FUNCIONES X ROL
 INSERT INTO NPM.Funciones_x_Rol (id_rol, id_funcion) VALUES 
 (1, 1),
@@ -629,11 +669,12 @@ INSERT INTO NPM.Funciones_x_Rol (id_rol, id_funcion) VALUES
 (1, 10),
 (2, 3),
 (2, 8),
-(2, 9)
-
+(2, 9),
+(3,7)
 
 -- ROLES X USUARIO
 INSERT INTO NPM.Roles_x_Usuario (id_usuario, id_rol) VALUES (1, 1)
+INSERT INTO NPM.Roles_x_Usuario (id_usuario, id_rol) VALUES (2, 3)
 
 --PAIS
 INSERT INTO NPM.Pais VALUES ('ARGENTINA','ARGENTINO',0)

@@ -37,10 +37,14 @@ namespace FrbaHotel
 
         private void btnClientes_Click(object sender, EventArgs e)
         {
-
+            var generico = DAO.DAOFactory.UsuarioDAO.Login("generico", "gen123*");
+            SetSession(generico, null, generico.Roles.First());
+            SetLoggedMenu();
+            var reserva = new Reservas.Reserva(session);
+            reserva.Show();
         }
 
-        public void Set_session(Usuario user, Hotel hotel, Rol rol)
+        public void SetSession(Usuario user, Hotel hotel, Rol rol)
         {
             session = new Session() { 
                 User = user, 

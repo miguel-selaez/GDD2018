@@ -232,6 +232,9 @@
       <DependentUpon>Reserva.cs</DependentUpon>
     </Compile>
     <Compile Include="Tools.cs" />
+    <EmbeddedResource Include="AbmRol\ListadoRol.resx">
+      <DependentUpon>ListadoRol.cs</DependentUpon>
+    </EmbeddedResource>
     <EmbeddedResource Include="Inicio.resx">
       <DependentUpon>Inicio.cs</DependentUpon>
     </EmbeddedResource>

@@ -26,5 +26,21 @@ namespace FrbaHotel.DAO
             }
             return list;
         }
+
+        public List<Rol> GetRoles(string descripcion, string vigencia) {
+            var list = new List<Rol>();
+
+            var query = ArmarSentenciaSP("P_Obtener_Roles", new[]{GetParam(descripcion), GetParamVigencia(vigencia)});
+            var result = Connection.ExecuteQuery(query);
+
+            if (result.Rows.Count > 0)
+            {
+                foreach (DataRow row in result.Rows)
+                {
+                    list.Add(new Rol(row));
+                }
+            }
+            return list;
+        }
     }
 }
