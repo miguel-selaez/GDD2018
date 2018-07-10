@@ -12,6 +12,15 @@ namespace FrbaHotel.DAO
     {
         public RolDAO(DBConnection con) : base(con) { }
 
+        public override void CreateOrUpdate(Rol rol){
+            var query = ArmarSentenciaSP("P_Guardar_Rol", new[] { GetParam(rol.Id), GetParam(rol.Descripcion), GetParam(rol.Baja) });
+            var rolId = Int32.Parse(Connection.ExecuteSingleResult(query));
+
+            foreach (var funcion in rol.Funciones) {
+                DAOFactory.FuncionDAO.SaveFuncionxRol(funcion, rolId);
+            }
+        } 
+
         public List<Rol> GetRolesByUserId(int userId)
         {
             var list = new List<Rol>();

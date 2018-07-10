@@ -235,6 +235,9 @@
     <EmbeddedResource Include="AbmRol\ListadoRol.resx">
       <DependentUpon>ListadoRol.cs</DependentUpon>
     </EmbeddedResource>
+    <EmbeddedResource Include="AbmRol\Rol.resx">
+      <DependentUpon>Rol.cs</DependentUpon>
+    </EmbeddedResource>
     <EmbeddedResource Include="Inicio.resx">
       <DependentUpon>Inicio.cs</DependentUpon>
     </EmbeddedResource>

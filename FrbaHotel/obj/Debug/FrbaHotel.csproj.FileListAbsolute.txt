@@ -29,3 +29,4 @@ C:\Users\migue\Documents\GitHub\GDD2018\FrbaHotel\obj\Debug\FrbaHotel.exe
 C:\Users\migue\Documents\GitHub\GDD2018\FrbaHotel\obj\Debug\FrbaHotel.pdb
 C:\Users\migue\Documents\GitHub\GDD2018\FrbaHotel\obj\Debug\FrbaHotel.csprojResolveAssemblyReference.cache
 C:\Users\migue\Documents\GitHub\GDD2018\FrbaHotel\obj\Debug\FrbaHotel.AbmRol.ListadoRol.resources
+C:\Users\migue\Documents\GitHub\GDD2018\FrbaHotel\obj\Debug\FrbaHotel.AbmRol.Rol.resources

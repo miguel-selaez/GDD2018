@@ -595,6 +595,78 @@ END
 
 GO
 
+IF EXISTS (SELECT 1 FROM sysobjects WHERE name='P_Obtener_Funciones')
+	DROP PROCEDURE NPM.P_Obtener_Funciones
+GO 	
+
+CREATE PROCEDURE NPM.P_Obtener_Funciones 
+	@baja bit
+AS
+BEGIN 
+	SELECT 
+		F.*
+	FROM 
+		NPM.Funcion as F
+	WHERE 
+		F.baja_f = @baja
+	ORDER BY
+		F.descripcion_f
+
+END
+
+GO
+
+IF EXISTS (SELECT 1 FROM sysobjects WHERE name='P_Guardar_Rol')
+	DROP PROCEDURE NPM.P_Guardar_Rol
+GO 	
+
+CREATE PROCEDURE NPM.P_Guardar_Rol 
+	@id int, 
+	@descripcion nvarchar(255),
+	@baja bit
+AS
+BEGIN 
+	IF @id = 0
+	BEGIN 
+		INSERT INTO NPM.Rol (descripcion_rl, baja_rl)
+		VALUES (@descripcion, @baja)
+
+		SELECT id_out = @@IDENTITY
+	END 
+	ELSE 
+	BEGIN 
+		UPDATE NPM.Rol 
+		SET 
+			descripcion_rl = @descripcion,
+			baja_rl = @baja
+		WHERE 
+			id_rol = @id;
+
+		SELECT id_out = @id;
+
+		DELETE Funciones_x_Rol
+		WHERE 
+			id_rol = @id;
+	END
+
+END
+
+GO
+
+IF EXISTS (SELECT 1 FROM sysobjects WHERE name='P_Guardar_Funcion_x_Rol')
+	DROP PROCEDURE NPM.P_Guardar_Funcion_x_Rol
+GO 	
+
+CREATE PROCEDURE NPM.P_Guardar_Funcion_x_Rol 
+	@id_funcion int, 
+	@id_rol int
+AS
+BEGIN 
+	INSERT INTO NPM.Funciones_x_Rol(id_funcion, id_rol)
+	VALUES (@id_funcion, @id_rol)
+END
+
+GO
 print (CONCAT('INSERTS ', CONVERT(VARCHAR, GETDATE(), 114)))
 ---------------------------------- INSERTS ------------------------------
 BEGIN TRY
@@ -668,6 +740,7 @@ INSERT INTO NPM.Funciones_x_Rol (id_rol, id_funcion) VALUES
 (1, 9),
 (1, 10),
 (2, 3),
+(2, 7),
 (2, 8),
 (2, 9),
 (3,7)

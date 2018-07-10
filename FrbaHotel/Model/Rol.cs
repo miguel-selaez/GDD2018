@@ -19,6 +19,7 @@ namespace FrbaHotel.Model
         public List<Funcion> Funciones
         {
             get { return _funciones ?? (_funciones = DAOFactory.FuncionDAO.GetFuncionesByRol(Id)); }
+            set { _funciones = value; }
         }
 
         public Rol(DataRow row) {
@@ -27,6 +28,13 @@ namespace FrbaHotel.Model
             Id = GetValue<int>("id_rol");
             Descripcion = GetValue<string>("descripcion_rl");
             Baja = GetValue<bool>("baja_rl");
+        }
+
+        public Rol(string descripcion, bool baja, List<Funcion> funciones)
+        {
+            Descripcion = descripcion;
+            Baja = baja;
+            this.Funciones = funciones;
         }
     }
 }

@@ -50,7 +50,7 @@ namespace FrbaHotel.AbmRol
         private void dgRoles_CellContentClick(object sender, DataGridViewCellEventArgs e)
         {
             var selectedRol = _results.ElementAt(e.RowIndex);
-            var nuevo = new Rol(_session);
+            var nuevo = new Rol(_session, selectedRol, this);
             nuevo.Show();
         }
 
@@ -58,6 +58,11 @@ namespace FrbaHotel.AbmRol
         {
             txtDescripcion.Text = "";
             cbVigencia.SelectedIndex = 0;
+        }
+
+        public void UpdateRoles()
+        {
+            btnBuscar.PerformClick();
         }
     }
 }
