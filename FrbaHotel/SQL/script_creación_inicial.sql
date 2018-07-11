@@ -359,6 +359,32 @@ BEGIN
 END
 
 GO 
+
+--LISTAR CONSUMO
+USE GD1C2018;
+GO
+
+IF EXISTS (SELECT 1 FROM sysobjects WHERE name='P_Listar_Consumos')
+	DROP PROCEDURE NPM.P_Listar_Consumos
+GO 	
+CREATE PROCEDURE NPM.P_Listar_Consumos
+	@reserva int,
+	@habitacion numeric(18,0)
+AS
+BEGIN
+
+SELECT co.descripcion_cb, c.cantidad, (c.cantidad * co.precio)
+from NPM.Consumo c
+join NPM.Habitacion_Reservada e on e.id_reserva = @reserva
+join NPM.Habitacion h on e.id_habitacion = h.id_habitacion and h.numero = @habitacion
+join NPM.Consumible co on c.id_consumible = co.id_consumible
+
+END
+GO
+
+
+
+
 --HOTEL
 USE GD1C2018;
 GO

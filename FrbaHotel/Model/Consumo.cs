@@ -1,4 +1,5 @@
-﻿using System;
+﻿using FrbaHotel.DAO;
+using System;
 using System.Collections.Generic;
 using System.Data;
 using System.Linq;
@@ -16,6 +17,9 @@ namespace FrbaHotel.Model
         public Reserva Reserva { get; set; }
         public decimal cantidad { get; set; }
 
+
+        
+
         public Consumo(DataRow row) {
             Row = row;
 
@@ -26,5 +30,15 @@ namespace FrbaHotel.Model
             Reserva = new Reserva(row);
             cantidad = GetValue<decimal>("cantidad");
         }
+
+        public Consumo(Estadia estadia, Consumible consumible, Habitacion habitacion, Reserva reserva, decimal cantidad) {
+            this.Estadia = estadia;
+            this.Consumible = consumible;
+            this.Habitacion = habitacion;
+            this.Reserva = reserva;
+            this.cantidad = cantidad;
+        }
+
+        
     }
 }

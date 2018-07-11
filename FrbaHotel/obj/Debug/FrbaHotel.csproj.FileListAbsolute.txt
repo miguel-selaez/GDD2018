@@ -30,3 +30,18 @@ C:\Users\migue\Documents\GitHub\GDD2018\FrbaHotel\obj\Debug\FrbaHotel.pdb
 C:\Users\migue\Documents\GitHub\GDD2018\FrbaHotel\obj\Debug\FrbaHotel.csprojResolveAssemblyReference.cache
 C:\Users\migue\Documents\GitHub\GDD2018\FrbaHotel\obj\Debug\FrbaHotel.AbmRol.ListadoRol.resources
 C:\Users\migue\Documents\GitHub\GDD2018\FrbaHotel\obj\Debug\FrbaHotel.AbmRol.Rol.resources
+C:\Users\jean pierre\Desktop\gdd1\GDD2018\FrbaHotel\bin\Debug\FrbaHotel.exe.config
+C:\Users\jean pierre\Desktop\gdd1\GDD2018\FrbaHotel\obj\Debug\FrbaHotel.exe
+C:\Users\jean pierre\Desktop\gdd1\GDD2018\FrbaHotel\obj\Debug\FrbaHotel.pdb
+C:\Users\jean pierre\Desktop\gdd1\GDD2018\FrbaHotel\obj\Debug\FrbaHotel.csprojResolveAssemblyReference.cache
+C:\Users\jean pierre\Desktop\gdd1\GDD2018\FrbaHotel\obj\Debug\FrbaHotel.AbmRol.ListadoRol.resources
+C:\Users\jean pierre\Desktop\gdd1\GDD2018\FrbaHotel\obj\Debug\FrbaHotel.AbmRol.Rol.resources
+C:\Users\jean pierre\Desktop\gdd1\GDD2018\FrbaHotel\obj\Debug\FrbaHotel.Inicio.resources
+C:\Users\jean pierre\Desktop\gdd1\GDD2018\FrbaHotel\obj\Debug\FrbaHotel.Login.Login.resources
+C:\Users\jean pierre\Desktop\gdd1\GDD2018\FrbaHotel\obj\Debug\FrbaHotel.Login.LoginSeleccion.resources
+C:\Users\jean pierre\Desktop\gdd1\GDD2018\FrbaHotel\obj\Debug\FrbaHotel.Properties.Resources.resources
+C:\Users\jean pierre\Desktop\gdd1\GDD2018\FrbaHotel\obj\Debug\FrbaHotel.RegistrarConsumible.ListadoConsumos.resources
+C:\Users\jean pierre\Desktop\gdd1\GDD2018\FrbaHotel\obj\Debug\FrbaHotel.csproj.GenerateResource.Cache
+C:\Users\jean pierre\Desktop\gdd1\GDD2018\FrbaHotel\bin\Debug\RegistrarConsumible\Database1.sdf
+C:\Users\jean pierre\Desktop\gdd1\GDD2018\FrbaHotel\bin\Debug\FrbaHotel.exe
+C:\Users\jean pierre\Desktop\gdd1\GDD2018\FrbaHotel\bin\Debug\FrbaHotel.pdb
