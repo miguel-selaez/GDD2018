@@ -1,4 +1,5 @@
-﻿using System;
+﻿using FrbaHotel.Model;
+using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
@@ -13,9 +14,7 @@ namespace FrbaHotel.DAO
         protected BaseDAO(DBConnection connection){
             Connection = connection;
         }
-
-        public virtual void CreateOrUpdate(T obj) { }
-
+        
         public virtual void Delete(Object obj) { }
 
         //public virtual T FindById(int id) { }
@@ -31,6 +30,7 @@ namespace FrbaHotel.DAO
             transaccion += "BEGIN TRY\n";
             transaccion += "BEGIN TRANSACTION\n";
             transaccion += sentencia;
+            transaccion += "COMMIT TRANSACTION;\n";
             transaccion += "END TRY\n";
             transaccion += "BEGIN CATCH\n";
             transaccion += "DECLARE @ErrorMessage NVARCHAR(4000); DECLARE @ErrorSeverity INT; DECLARE @ErrorState INT;  SELECT @ErrorMessage = ERROR_MESSAGE(), @ErrorSeverity = ERROR_SEVERITY(), @ErrorState = ERROR_STATE();  RAISERROR (@ErrorMessage, @ErrorSeverity, @ErrorState );\n";
@@ -63,10 +63,14 @@ namespace FrbaHotel.DAO
         public string GetParam(string param) {
             return !string.IsNullOrEmpty(param) ? "'" + param + "'" : "null";
         }
-        public string GetParam(DateTime param) {
-            return param != null ? "'" + Tools.ToDataBaseTime(param) + "'" : "null";
+        public string GetParam(DateTime? param) {
+            return param != null ? "'" + Tools.ToDataBaseTime(param.Value) + "'" : "null";
         }
         public string GetParam(int param) {
+            return param.ToString();
+        }
+        public string GetParam(decimal param)
+        {
             return param.ToString();
         }
         public string GetParamVigencia(string param) {
@@ -76,6 +80,21 @@ namespace FrbaHotel.DAO
                     ? "1"
                     : "0";
         }
-            
+        public string GetParam(Persona param)
+        {
+            return param != null && param.Id > 0 ? param.Id.ToString() : "null"; ;
+        }
+        public string GetParam(Direccion param)
+        {
+            return param != null && param.Id > 0 ? param.Id.ToString() : "null"; ;
+        }
+        public string GetParam(Pais param)
+        {
+            return param != null && param.Id > 0 ? param.Id.ToString() : "null"; ;
+        }
+        public string GetParam(TipoDocumento param)
+        {
+            return param != null && param.Id > 0 ? param.Id.ToString() : "null"; ;
+        }
     }
 }

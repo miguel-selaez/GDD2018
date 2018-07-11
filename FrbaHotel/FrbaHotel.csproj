@@ -126,7 +126,10 @@
     <Compile Include="DAO\BaseDAO.cs" />
     <Compile Include="DAO\DAOFactory.cs" />
     <Compile Include="DAO\DBConnection.cs" />
+    <Compile Include="DAO\DireccionDAO.cs" />
     <Compile Include="DAO\ItemFacturaDAO.cs" />
+    <Compile Include="DAO\PesonaDAO.cs" />
+    <Compile Include="DAO\TipoDocumentoDAO.cs" />
     <Compile Include="Exceptions\DBConnectionException.cs" />
     <Compile Include="DAO\FuncionDAO.cs" />
     <Compile Include="DAO\HotelDAO.cs" />
@@ -237,6 +240,12 @@
     </EmbeddedResource>
     <EmbeddedResource Include="AbmRol\Rol.resx">
       <DependentUpon>Rol.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="AbmUsuario\ListadoUsuario.resx">
+      <DependentUpon>ListadoUsuario.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="AbmUsuario\Usuario.resx">
+      <DependentUpon>Usuario.cs</DependentUpon>
     </EmbeddedResource>
     <EmbeddedResource Include="Inicio.resx">
       <DependentUpon>Inicio.cs</DependentUpon>

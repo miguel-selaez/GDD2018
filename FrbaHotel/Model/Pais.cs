@@ -22,6 +22,6 @@ namespace FrbaHotel.Model
             Nacionalidad = GetValue<string>("nacionalidad");
             Baja = GetValue<bool>("baja_pa");
         }
-
+        
     }
 }

@@ -332,7 +332,7 @@ CREATE PROCEDURE NPM.P_Guardar_Direccion
 	@id_out int OUTPUT
 AS
 BEGIN 
-	IF @id IS NULL
+	IF @id IS NULL OR @id = 0
 	BEGIN 
 		INSERT INTO NPM.Direccion (calle, nro_calle, piso, departamento, ciudad, id_pais)
 		VALUES (@calle, @nro_calle, @piso, @departamento, @ciudad, @id_pais)
@@ -430,7 +430,7 @@ CREATE PROCEDURE NPM.P_Alta_Persona
 	@id_out int OUTPUT
 AS
 BEGIN 
-	IF @id IS NULL
+	IF @id IS NULL OR @id = 0
 	BEGIN 
 		INSERT INTO NPM.Persona(nombre,apellido,fecha_nacimiento,telefono,id_tipo_documento,numero_documento,id_direccion,mail,id_nacionalidad,inconsistente)
 		VALUES (@nombre,@apellido,@fecha_nac,@telefono,@tipo_doc,@nro_doc,@id_direc,@mail,@nacionalidad,@inconsistente)
@@ -475,13 +475,32 @@ BEGIN
 	SELECT @pass_enc = HASHBYTES('SHA2_256', @pass);
 
 	SELECT 
-		*
+		u.id_usuario,
+		u.nombre_usuario,
+		'' as pass,
+		u.baja_u,
+		u.intentos_fallidos,
+		p.id_persona,
+		p.nombre,
+		p.apellido,
+		NPM.FX_Mostrar_Fecha(p.fecha_nacimiento) as 'fecha_nacimiento',
+		p.telefono,
+		p.numero_documento,
+		p.mail,
+		p.inconsistente,
+		t.*,
+		d.*,
+		pa.*
 	FROM
 		NPM.Usuario as u
 		LEFT JOIN NPM.Persona as p
 			ON u.id_persona = p.id_persona
 		LEFT JOIN NPM.Direccion as d
 			ON p.id_direccion = d.id_direccion
+		LEFT JOIN NPM.Tipo_Documento as t
+			ON p.id_tipo_documento = t.id_tipo_documento
+		LEFT JOIN NPM.Pais as pa
+			ON pa.id_pais = d.id_pais
 	WHERE
 		UPPER(u.nombre_usuario) = UPPER(@user)
 		AND u.pass = @pass_enc
@@ -531,13 +550,16 @@ BEGIN
 		H.estrellas,
 		CONVERT(varchar(10), H.fecha_creacion, 112) as 'fecha_creacion',
 		H.baja_ho,
-		D.*
+		D.*,
+		pa.*
 	FROM 
 		NPM.Hotel as H
 		INNER JOIN NPM.Usuario_x_Hotel as HU
 			ON H.id_hotel = HU.id_hotel
-		INNER JOIN NPM.Direccion as D
+		LEFT JOIN NPM.Direccion as D
 			ON D.id_direccion = H.id_direccion
+		LEFT JOIN NPM.Pais as pa
+			ON pa.id_pais = d.id_pais
 	WHERE 
 		HU.id_usuario = @id
 		AND H.baja_ho = 0
@@ -595,6 +617,25 @@ END
 
 GO
 
+IF EXISTS (SELECT 1 FROM sysobjects WHERE name='FX_Mostrar_Fecha')
+	DROP FUNCTION NPM.FX_Mostrar_Fecha
+GO 	
+
+CREATE FUNCTION NPM.FX_Mostrar_Fecha(@fecha datetime)  
+RETURNS varchar(10)   
+AS   
+BEGIN  
+    DECLARE @ret varchar(10); 
+	IF (@fecha IS NULL) 
+		 RETURN NULL;
+	ELSE
+		SELECT @ret = CONVERT(varchar(10), @fecha, 112)
+    
+	RETURN @ret;  
+END;
+ 
+GO
+
 IF EXISTS (SELECT 1 FROM sysobjects WHERE name='P_Obtener_Funciones')
 	DROP PROCEDURE NPM.P_Obtener_Funciones
 GO 	
@@ -609,6 +650,7 @@ BEGIN
 		NPM.Funcion as F
 	WHERE 
 		F.baja_f = @baja
+		AND F.descripcion_f <> 'ABM USUARIO'
 	ORDER BY
 		F.descripcion_f
 
@@ -664,6 +706,199 @@ AS
 BEGIN 
 	INSERT INTO NPM.Funciones_x_Rol(id_funcion, id_rol)
 	VALUES (@id_funcion, @id_rol)
+END
+GO
+
+IF EXISTS (SELECT 1 FROM sysobjects WHERE name='P_Obtener_Usuarios')
+	DROP PROCEDURE NPM.P_Obtener_Usuarios
+GO 	
+
+CREATE PROCEDURE NPM.P_Obtener_Usuarios  
+	@usuario nvarchar(255),
+	@baja bit
+AS
+BEGIN 
+	SELECT 
+		u.id_usuario,
+		u.nombre_usuario,
+		'' as pass,
+		u.baja_u,
+		u.intentos_fallidos,
+		p.id_persona,
+		p.nombre,
+		p.apellido,
+		NPM.FX_Mostrar_Fecha(p.fecha_nacimiento) as 'fecha_nacimiento',
+		p.telefono,
+		p.numero_documento,
+		p.mail,
+		p.inconsistente,
+		t.*,
+		d.*,
+		pa.*
+	FROM
+		NPM.Usuario as u
+		LEFT JOIN NPM.Persona as p
+			ON u.id_persona = p.id_persona
+		LEFT JOIN NPM.Direccion as d
+			ON p.id_direccion = d.id_direccion
+		LEFT JOIN NPM.Tipo_Documento as t
+			ON p.id_tipo_documento = t.id_tipo_documento
+		LEFT JOIN NPM.Pais as pa
+			ON pa.id_pais = d.id_pais
+	WHERE
+		(U.nombre_usuario like '%'+ @usuario + '%' OR @usuario IS NULL)
+		AND (U.baja_u = @baja OR @baja IS NULL)
+	ORDER BY
+		U.nombre_usuario
+
+END
+
+GO
+
+IF EXISTS (SELECT 1 FROM sysobjects WHERE name='P_Obtener_Hoteles')
+	DROP PROCEDURE NPM.P_Obtener_Hoteles
+GO 	
+
+CREATE PROCEDURE NPM.P_Obtener_Hoteles  
+	@nombre nvarchar(255),
+	@baja bit
+AS
+BEGIN 
+	SELECT 
+		H.id_hotel,
+		H.nombre,
+		H.mail,
+		H.telefono,
+		H.estrellas,
+		NPM.FX_Mostrar_Fecha(H.fecha_creacion) as 'fecha_creacion',
+		H.baja_ho,
+		D.*,
+		pa.*
+	FROM 
+		NPM.Hotel as H
+		LEFT JOIN NPM.Direccion as D
+			ON H.id_direccion = D.id_direccion
+		LEFT JOIN NPM.Pais as pa
+			ON pa.id_pais = d.id_pais
+	WHERE
+		(H.nombre like '%'+ @nombre + '%' OR @nombre IS NULL)
+		AND (H.baja_ho = @baja OR @baja IS NULL)
+	ORDER BY
+		H.nombre
+
+END
+
+GO
+
+IF EXISTS (SELECT 1 FROM sysobjects WHERE name='P_Obtener_TiposDocumento')
+	DROP PROCEDURE NPM.P_Obtener_TiposDocumento
+GO 	
+
+CREATE PROCEDURE NPM.P_Obtener_TiposDocumento  
+	@descripcion nvarchar(255),
+	@baja bit
+AS
+BEGIN 
+	SELECT 
+		T.*
+	FROM 
+		NPM.Tipo_Documento as T
+	WHERE
+		(T.descripcion_td like '%'+ @descripcion + '%' OR @descripcion IS NULL)
+		AND (T.baja_td = @baja OR @baja IS NULL)
+	ORDER BY
+		T.descripcion_td
+
+END
+
+GO
+
+IF EXISTS (SELECT 1 FROM sysobjects WHERE name='P_Guardar_Usuario')
+	DROP PROCEDURE NPM.P_Guardar_Usuario
+GO 	
+
+CREATE PROCEDURE NPM.P_Guardar_Usuario 
+	@id int, 
+	@nombre_usuario nvarchar(255),
+	@pass nvarchar(50),
+	@baja bit, 
+	@id_persona int,
+	@id_out int out
+AS
+BEGIN 
+	IF @id = 0
+	BEGIN 
+		INSERT INTO NPM.Usuario(nombre_usuario, pass, baja_u, intentos_fallidos, id_persona)
+		VALUES (@nombre_usuario, HASHBYTES('SHA2_256', @pass), @baja, 0, @id_persona)
+
+		SELECT @id_out = @@IDENTITY
+	END 
+	ELSE 
+	BEGIN 
+		IF @pass IS NULL
+		BEGIN
+			UPDATE NPM.Usuario
+			SET 
+				nombre_usuario = @nombre_usuario,
+				baja_u = @baja,
+				id_persona = @id_persona
+			WHERE 
+				 id_usuario = @id;
+		END 
+		ELSE
+		BEGIN
+			UPDATE NPM.Usuario
+			SET 
+				nombre_usuario = @nombre_usuario,
+				pass = HASHBYTES('SHA2_256', @pass),
+				baja_u = @baja,
+				id_persona = @id_persona
+			WHERE 
+				 id_usuario = @id;
+		END
+
+		SELECT @id_out = @id;
+
+		DELETE NPM.Usuario_x_Hotel
+		WHERE 
+			id_usuario = @id;
+
+		DELETE NPM.Roles_x_Usuario
+		WHERE 
+			id_usuario = @id;
+
+		RETURN @id_out;
+	END
+
+END
+
+GO
+
+IF EXISTS (SELECT 1 FROM sysobjects WHERE name='P_Guardar_Rol_x_Usuario')
+	DROP PROCEDURE NPM.P_Guardar_Rol_x_Usuario
+GO 	
+
+CREATE PROCEDURE NPM.P_Guardar_Rol_x_Usuario 
+	@id_usuario int, 
+	@id_rol int
+AS
+BEGIN 
+	INSERT INTO NPM.Roles_x_Usuario(id_usuario, id_rol)
+	VALUES (@id_usuario, @id_rol)
+END
+GO
+
+IF EXISTS (SELECT 1 FROM sysobjects WHERE name='P_Guardar_Usuario_x_Hotel')
+	DROP PROCEDURE NPM.P_Guardar_Usuario_x_Hotel
+GO 	
+
+CREATE PROCEDURE NPM.P_Guardar_Usuario_x_Hotel 
+	@id_usuario int,
+	@id_hotel int	
+AS
+BEGIN 
+	INSERT INTO NPM.Usuario_x_Hotel(id_hotel, id_usuario)
+	VALUES (@id_hotel, @id_usuario)
 END
 
 GO

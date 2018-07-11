@@ -11,9 +11,9 @@ namespace FrbaHotel.DAO
     {
         public ItemFacturaDAO(DBConnection con) : base(con) { }
 
-        public override void CreateOrUpdate(ItemFactura item)
+        public int CreateOrUpdate(ItemFactura item)
         {
-
+            return 0;
         }
 
         internal List<ItemFactura> GetItemsByFacturaId(int Id)
