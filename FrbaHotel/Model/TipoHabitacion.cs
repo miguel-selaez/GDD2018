@@ -20,8 +20,8 @@ namespace FrbaHotel.Model
 
             Id = GetValue<decimal>("id_tipo_habitacion");
             Descripcion = GetValue<string>("descripcion_th");
-            Porcentual = GetValue<decimal>("porcentual_th");
-            Baja = GetValue<bool>("baja");
+            Porcentual = GetValue<decimal>("porcentual");
+            Baja = GetValue<bool>("baja_th");
         }
     }
 }

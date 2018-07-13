@@ -147,10 +147,13 @@
     <Compile Include="DAO\DAOFactory.cs" />
     <Compile Include="DAO\DBConnection.cs" />
     <Compile Include="DAO\DireccionDAO.cs" />
+    <Compile Include="DAO\HabitacionDAO.cs" />
     <Compile Include="DAO\ItemFacturaDAO.cs" />
     <Compile Include="DAO\PaisDAO.cs" />
     <Compile Include="DAO\PesonaDAO.cs" />
     <Compile Include="DAO\TipoDocumentoDAO.cs" />
+    <Compile Include="DAO\TipoHabitacionDAO.cs" />
+    <Compile Include="DAO\TipoRegimenDAO.cs" />
     <Compile Include="Exceptions\DBConnectionException.cs" />
     <Compile Include="DAO\FuncionDAO.cs" />
     <Compile Include="DAO\HotelDAO.cs" />
@@ -243,6 +246,12 @@
     <Compile Include="RegistrarEstadia\ListadoEstadia.Designer.cs">
       <DependentUpon>ListadoEstadia.cs</DependentUpon>
     </Compile>
+    <Compile Include="Reservas\BuscarHabitacion.cs">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="Reservas\BuscarHabitacion.Designer.cs">
+      <DependentUpon>BuscarHabitacion.cs</DependentUpon>
+    </Compile>
     <Compile Include="Reservas\ListadoReserva.cs">
       <SubType>Form</SubType>
     </Compile>
@@ -292,6 +301,12 @@
       <AutoGen>True</AutoGen>
       <DependentUpon>Resources.resx</DependentUpon>
     </Compile>
+    <EmbeddedResource Include="Reservas\BuscarHabitacion.resx">
+      <DependentUpon>BuscarHabitacion.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Reservas\Reserva.resx">
+      <DependentUpon>Reserva.cs</DependentUpon>
+    </EmbeddedResource>
     <None Include="Properties\DataSources\FrbaHotel.Model.Hotel.datasource" />
     <None Include="Properties\DataSources\FrbaHotel.Model.Rol.datasource" />
     <None Include="Properties\Settings.settings">

@@ -902,6 +902,7 @@ BEGIN
 END
 
 GO
+<<<<<<< HEAD
 IF EXISTS (SELECT 1 FROM sysobjects WHERE name='P_Obtener_Paises')
 	DROP PROCEDURE NPM.P_Obtener_Paises
 GO 	
@@ -996,6 +997,105 @@ BEGIN
 		p.mail, p.numero_documento 
 
 END
+=======
+
+IF EXISTS (SELECT 1 FROM sysobjects WHERE name='P_Obtener_Tipos_Habitacion_x_Hotel')
+	DROP PROCEDURE NPM.P_Obtener_Tipos_Habitacion_x_Hotel
+GO 	
+
+CREATE PROCEDURE NPM.P_Obtener_Tipos_Habitacion_x_Hotel  
+	@id_hotel int
+AS
+BEGIN 
+	SELECT 
+		DISTINCT
+		T.*
+	FROM 
+		NPM.Tipo_Habitacion as T
+		INNER JOIN NPM.Habitacion as Ha
+			ON Ha.id_tipo_habitacion = T.id_tipo_habitacion
+		INNER JOIN NPM.Hotel as Ho
+			ON Ho.id_hotel = Ha.id_hotel			
+	WHERE
+		Ho.id_hotel = @id_hotel
+		AND T.baja_th = 0
+	ORDER BY
+		T.descripcion_th	
+END
+
+GO
+
+IF EXISTS (SELECT 1 FROM sysobjects WHERE name='P_Obtener_Habitaciones_x_Pedido')
+	DROP PROCEDURE NPM.P_Obtener_Habitaciones_x_Pedido
+GO 	
+
+CREATE PROCEDURE NPM.P_Obtener_Habitaciones_x_Pedido  
+	@id_hotel int,
+	@id_tipo_habitacion decimal,
+	@fecha_actual datetime,
+	@desde datetime, 
+	@hasta datetime
+AS
+BEGIN 
+	SELECT 
+		Ha.*,
+		TH.*
+	FROM 
+		Habitacion as Ha
+		INNER JOIN NPM.Tipo_Habitacion as TH
+			ON Ha.id_tipo_habitacion = TH.id_tipo_habitacion
+	WHERE 
+		Ha.id_hotel = @id_hotel
+		AND Ha.id_tipo_habitacion = @id_tipo_habitacion
+		AND Ha.baja_ha = 0
+		AND id_habitacion NOT IN (
+			SELECT 
+				DISTINCT 
+				HR.id_habitacion
+			FROM 
+				NPM.Reserva as R
+				INNER JOIN NPM.Habitacion_Reservada as HR	
+					ON HR.id_reserva = R.id_reserva
+			WHERE
+				R.id_hotel = 3
+				AND R.fecha_inicio >= @fecha_actual 
+				AND
+				(
+					(R.fecha_inicio <= @desde AND R.fecha_fin >= @desde)
+					OR  
+					(R.fecha_inicio <= @hasta AND R.fecha_fin >= @hasta)
+				)				
+		)
+	ORDER BY Ha.numero
+END
+
+GO
+
+IF EXISTS (SELECT 1 FROM sysobjects WHERE name='P_Obtener_Regimenes_x_Hotel')
+	DROP PROCEDURE NPM.P_Obtener_Regimenes_x_Hotel
+GO 	
+
+CREATE PROCEDURE NPM.P_Obtener_Regimenes_x_Hotel  
+	@id_hotel int
+AS
+BEGIN 
+	SELECT 
+		Re.*
+	FROM 
+		NPM.Regimen as Re
+		INNER JOIN NPM.Regimen_x_Hotel as RH
+			ON Re.id_regimen = RH.id_regimen			
+	WHERE
+		RH.id_hotel = @id_hotel
+		AND Re.baja_r = 0
+	ORDER BY
+		Re.descripcion_r	
+END
+
+GO
+
+
+>>>>>>> be0a9056ce884996d97a51334f9b498d0a44ef88
 GO
 print (CONCAT('INSERTS ', CONVERT(VARCHAR, GETDATE(), 114)))
 ---------------------------------- INSERTS ------------------------------
