@@ -901,6 +901,7 @@ BEGIN
 	VALUES (@id_hotel, @id_usuario)
 END
 
+GO
 IF EXISTS (SELECT 1 FROM sysobjects WHERE name='P_Obtener_Paises')
 	DROP PROCEDURE NPM.P_Obtener_Paises
 GO 	

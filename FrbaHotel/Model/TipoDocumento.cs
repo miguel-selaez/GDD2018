@@ -21,5 +21,13 @@ namespace FrbaHotel.Model
             Descripcion = GetValue<string>("descripcion_td");
             Baja = GetValue<bool>("baja_td");
         }
+
+        public TipoDocumento(int id, string descripcion, bool baja)
+        {
+            Id = id;
+            Descripcion = descripcion;
+            Baja = baja;
+        }
+
     }
 }

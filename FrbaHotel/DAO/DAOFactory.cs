@@ -18,6 +18,8 @@ namespace FrbaHotel.DAO
         private static TipoDocumentoDAO _tipoDocumentoDao;
         private static PesonaDAO _personaDao;
         private static DireccionDAO _direccionDao;
+        private static PaisDAO _paisDao;
+        private static ClienteDAO _clienteDao;
 
         public static FuncionDAO FuncionDAO { get { return _funcionDao ?? (_funcionDao = new FuncionDAO(_connection)); } }
 
@@ -35,5 +37,8 @@ namespace FrbaHotel.DAO
 
         public static DireccionDAO DireccionDAO { get { return _direccionDao ?? (_direccionDao = new DireccionDAO(_connection)); } }
 
+        public static PaisDAO PaisDAO { get { return _paisDao ?? (_paisDao = new PaisDAO(_connection)); } }
+
+        public static ClienteDAO ClienteDAO { get { return _clienteDao ?? (_clienteDao = new ClienteDAO(_connection)); } }
     }
 }

@@ -23,5 +23,14 @@ namespace FrbaHotel.Model
             Baja = GetValue<bool>("baja_pa");
         }
         
+        public bool isName(string nombre)
+        {
+            return Descripcion.Equals(nombre);
+        }
+
+        public bool isNacionalidad(string nacionalidad)
+        {
+            return Nacionalidad.Equals(nacionalidad);
+        }
     }
 }

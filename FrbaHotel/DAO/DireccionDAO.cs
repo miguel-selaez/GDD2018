@@ -24,6 +24,6 @@ namespace FrbaHotel.DAO
                 "@id_direccion output"
             });
             return query;
-        } 
+        }
     }
 }
