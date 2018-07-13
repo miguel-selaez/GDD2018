@@ -901,6 +901,100 @@ BEGIN
 	VALUES (@id_hotel, @id_usuario)
 END
 
+IF EXISTS (SELECT 1 FROM sysobjects WHERE name='P_Obtener_Paises')
+	DROP PROCEDURE NPM.P_Obtener_Paises
+GO 	
+CREATE PROCEDURE [NPM].[P_Obtener_Paises] 
+	@baja bit
+AS
+BEGIN 
+	SELECT 
+		P.*
+	FROM 
+		NPM.Pais as P
+	WHERE 
+		P.baja_pa = @baja
+	ORDER BY
+		P.descripcion_pa
+
+END
+GO
+IF EXISTS (SELECT 1 FROM sysobjects WHERE name='P_Guardar_Cliente')
+	DROP PROCEDURE NPM.P_Guardar_Cliente
+GO 	
+CREATE PROCEDURE [NPM].[P_Guardar_Cliente] 
+	@id int, 
+	@id_persona int,
+	@baja bit, 
+	@id_out int out
+AS
+BEGIN 
+	IF @id = 0
+	BEGIN 
+		INSERT INTO NPM.Cliente(id_persona, baja_cl)
+		VALUES (@id_persona, @baja)
+
+		SELECT @id_out = @@IDENTITY
+	END 
+	ELSE 
+	BEGIN 
+		UPDATE NPM.Cliente
+		SET 
+			id_persona = @id_persona,
+			baja_cl = @baja
+		WHERE 
+			id_cliente = @id;
+
+		SELECT @id_out = @id;
+	END
+		
+	RETURN @id_out;
+	
+END
+GO
+IF EXISTS (SELECT 1 FROM sysobjects WHERE name='P_Obtener_Clientes')
+	DROP PROCEDURE NPM.P_Obtener_Clientes
+GO 
+CREATE PROCEDURE [NPM].[P_Obtener_Clientes]  
+	@tipo_identificacion nvarchar(100),
+	@numero_documento numeric(18,0),
+	@mail nvarchar(255),
+	@baja bit
+AS
+BEGIN 
+	SELECT 
+		c.id_cliente,		
+		c.baja_cl,
+		p.id_persona,
+		p.nombre,
+		p.apellido,
+		NPM.FX_Mostrar_Fecha(p.fecha_nacimiento) as 'fecha_nacimiento',
+		p.telefono,
+		p.numero_documento,
+		p.mail,
+		p.inconsistente,
+		t.*,
+		d.*,
+		pa.*
+	FROM
+		NPM.Cliente as c
+		LEFT JOIN NPM.Persona as p
+			ON c.id_persona = p.id_persona
+		LEFT JOIN NPM.Direccion as d
+			ON p.id_direccion = d.id_direccion
+		LEFT JOIN NPM.Tipo_Documento as t
+			ON p.id_tipo_documento = t.id_tipo_documento
+		LEFT JOIN NPM.Pais as pa
+			ON pa.id_pais = d.id_pais
+	WHERE
+		(p.mail LIKE '%' + @mail + '%' OR @mail IS NULL) AND
+		(CAST(p.numero_documento AS nvarchar) LIKE '%' + CAST(@numero_documento AS nvarchar) + '%') AND
+		(t.descripcion_td = CASE WHEN @tipo_identificacion = 'TODOS' THEN t.descripcion_td ELSE @tipo_identificacion END) AND
+		(c.baja_cl = @baja OR @baja IS NULL)
+	ORDER BY
+		p.mail, p.numero_documento 
+
+END
 GO
 print (CONCAT('INSERTS ', CONVERT(VARCHAR, GETDATE(), 114)))
 ---------------------------------- INSERTS ------------------------------
@@ -1076,7 +1170,7 @@ SELECT
 	Cliente_Apellido,
 	Cliente_Fecha_Nac,
 	null,
-	null,
+	(SELECT id_tipo_documento FROM NPM.Tipo_Documento WHERE descripcion_td = 'PASAPORTE'),
 	Cliente_Pasaporte_Nro,
 	null,
 	Cliente_Mail,
