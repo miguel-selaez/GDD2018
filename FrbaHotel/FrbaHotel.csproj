@@ -301,6 +301,7 @@
     </Compile>
     <EmbeddedResource Include="Reservas\BuscarHabitacion.resx">
       <DependentUpon>BuscarHabitacion.cs</DependentUpon>
+    </EmbeddedResource>
     <EmbeddedResource Include="RegistrarConsumible\Consumo.resx">
       <DependentUpon>Consumo.cs</DependentUpon>
     </EmbeddedResource>
