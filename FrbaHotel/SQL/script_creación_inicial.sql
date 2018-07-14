@@ -450,7 +450,7 @@ BEGIN
 	if @var > 0
 BEGIN
 select @reserva = id_reserva from NPM.Estadia where id_estadia = @estadia  
-select @consumible = id_consumible from NPM.Consumible where descripcion = @producto
+select @consumible = id_consumible from NPM.Consumible where descripcion_cb = @producto
 select @habitacion = id_habitacion from NPM.Habitacion_Reservada where id_reserva = @reserva
 
    
@@ -464,8 +464,6 @@ GO
 -------------------------------------------------------------------------------------
 
 
-
-
 USE GD1C2018;
 GO
 
@@ -474,11 +472,11 @@ IF EXISTS (SELECT 1 FROM sysobjects WHERE name='NPM.Facturar_Consumo')
 GO 	
 CREATE PROCEDURE NPM.Facturar_Consumo
 @estadia int
-
 AS
 BEGIN
 
-declare @nro_factura numeric(18,0)
+declare @nro_factura numeric(18,0);
+declare @var int;
 
 set @var = (select case 
 			when fecha_salida is null then id_estadia
@@ -489,21 +487,21 @@ set @var = (select case
 if @var > 0
 BEGIN
 
-set @nro_factura = (select max(id_factura)+1 from NPM.Factura)
+	set @nro_factura = (select max(id_factura)+1 from NPM.Factura)
 
-select c.id_consumo,case
-	when reg.descripcion = 'All inclusive' then 'descuento por regimen de estadia'
-	else NULL
-	end,case 
-	when reg.descripcion = 'All inclusive' then 0
-	else (con.precio * c.cantidad)
-	end, @nro_factura
-from NPM.Reserva r
-join NPM.Consumo c on c.id_reserva = r.id_reserva
-join NPM.Consumible con on con.id_consumible = c.id_consumible
-join NPM.Estadia e on e.id_estadia = @var and e.id_reserva = r.id_reserva 
-join NPM.Resgimen reg on reg.id_regimen = r.id_regimen
-END
+	select c.id_consumo,case
+		when reg.descripcion_r = 'All inclusive' then 'descuento por regimen de estadia'
+		else NULL
+		end,case 
+		when reg.descripcion_r = 'All inclusive' then 0
+		else (con.precio * c.cantidad)
+		end, @nro_factura
+	from NPM.Reserva r
+	join NPM.Consumo c on c.id_reserva = r.id_reserva
+	join NPM.Consumible con on con.id_consumible = c.id_consumible
+	join NPM.Estadia e on e.id_estadia = @var and e.id_reserva = r.id_reserva 
+	join NPM.Regimen reg on reg.id_regimen = r.id_regimen
+	END
 END
 GO
 
@@ -1250,11 +1248,12 @@ GO
 
 CREATE PROCEDURE NPM.P_Guardar_Habitaciones_Reservadas 
 	@id_reserva numeric(18,0),
-	@id_habitacion int	
+	@id_habitacion int, 
+	@total_habitacion numeric(18,2)
 AS
 BEGIN 
-	INSERT INTO NPM.Habitacion_Reservada(id_reserva, id_habitacion)
-	VALUES (@id_reserva, @id_habitacion)
+	INSERT INTO NPM.Habitacion_Reservada(id_reserva, id_habitacion, total_habitacion)
+	VALUES (@id_reserva, @id_habitacion, @total_habitacion)
 END
 
 GO
