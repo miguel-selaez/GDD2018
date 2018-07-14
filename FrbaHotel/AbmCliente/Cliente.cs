@@ -17,18 +17,18 @@ namespace FrbaHotel.AbmCliente
         private Model.Session _session;
         private Model.Cliente _editObject;
         private ListadoCliente _listado;
-         
 
-        public Cliente(Model.Session _session)
+
+        public Cliente(Model.Session session)
         {
-            this._session = _session;
+            this._session = session;
             InitializeComponent();
             InitValues();
         }
 
         public Cliente(Model.Session session, Model.Cliente selectedCliente, ListadoCliente listadoCliente)
         {
-            this._session = _session;
+            this._session = session;
             this._editObject = selectedCliente;
             this._listado = listadoCliente;
             InitializeComponent();
@@ -39,6 +39,7 @@ namespace FrbaHotel.AbmCliente
         private void InitValues()
         {
             dtFechaNacimiento.Value = Tools.GetDate();
+            dtFechaNacimiento.MaxDate = Tools.GetDate().AddYears(18);
             var tiposDocumento = DAO.DAOFactory.TipoDocumentoDAO.GetTiposDocumento("", "Si");
 
             if (tiposDocumento.Any())

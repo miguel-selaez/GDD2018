@@ -23,6 +23,7 @@ namespace FrbaHotel.DAO
         private static TipoHabitacionDAO _tipoHabitacionDao;
         private static HabitacionDAO _habitacionDao;
         private static TipoRegimenDAO _tipoRegimenDao;
+        private static ReservaDAO _reservaDao;
 
         public static FuncionDAO FuncionDAO { get { return _funcionDao ?? (_funcionDao = new FuncionDAO(_connection)); } }
 
@@ -49,6 +50,8 @@ namespace FrbaHotel.DAO
         public static HabitacionDAO HabitacionDAO { get { return _habitacionDao ?? (_habitacionDao = new HabitacionDAO(_connection)); } }
 
         public static TipoRegimenDAO TipoRegimenDAO { get { return _tipoRegimenDao ?? (_tipoRegimenDao = new TipoRegimenDAO(_connection)); } }
+
+        public static ReservaDAO ReservaDAO { get { return _reservaDao ?? (_reservaDao = new ReservaDAO(_connection)); } }
 
     }
 }

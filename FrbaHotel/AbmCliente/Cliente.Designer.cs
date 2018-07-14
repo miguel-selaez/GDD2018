@@ -348,6 +348,7 @@
             // 
             this.dtFechaNacimiento.Format = System.Windows.Forms.DateTimePickerFormat.Short;
             this.dtFechaNacimiento.Location = new System.Drawing.Point(402, 135);
+            this.dtFechaNacimiento.MinDate = new System.DateTime(1900, 1, 1, 0, 0, 0, 0);
             this.dtFechaNacimiento.Name = "dtFechaNacimiento";
             this.dtFechaNacimiento.Size = new System.Drawing.Size(100, 20);
             this.dtFechaNacimiento.TabIndex = 70;

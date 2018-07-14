@@ -96,5 +96,29 @@ namespace FrbaHotel.DAO
         {
             return param != null && param.Id > 0 ? param.Id.ToString() : "null"; ;
         }
+        public string GetParam(Usuario param)
+        {
+            return param != null && param.Id > 0 ? param.Id.ToString() : "null"; ;
+        }
+        public string GetParam(Hotel param)
+        {
+            return param != null && param.Id > 0 ? param.Id.ToString() : "null"; ;
+        }
+        public string GetParam(Regimen param)
+        {
+            return param != null && param.Id > 0 ? param.Id.ToString() : "null"; ;
+        }
+        public string GetParam(Cliente param)
+        {
+            return param != null && param.Id > 0 ? param.Id.ToString() : "null"; ;
+        }
+        public string GetParam(EstadoReserva param)
+        {
+            return param != null && param.Id > 0 ? param.Id.ToString() : "null"; ;
+        }
+        public string GetParam(Habitacion param)
+        {
+            return param != null && param.Id > 0 ? param.Id.ToString() : "null"; ;
+        }
     }
 }

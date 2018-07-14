@@ -27,6 +27,7 @@ CREATE TABLE NPM.Reserva(
 	fecha_creacion datetime NULL,
 	fecha_inicio datetime NULL,
 	fecha_fin datetime NULL,
+	total_reserva numeric(18,2) NULL,
 	id_estado int NULL,
 	PRIMARY KEY(id_reserva)
 )
@@ -1069,10 +1070,6 @@ BEGIN
 	ORDER BY Ha.numero
 END
 
---GO
-
---EXEC NPM.P_Obtener_Habitaciones_x_Pedido 2, 1001, '20180601', '20180615', '20180620';
-
 GO
 
 IF EXISTS (SELECT 1 FROM sysobjects WHERE name='P_Obtener_Regimenes_x_Hotel')
@@ -1097,6 +1094,84 @@ BEGIN
 END
 
 GO
+
+IF EXISTS (SELECT 1 FROM sysobjects WHERE name='P_Guardar_Habitaciones_Reservadas')
+	DROP PROCEDURE NPM.P_Guardar_Habitaciones_Reservadas
+GO 	
+
+CREATE PROCEDURE NPM.P_Guardar_Habitaciones_Reservadas 
+	@id_reserva numeric(18,0),
+	@id_habitacion int	
+AS
+BEGIN 
+	INSERT INTO NPM.Habitacion_Reservada(id_reserva, id_habitacion)
+	VALUES (@id_reserva, @id_habitacion)
+END
+
+GO
+
+IF EXISTS (SELECT 1 FROM sysobjects WHERE name='FX_Generar_Id_Reserva')
+	DROP FUNCTION NPM.FX_Generar_Id_Reserva
+GO 	
+
+CREATE FUNCTION NPM.FX_Generar_Id_Reserva()  
+RETURNS numeric(18,0)  
+AS   
+BEGIN  
+    DECLARE @ret numeric(18,0); 
+	
+	SELECT @ret = MAX(id_reserva) + 1 FROM NPM.Reserva;
+    
+	RETURN @ret;  
+END;
+ 
+GO
+IF EXISTS (SELECT 1 FROM sysobjects WHERE name='P_Guardar_Reserva')
+	DROP PROCEDURE NPM.P_Guardar_Reserva
+GO 	
+CREATE PROCEDURE NPM.P_Guardar_Reserva
+	@id numeric(18,0), 
+	@id_usuario int,
+	@id_hotel int, 
+	@id_regimen int,
+	@id_cliente int,
+	@fecha_creacion datetime,
+	@fecha_inicio datetime,
+	@fecha_fin datetime,
+	@total_reserva numeric(18,2),
+	@id_estado_reserva int,
+	@id_out int out
+AS
+BEGIN 
+	IF @id = 0
+	BEGIN 
+		INSERT INTO NPM.Reserva
+		VALUES 
+		(NPM.FX_Generar_Id_Reserva(), @id_usuario, @id_hotel, @id_regimen, @id_cliente,
+		 @fecha_creacion, @fecha_inicio, @fecha_fin, @total_reserva,1)
+
+		SELECT @id_out = @@IDENTITY
+	END 
+	ELSE 
+	BEGIN 
+		UPDATE NPM.Reserva
+		SET 
+			id_hotel = @id_hotel,
+			id_regimen = @id_regimen,
+			fecha_inicio = @fecha_inicio,
+			fecha_fin = @fecha_fin,
+			total_reserva = @total_reserva
+		WHERE 
+			id_reserva = @id;
+
+		SELECT @id_out = @id;
+	END
+		
+	RETURN @id_out;
+	
+END
+GO
+
 
 print (CONCAT('INSERTS ', CONVERT(VARCHAR, GETDATE(), 114)))
 ---------------------------------- INSERTS ------------------------------
@@ -1552,6 +1627,7 @@ SELECT
 	r_fec_creacion,
 	r_fec_inicio,
 	r_fec_fin,
+	0,
 	r_estado 
 FROM #Reserva
 
@@ -1622,7 +1698,7 @@ DROP TABLE #Estadia
 
 --DROP TABLE #Consumible_Reserva
 
-COMMIT 
+COMMIT TRANSACTION
 
 END TRY
 BEGIN CATCH
@@ -1633,7 +1709,7 @@ BEGIN CATCH
     ,ERROR_PROCEDURE() AS ErrorProcedure  
     ,ERROR_LINE() AS ErrorLine  
     ,ERROR_MESSAGE() AS ErrorMessage;  
-	ROLLBACK
+	ROLLBACK TRANSACTION
 END CATCH
 GO
 

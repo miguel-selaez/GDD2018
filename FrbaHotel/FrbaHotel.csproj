@@ -151,6 +151,7 @@
     <Compile Include="DAO\ItemFacturaDAO.cs" />
     <Compile Include="DAO\PaisDAO.cs" />
     <Compile Include="DAO\PesonaDAO.cs" />
+    <Compile Include="DAO\ReservaDAO.cs" />
     <Compile Include="DAO\TipoDocumentoDAO.cs" />
     <Compile Include="DAO\TipoHabitacionDAO.cs" />
     <Compile Include="DAO\TipoRegimenDAO.cs" />

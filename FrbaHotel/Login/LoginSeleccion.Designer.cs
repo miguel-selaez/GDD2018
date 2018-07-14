@@ -95,13 +95,6 @@
             this.btnContinue.UseVisualStyleBackColor = true;
             this.btnContinue.Click += new System.EventHandler(this.btnContinue_Click);
             // 
-            // hotelBindingSource
-            // 
-            this.hotelBindingSource.DataSource = typeof(FrbaHotel.Model.Hotel);
-            // 
-            // rolBindingSource
-            // 
-            this.rolBindingSource.DataSource = typeof(FrbaHotel.Model.Rol);
             // 
             // LoginSeleccion
             // 
