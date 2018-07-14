@@ -174,7 +174,7 @@ namespace FrbaHotel
 
         private void nuevoConsumo_Click(object sender, EventArgs e)
         {
-            var nuevo = new RegistrarConsumible.Consumo(_main.session);
+            var nuevo = new RegistrarConsumible.Consumos(_main.session);
             
             nuevo.Show();
         }

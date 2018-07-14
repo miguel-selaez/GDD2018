@@ -51,5 +51,10 @@ namespace FrbaHotel.Login
             _inicio.Show();
             Close();
         }
+
+        private void lbRol_Click(object sender, EventArgs e)
+        {
+
+        }
     }
 }

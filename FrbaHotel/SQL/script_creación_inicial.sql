@@ -361,6 +361,153 @@ BEGIN
 END
 
 GO 
+
+--LISTAR CONSUMO
+USE GD1C2018;
+GO
+
+IF EXISTS (SELECT 1 FROM sysobjects WHERE name='P_Listar_Consumos')
+	DROP PROCEDURE NPM.P_Listar_Consumos
+GO 	
+CREATE PROCEDURE NPM.P_Listar_Consumos
+	@estadia int,
+	@habitacion numeric(18,0)
+AS
+BEGIN
+
+SELECT co.descripcion_cb, count(co.descripcion_cb) as cantidad, sum(co.precio) as 'total'
+from NPM.Reserva r
+join NPM.Estadia e on e.id_estadia = @estadia and r.id_reserva = e.id_reserva
+join NPM.Consumo c on c.id_estadia = e.id_estadia
+join NPM.Habitacion h on h.id_habitacion = c.id_habitacion and h.numero = @habitacion 
+join NPM.Consumible co on c.id_consumible = co.id_consumible
+group by co.descripcion_cb
+
+END
+GO
+
+---------------------------------------------------------------------------------
+
+IF EXISTS (SELECT 1 FROM sysobjects WHERE name='P_Listar_Productos')
+	DROP PROCEDURE NPM.P_Listar_Productos
+GO 	
+CREATE PROCEDURE NPM.P_Listar_Productos
+AS
+BEGIN
+	SELECT * FROM NPM.Consumible
+END
+GO
+
+
+
+---------------------------------------------------------------------------------
+
+
+
+IF EXISTS (SELECT 1 FROM sysobjects WHERE name='P_Listar_Habitaciones_Hotel')
+	DROP PROCEDURE NPM.P_Listar_Habitaciones_Hotel
+GO 	
+CREATE PROCEDURE NPM.P_Listar_Habitaciones_Hotel
+	@hotel int
+AS
+BEGIN
+	SELECT DISTINCT hab.numero FROM  NPM.Reserva r
+	JOIN NPM.Estadia e ON e.id_reserva = r.id_reserva
+	JOIN NPM.Hotel h ON h.id_hotel = @hotel 
+	JOIN NPM.Habitacion hab ON hab.id_hotel = @hotel
+END
+GO
+
+
+---------------------------------------------------------------------------------------
+
+
+
+USE GD1C2018;
+GO
+IF EXISTS (SELECT 1 FROM sysobjects WHERE name='NPM.Registrar_Consumo')
+	DROP PROCEDURE NPM.Registrar_Consumo
+GO 	
+CREATE PROCEDURE NPM.Registrar_Consumo
+	@estadia int,
+@producto nvarchar(255),
+@nro_habit numeric(18,0),
+@cantidad numeric(18,2)
+AS
+BEGIN
+	declare @var int
+	declare @reserva numeric(18,0)
+	declare @consumible numeric(18,0)
+	declare @habitacion int
+
+	set @var = (select case 
+			when fecha_salida is null then id_estadia
+			else 0
+		        end
+		    from NPM.estadia
+	            where id_estadia = @estadia)
+
+	if @var > 0
+BEGIN
+select @reserva = id_reserva from NPM.Estadia where id_estadia = @estadia  
+select @consumible = id_consumible from NPM.Consumible where descripcion = @producto
+select @habitacion = id_habitacion from NPM.Habitacion_Reservada where id_reserva = @reserva
+
+   
+INSERT INTO NPM.Consumo
+VALUES(@estadia,@consumible,@habitacion,@reserva,@cantidad)
+END
+RETURN 'Consumo Guardado'
+END
+GO
+
+-------------------------------------------------------------------------------------
+
+
+
+
+USE GD1C2018;
+GO
+
+IF EXISTS (SELECT 1 FROM sysobjects WHERE name='NPM.Facturar_Consumo')
+	DROP PROCEDURE NPM.Facturar_Consumo
+GO 	
+CREATE PROCEDURE NPM.Facturar_Consumo
+@estadia int
+
+AS
+BEGIN
+
+declare @nro_factura numeric(18,0)
+
+set @var = (select case 
+			when fecha_salida is null then id_estadia
+			else 0
+		        end
+		    from NPM.estadia
+	            where id_estadia = @estadia)
+if @var > 0
+BEGIN
+
+set @nro_factura = (select max(id_factura)+1 from NPM.Factura)
+
+select c.id_consumo,case
+	when reg.descripcion = 'All inclusive' then 'descuento por regimen de estadia'
+	else NULL
+	end,case 
+	when reg.descripcion = 'All inclusive' then 0
+	else (con.precio * c.cantidad)
+	end, @nro_factura
+from NPM.Reserva r
+join NPM.Consumo c on c.id_reserva = r.id_reserva
+join NPM.Consumible con on con.id_consumible = c.id_consumible
+join NPM.Estadia e on e.id_estadia = @var and e.id_reserva = r.id_reserva 
+join NPM.Resgimen reg on reg.id_regimen = r.id_regimen
+END
+END
+GO
+
+
 --HOTEL
 USE GD1C2018;
 GO

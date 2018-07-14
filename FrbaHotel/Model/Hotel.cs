@@ -4,6 +4,8 @@ using System.Data;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
+using System.Data.SqlClient;
+using System.Windows.Forms;
 
 namespace FrbaHotel.Model
 {
@@ -30,5 +32,7 @@ namespace FrbaHotel.Model
             FechaCreacion = GetDate("fecha_creacion");
             Baja = GetValue<bool>("baja_ho");
         }
+
+        
     }
 }
