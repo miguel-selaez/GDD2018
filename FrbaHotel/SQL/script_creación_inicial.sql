@@ -902,7 +902,6 @@ BEGIN
 END
 
 GO
-<<<<<<< HEAD
 IF EXISTS (SELECT 1 FROM sysobjects WHERE name='P_Obtener_Paises')
 	DROP PROCEDURE NPM.P_Obtener_Paises
 GO 	
@@ -997,7 +996,8 @@ BEGIN
 		p.mail, p.numero_documento 
 
 END
-=======
+
+GO
 
 IF EXISTS (SELECT 1 FROM sysobjects WHERE name='P_Obtener_Tipos_Habitacion_x_Hotel')
 	DROP PROCEDURE NPM.P_Obtener_Tipos_Habitacion_x_Hotel
@@ -1041,7 +1041,7 @@ BEGIN
 		Ha.*,
 		TH.*
 	FROM 
-		Habitacion as Ha
+		NPM.Habitacion as Ha
 		INNER JOIN NPM.Tipo_Habitacion as TH
 			ON Ha.id_tipo_habitacion = TH.id_tipo_habitacion
 	WHERE 
@@ -1057,7 +1057,7 @@ BEGIN
 				INNER JOIN NPM.Habitacion_Reservada as HR	
 					ON HR.id_reserva = R.id_reserva
 			WHERE
-				R.id_hotel = 3
+				R.id_hotel = @id_hotel
 				AND R.fecha_inicio >= @fecha_actual 
 				AND
 				(
@@ -1068,6 +1068,10 @@ BEGIN
 		)
 	ORDER BY Ha.numero
 END
+
+--GO
+
+--EXEC NPM.P_Obtener_Habitaciones_x_Pedido 2, 1001, '20180601', '20180615', '20180620';
 
 GO
 
@@ -1094,9 +1098,6 @@ END
 
 GO
 
-
->>>>>>> be0a9056ce884996d97a51334f9b498d0a44ef88
-GO
 print (CONCAT('INSERTS ', CONVERT(VARCHAR, GETDATE(), 114)))
 ---------------------------------- INSERTS ------------------------------
 BEGIN TRY
@@ -1156,7 +1157,6 @@ INSERT INTO NPM.Usuario VALUES
 ('admin', HASHBYTES('SHA2_256', CONVERT(nvarchar(50), 'w23e')), 0, 0, @id_persona_usuario),
 ('generico', HASHBYTES('SHA2_256', CONVERT(nvarchar(50), 'gen123*')), 0, 0, @id_persona_gen)
  
- select * from NPM.Usuario
 -- FUNCIONES X ROL
 INSERT INTO NPM.Funciones_x_Rol (id_rol, id_funcion) VALUES 
 (1, 1),
@@ -1421,7 +1421,7 @@ JOIN #Habitacion hab ON  d.calle = hab.hab_calle AND
 					     d.ciudad = hab.hab_ciudad
 
 INSERT INTO NPM.Habitacion
-SELECT hab_numero,hab_id_hotel,hab_piso,hab_frente,hab_tipo_habitacion,1 FROM #Habitacion
+SELECT hab_numero,hab_id_hotel,hab_piso,hab_frente,hab_tipo_habitacion,0 FROM #Habitacion
 
 DROP TABLE #Habitacion
 
