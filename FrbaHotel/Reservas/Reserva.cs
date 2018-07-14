@@ -101,7 +101,7 @@ namespace FrbaHotel.Reservas
                 dgHabitaciones.Rows[index].Cells["Piso"].Value = habitacion.Piso.ToString();
                 dgHabitaciones.Rows[index].Cells["TipoHabitacion"].Value = habitacion.TipoHabitacion.Descripcion;
                 dgHabitaciones.Rows[index].Cells["Ubicacion"].Value = habitacion.Frente == "N" ? "Interior" : "Exterior";
-                dgHabitaciones.Rows[index].Cells["Precio"].Value = precioPorHabitacion.ToString();
+                dgHabitaciones.Rows[index].Cells["Precio"].Value = precioPorHabitacion.ToString("0.00");
                 dgHabitaciones.Rows[index].Cells["Eliminar"].Value = "Eliminar";
 
                 precios.Add(precioPorHabitacion);
@@ -124,9 +124,24 @@ namespace FrbaHotel.Reservas
         }
         private void btnBuscar_Click(object sender, EventArgs e)
         {
-            var hotel = (Model.Hotel) cbHoteles.SelectedValue;
-            var buscador = new BuscarHabitacion(this, hotel, dtInicio.Value, dtFin.Value);
-            buscador.Show();
+            try
+            {
+                if (DateTime.Compare(this.dtInicio.Value, dtFin.Value) > 0)
+                {
+                    throw new ValidateException("La fecha de inicio no puede ser mayor que la de fin.");
+                }
+
+                var hotel = (Model.Hotel)cbHoteles.SelectedValue;
+                var buscador = new BuscarHabitacion(this, hotel, dtInicio.Value, dtFin.Value);
+                buscador.Show();
+            }
+            catch (Exception ex)
+            {
+                string message = ex.Message;
+                string caption = "Error:";
+                MessageBoxButtons buttons = MessageBoxButtons.OK;
+                MessageBox.Show(message, caption, buttons);
+            }
         }
 
         private void btnCancel_Click(object sender, EventArgs e)
@@ -199,8 +214,17 @@ namespace FrbaHotel.Reservas
 
         private void btnSelectCliente_Click(object sender, EventArgs e)
         {
-            var listado = new AbmCliente.ListadoCliente(_session);
+            var listado = new AbmCliente.ListadoCliente(_session, this);
             listado.Show();
+        }
+
+        private void dgHabitaciones_CellContentClick(object sender, DataGridViewCellEventArgs e)
+        {
+            if (e.RowIndex >= 0)
+            {
+                _habitaciones.RemoveAt(e.RowIndex);
+                BindHabitaciones();
+            }
         }
     }
 }

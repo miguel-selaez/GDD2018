@@ -209,7 +209,7 @@ namespace FrbaHotel
 
         private void listadoReserva_Click(object sender, EventArgs e)
         {
-            var listado = new Reservas.ListadoReserva(_main.session);
+            var listado = new Reservas.BuscarReserva(_main.session);
             
             listado.Show();
         }

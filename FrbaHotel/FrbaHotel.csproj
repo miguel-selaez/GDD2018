@@ -168,12 +168,6 @@
     <Compile Include="Inicio.Designer.cs">
       <DependentUpon>Inicio.cs</DependentUpon>
     </Compile>
-    <Compile Include="GenerarModificacionReserva\Form1.cs">
-      <SubType>Form</SubType>
-    </Compile>
-    <Compile Include="GenerarModificacionReserva\Form1.Designer.cs">
-      <DependentUpon>Form1.cs</DependentUpon>
-    </Compile>
     <Compile Include="ListadoEstadistico\Estadisticas.cs">
       <SubType>Form</SubType>
     </Compile>
@@ -202,6 +196,7 @@
     <Compile Include="Model\EstadoReserva.cs" />
     <Compile Include="Model\Factura.cs" />
     <Compile Include="Model\Funcion.cs" />
+    <Compile Include="Model\HabitacionReservada.cs" />
     <Compile Include="Model\Hotel.cs" />
     <Compile Include="Model\Habitacion.cs" />
     <Compile Include="Model\ItemFactura.cs" />
@@ -253,11 +248,11 @@
     <Compile Include="Reservas\BuscarHabitacion.Designer.cs">
       <DependentUpon>BuscarHabitacion.cs</DependentUpon>
     </Compile>
-    <Compile Include="Reservas\ListadoReserva.cs">
+    <Compile Include="Reservas\BuscarReserva.cs">
       <SubType>Form</SubType>
     </Compile>
-    <Compile Include="Reservas\ListadoReserva.Designer.cs">
-      <DependentUpon>ListadoReserva.cs</DependentUpon>
+    <Compile Include="Reservas\BuscarReserva.Designer.cs">
+      <DependentUpon>BuscarReserva.cs</DependentUpon>
     </Compile>
     <Compile Include="Reservas\Reserva.cs">
       <SubType>Form</SubType>
@@ -304,6 +299,9 @@
     </Compile>
     <EmbeddedResource Include="Reservas\BuscarHabitacion.resx">
       <DependentUpon>BuscarHabitacion.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Reservas\BuscarReserva.resx">
+      <DependentUpon>BuscarReserva.cs</DependentUpon>
     </EmbeddedResource>
     <EmbeddedResource Include="Reservas\Reserva.resx">
       <DependentUpon>Reserva.cs</DependentUpon>

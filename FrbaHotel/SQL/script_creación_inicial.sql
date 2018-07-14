@@ -72,6 +72,7 @@ GO
 CREATE TABLE NPM.Habitacion_Reservada(
 	id_habitacion int NOT NULL,
 	id_reserva numeric(18,0) NOT NULL,
+	total_habitacion numeric(18,2) NULL,
 	PRIMARY KEY(id_reserva, id_habitacion)
 )
  
@@ -965,6 +966,7 @@ CREATE PROCEDURE [NPM].[P_Obtener_Clientes]
 AS
 BEGIN 
 	SELECT 
+		TOP (100)
 		c.id_cliente,		
 		c.baja_cl,
 		p.id_persona,
@@ -1166,6 +1168,9 @@ BEGIN
 
 		SELECT @id_out = @id;
 	END
+
+	DELETE NPM.Habitacion_Reservada
+	WHERE id_reserva = @id;
 		
 	RETURN @id_out;
 	

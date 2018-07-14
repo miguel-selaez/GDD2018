@@ -16,11 +16,19 @@ namespace FrbaHotel.AbmCliente
     {
         private Model.Session _session;
         private List<Model.Cliente> _results;
+        private Reservas.Reserva _reserva;
 
         public ListadoCliente(Model.Session _session)
         {
-            // TODO: Complete member initialization
             this._session = _session;
+            InitializeComponent();
+            InitValues();
+        }
+
+        public ListadoCliente(Model.Session _session, Reservas.Reserva reserva)
+        {
+            this._session = _session;
+            this._reserva = reserva;
             InitializeComponent();
             InitValues();
         }
@@ -100,14 +108,29 @@ namespace FrbaHotel.AbmCliente
 
         private void dgClientes_CellContentClick(object sender, DataGridViewCellEventArgs e)
         {
-            var selectedCliente = _results.ElementAt(e.RowIndex);
-            var nuevo = new Cliente(_session ,selectedCliente, this);
-            nuevo.Show();
+            if (e.RowIndex >= 0)
+            {
+                var selectedCliente = _results.ElementAt(e.RowIndex);
+                if (_reserva == null)
+                {                    
+                    var nuevo = new Cliente(_session, selectedCliente, this);
+                    nuevo.Show();
+                }
+                else {
+                    _reserva.SetCliente(selectedCliente);
+                }
+            }
         }
 
         public void UpdateClientes()
         {
             btnBuscar.PerformClick();
+        }
+
+        private void btnNuevo_Click(object sender, EventArgs e)
+        {
+            var nuevo = new Cliente(_session);
+            nuevo.Show();
         }
     }
 }

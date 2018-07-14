@@ -167,6 +167,7 @@
             this.dgHabitaciones.SelectionMode = System.Windows.Forms.DataGridViewSelectionMode.FullRowSelect;
             this.dgHabitaciones.Size = new System.Drawing.Size(685, 192);
             this.dgHabitaciones.TabIndex = 68;
+            this.dgHabitaciones.CellContentClick += new System.Windows.Forms.DataGridViewCellEventHandler(this.dgHabitaciones_CellContentClick);
             // 
             // Numero
             // 
