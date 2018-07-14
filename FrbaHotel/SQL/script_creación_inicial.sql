@@ -368,16 +368,18 @@ IF EXISTS (SELECT 1 FROM sysobjects WHERE name='P_Listar_Consumos')
 	DROP PROCEDURE NPM.P_Listar_Consumos
 GO 	
 CREATE PROCEDURE NPM.P_Listar_Consumos
-	@reserva int,
+	@estadia int,
 	@habitacion numeric(18,0)
 AS
 BEGIN
 
-SELECT co.descripcion_cb, c.cantidad, (c.cantidad * co.precio)
-from NPM.Consumo c
-join NPM.Habitacion_Reservada e on e.id_reserva = @reserva
-join NPM.Habitacion h on e.id_habitacion = h.id_habitacion and h.numero = @habitacion
+SELECT co.descripcion_cb, count(co.descripcion_cb) as cantidad, sum(co.precio) as 'total'
+from NPM.Reserva r
+join NPM.Estadia e on e.id_estadia = @estadia and r.id_reserva = e.id_reserva
+join NPM.Consumo c on c.id_estadia = e.id_estadia
+join NPM.Habitacion h on h.id_habitacion = c.id_habitacion and h.numero = @habitacion 
 join NPM.Consumible co on c.id_consumible = co.id_consumible
+group by co.descripcion_cb
 
 END
 GO

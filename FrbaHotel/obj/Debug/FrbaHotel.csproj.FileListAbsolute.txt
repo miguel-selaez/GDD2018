@@ -45,3 +45,4 @@ C:\Users\jean pierre\Desktop\gdd1\GDD2018\FrbaHotel\obj\Debug\FrbaHotel.csproj.G
 C:\Users\jean pierre\Desktop\gdd1\GDD2018\FrbaHotel\bin\Debug\RegistrarConsumible\Database1.sdf
 C:\Users\jean pierre\Desktop\gdd1\GDD2018\FrbaHotel\bin\Debug\FrbaHotel.exe
 C:\Users\jean pierre\Desktop\gdd1\GDD2018\FrbaHotel\bin\Debug\FrbaHotel.pdb
+C:\Users\jean pierre\Desktop\gdd1\GDD2018\FrbaHotel\obj\Debug\FrbaHotel.RegistrarConsumible.Consumos.resources

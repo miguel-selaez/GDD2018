@@ -33,12 +33,12 @@
             this.lbRol = new System.Windows.Forms.Label();
             this.label1 = new System.Windows.Forms.Label();
             this.cbRoles = new System.Windows.Forms.ComboBox();
-            this.cbHoteles = new System.Windows.Forms.ComboBox();
-            this.btnContinue = new System.Windows.Forms.Button();
-            this.hotelBindingSource = new System.Windows.Forms.BindingSource(this.components);
             this.rolBindingSource = new System.Windows.Forms.BindingSource(this.components);
-            ((System.ComponentModel.ISupportInitialize)(this.hotelBindingSource)).BeginInit();
+            this.cbHoteles = new System.Windows.Forms.ComboBox();
+            this.hotelBindingSource = new System.Windows.Forms.BindingSource(this.components);
+            this.btnContinue = new System.Windows.Forms.Button();
             ((System.ComponentModel.ISupportInitialize)(this.rolBindingSource)).BeginInit();
+            ((System.ComponentModel.ISupportInitialize)(this.hotelBindingSource)).BeginInit();
             this.SuspendLayout();
             // 
             // lbRol
@@ -50,6 +50,7 @@
             this.lbRol.Size = new System.Drawing.Size(121, 18);
             this.lbRol.TabIndex = 4;
             this.lbRol.Text = "Seleccione un Rol:";
+            this.lbRol.Click += new System.EventHandler(this.lbRol_Click);
             // 
             // label1
             // 
@@ -72,6 +73,10 @@
             this.cbRoles.Size = new System.Drawing.Size(319, 26);
             this.cbRoles.TabIndex = 6;
             // 
+            // rolBindingSource
+            // 
+            this.rolBindingSource.DataSource = typeof(FrbaHotel.Model.Rol);
+            // 
             // cbHoteles
             // 
             this.cbHoteles.DataBindings.Add(new System.Windows.Forms.Binding("SelectedValue", this.hotelBindingSource, "Id", true));
@@ -82,6 +87,10 @@
             this.cbHoteles.Name = "cbHoteles";
             this.cbHoteles.Size = new System.Drawing.Size(319, 26);
             this.cbHoteles.TabIndex = 7;
+            // 
+            // hotelBindingSource
+            // 
+            this.hotelBindingSource.DataSource = typeof(FrbaHotel.Model.Hotel);
             // 
             // btnContinue
             // 
@@ -94,14 +103,6 @@
             this.btnContinue.Text = "Continuar";
             this.btnContinue.UseVisualStyleBackColor = true;
             this.btnContinue.Click += new System.EventHandler(this.btnContinue_Click);
-            // 
-            // hotelBindingSource
-            // 
-            this.hotelBindingSource.DataSource = typeof(FrbaHotel.Model.Hotel);
-            // 
-            // rolBindingSource
-            // 
-            this.rolBindingSource.DataSource = typeof(FrbaHotel.Model.Rol);
             // 
             // LoginSeleccion
             // 
@@ -116,8 +117,8 @@
             this.Icon = ((System.Drawing.Icon)(resources.GetObject("$this.Icon")));
             this.Name = "LoginSeleccion";
             this.Text = "FRBAHotel";
-            ((System.ComponentModel.ISupportInitialize)(this.hotelBindingSource)).EndInit();
             ((System.ComponentModel.ISupportInitialize)(this.rolBindingSource)).EndInit();
+            ((System.ComponentModel.ISupportInitialize)(this.hotelBindingSource)).EndInit();
             this.ResumeLayout(false);
             this.PerformLayout();
 

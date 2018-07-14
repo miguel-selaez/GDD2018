@@ -271,6 +271,9 @@
       <AutoGen>True</AutoGen>
       <DependentUpon>Resources.resx</DependentUpon>
     </Compile>
+    <EmbeddedResource Include="RegistrarConsumible\Consumo.resx">
+      <DependentUpon>Consumo.cs</DependentUpon>
+    </EmbeddedResource>
     <EmbeddedResource Include="RegistrarConsumible\ListadoConsumos.resx">
       <DependentUpon>ListadoConsumos.cs</DependentUpon>
     </EmbeddedResource>

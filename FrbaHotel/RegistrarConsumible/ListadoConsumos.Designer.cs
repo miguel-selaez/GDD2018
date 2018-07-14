@@ -30,7 +30,7 @@
         {
             this.label1 = new System.Windows.Forms.Label();
             this.label2 = new System.Windows.Forms.Label();
-            this.txt_reserva = new System.Windows.Forms.TextBox();
+            this.txt_estadia = new System.Windows.Forms.TextBox();
             this.txt_habitacion = new System.Windows.Forms.TextBox();
             this.button1 = new System.Windows.Forms.Button();
             this.button2 = new System.Windows.Forms.Button();
@@ -43,9 +43,9 @@
             this.label1.AutoSize = true;
             this.label1.Location = new System.Drawing.Point(12, 24);
             this.label1.Name = "label1";
-            this.label1.Size = new System.Drawing.Size(67, 13);
+            this.label1.Size = new System.Drawing.Size(62, 13);
             this.label1.TabIndex = 0;
-            this.label1.Text = "Nro Reserva";
+            this.label1.Text = "Nro Estadia";
             this.label1.Click += new System.EventHandler(this.label1_Click);
             // 
             // label2
@@ -57,12 +57,12 @@
             this.label2.TabIndex = 1;
             this.label2.Text = "Nro Habitacion";
             // 
-            // txt_reserva
+            // txt_estadia
             // 
-            this.txt_reserva.Location = new System.Drawing.Point(104, 24);
-            this.txt_reserva.Name = "txt_reserva";
-            this.txt_reserva.Size = new System.Drawing.Size(52, 20);
-            this.txt_reserva.TabIndex = 2;
+            this.txt_estadia.Location = new System.Drawing.Point(104, 24);
+            this.txt_estadia.Name = "txt_estadia";
+            this.txt_estadia.Size = new System.Drawing.Size(52, 20);
+            this.txt_estadia.TabIndex = 2;
             // 
             // txt_habitacion
             // 
@@ -108,7 +108,7 @@
             this.Controls.Add(this.button2);
             this.Controls.Add(this.button1);
             this.Controls.Add(this.txt_habitacion);
-            this.Controls.Add(this.txt_reserva);
+            this.Controls.Add(this.txt_estadia);
             this.Controls.Add(this.label2);
             this.Controls.Add(this.label1);
             this.Name = "ListadoConsumos";
@@ -123,7 +123,7 @@
 
         private System.Windows.Forms.Label label1;
         private System.Windows.Forms.Label label2;
-        private System.Windows.Forms.TextBox txt_reserva;
+        private System.Windows.Forms.TextBox txt_estadia;
         private System.Windows.Forms.TextBox txt_habitacion;
         private System.Windows.Forms.Button button1;
         private System.Windows.Forms.Button button2;

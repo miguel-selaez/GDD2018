@@ -34,7 +34,7 @@ namespace FrbaHotel.RegistrarConsumible
             conexion.Open();
             SqlCommand cmd = new SqlCommand("NPM.P_Listar_Consumos", conexion);
             cmd.CommandType = CommandType.StoredProcedure;
-            cmd.Parameters.AddWithValue("@reserva", txt_reserva.Text);
+            cmd.Parameters.AddWithValue("@estadia", txt_estadia.Text);
             cmd.Parameters.AddWithValue("@habitacion", txt_habitacion.Text);
 
             SqlDataAdapter da = new SqlDataAdapter(cmd);
@@ -48,7 +48,7 @@ namespace FrbaHotel.RegistrarConsumible
 
         private void button2_Click(object sender, EventArgs e)
         {
-            txt_reserva.Text = "";
+            txt_estadia.Text = "";
             txt_habitacion.Text = "";
             dgConsumos.DataSource = null;
         }
