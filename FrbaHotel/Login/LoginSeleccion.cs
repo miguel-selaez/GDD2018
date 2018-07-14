@@ -29,6 +29,7 @@ namespace FrbaHotel.Login
 
         private void BindHoteles()
         {
+            cbHoteles.DataSource = null;
             cbHoteles.DataSource = _user.HotelesAsignados;
             cbHoteles.DisplayMember = "Nombre";
             cbHoteles.SelectedIndex = 0;
@@ -36,6 +37,7 @@ namespace FrbaHotel.Login
 
         private void BindRoles()
         {
+            cbRoles.DataSource = null;
             cbRoles.DataSource = _user.Roles;
             cbRoles.DisplayMember = "Descripcion";
             cbRoles.SelectedIndex = 0;

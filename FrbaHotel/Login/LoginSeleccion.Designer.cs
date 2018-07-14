@@ -35,10 +35,6 @@
             this.cbRoles = new System.Windows.Forms.ComboBox();
             this.cbHoteles = new System.Windows.Forms.ComboBox();
             this.btnContinue = new System.Windows.Forms.Button();
-            this.hotelBindingSource = new System.Windows.Forms.BindingSource(this.components);
-            this.rolBindingSource = new System.Windows.Forms.BindingSource(this.components);
-            ((System.ComponentModel.ISupportInitialize)(this.hotelBindingSource)).BeginInit();
-            ((System.ComponentModel.ISupportInitialize)(this.rolBindingSource)).BeginInit();
             this.SuspendLayout();
             // 
             // lbRol
@@ -63,8 +59,6 @@
             // 
             // cbRoles
             // 
-            this.cbRoles.DataBindings.Add(new System.Windows.Forms.Binding("SelectedValue", this.rolBindingSource, "Id", true));
-            this.cbRoles.DataBindings.Add(new System.Windows.Forms.Binding("Text", this.rolBindingSource, "Descripcion", true));
             this.cbRoles.Font = new System.Drawing.Font("Calibri", 11.25F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
             this.cbRoles.FormattingEnabled = true;
             this.cbRoles.Location = new System.Drawing.Point(55, 58);
@@ -74,8 +68,6 @@
             // 
             // cbHoteles
             // 
-            this.cbHoteles.DataBindings.Add(new System.Windows.Forms.Binding("SelectedValue", this.hotelBindingSource, "Id", true));
-            this.cbHoteles.DataBindings.Add(new System.Windows.Forms.Binding("Text", this.hotelBindingSource, "Nombre", true));
             this.cbHoteles.Font = new System.Drawing.Font("Calibri", 11.25F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
             this.cbHoteles.FormattingEnabled = true;
             this.cbHoteles.Location = new System.Drawing.Point(55, 137);
@@ -95,7 +87,6 @@
             this.btnContinue.UseVisualStyleBackColor = true;
             this.btnContinue.Click += new System.EventHandler(this.btnContinue_Click);
             // 
-            // 
             // LoginSeleccion
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
@@ -109,8 +100,6 @@
             this.Icon = ((System.Drawing.Icon)(resources.GetObject("$this.Icon")));
             this.Name = "LoginSeleccion";
             this.Text = "FRBAHotel";
-            ((System.ComponentModel.ISupportInitialize)(this.hotelBindingSource)).EndInit();
-            ((System.ComponentModel.ISupportInitialize)(this.rolBindingSource)).EndInit();
             this.ResumeLayout(false);
             this.PerformLayout();
 
@@ -123,7 +112,5 @@
         private System.Windows.Forms.ComboBox cbRoles;
         private System.Windows.Forms.ComboBox cbHoteles;
         private System.Windows.Forms.Button btnContinue;
-        private System.Windows.Forms.BindingSource rolBindingSource;
-        private System.Windows.Forms.BindingSource hotelBindingSource;
     }
 }
