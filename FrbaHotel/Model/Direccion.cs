@@ -12,10 +12,10 @@ namespace FrbaHotel.Model
         public int Id { get; set; }
         public string Calle { get; set; }
         public decimal NumeroCalle { get; set; }
-        public int Piso { get; set; }
+        public decimal Piso { get; set; }
         public string Departamento { get; set; }
         public string Ciudad { get; set; }
-        public int IdPais { get; set; }
+        public Pais Pais { get; set; }
 
         public Direccion(DataRow row)
         {
@@ -24,10 +24,19 @@ namespace FrbaHotel.Model
             Id = GetValue<int>("id_direccion");
             Calle = GetValue<string>("calle");
             NumeroCalle = GetValue<decimal>("nro_calle");
-            Piso = GetValue<int>("piso");
+            Piso = GetValue<decimal>("piso");
             Departamento = GetValue<string>("departamento");
             Ciudad = GetValue<string>("ciudad");
-            IdPais = GetValue<int>("id_pais");
+            Pais = new Pais(row);
+        }
+
+        public Direccion(string calle, decimal numeroCalle, int piso, string departamento, string ciudad, Pais pais) {
+            Calle = calle;
+            NumeroCalle = numeroCalle;
+            Piso = piso;
+            Departamento = departamento;
+            Ciudad = ciudad;
+            Pais = pais;
         }
     }
 }

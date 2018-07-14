@@ -32,10 +32,15 @@ namespace FrbaHotel.AbmRol
 
             if (funciones.Any())
             {
-                cbFunciones.DataSource = funciones;
-                cbFunciones.DisplayMember = "Descripcion";
-                cbFunciones.SelectedIndex = 0;
+                BindCbFunciones(funciones);
             }
+        }
+
+        private void BindCbFunciones(List<Model.Funcion> funciones) {
+            cbFunciones.DataSource = null;
+            cbFunciones.DataSource = funciones;
+            cbFunciones.DisplayMember = "Descripcion";
+            cbFunciones.SelectedIndex = 0;
         }
 
         private bool NoExisteEnEditObject(Funcion funcion)
@@ -58,10 +63,14 @@ namespace FrbaHotel.AbmRol
             rdNo.Checked = _editObject.Baja;
             rdSi.Checked = !_editObject.Baja;
 
-            lbFunciones.DataSource = _editObject.Funciones;
-            lbFunciones.DisplayMember = "Descripcion";
+            BindLbFunciones(_editObject.Funciones);
         }
 
+        private void BindLbFunciones(List<Model.Funcion> funciones) {
+            lbFunciones.DataSource = null;
+            lbFunciones.DataSource = funciones;
+            lbFunciones.DisplayMember = "Descripcion";
+        }
         private void btnSave_Click(object sender, EventArgs e)
         {
             try
@@ -116,16 +125,12 @@ namespace FrbaHotel.AbmRol
             var newLbList = (List<Model.Funcion>) lbFunciones.DataSource ?? new List<Model.Funcion>();
             newLbList.Add(selected);
 
-            lbFunciones.DataSource = null;
-            lbFunciones.DataSource = newLbList;
-            lbFunciones.DisplayMember = "Descripcion";
+            BindLbFunciones(newLbList);
 
             var newCbList = (List<Model.Funcion>)cbFunciones.DataSource ?? new List<Model.Funcion>();
             newCbList.RemoveAt(cbFunciones.SelectedIndex);
 
-            cbFunciones.DataSource = null;
-            cbFunciones.DataSource = newCbList;
-            cbFunciones.DisplayMember = "Descripcion";
+            BindCbFunciones(newCbList);
         }
 
         private void btnDeleteFuncion_Click(object sender, EventArgs e)
@@ -135,16 +140,12 @@ namespace FrbaHotel.AbmRol
             var newCbList = (List<Model.Funcion>)cbFunciones.DataSource ?? new List<Model.Funcion>();
             newCbList.Add(deletedFuncion);
 
-            cbFunciones.DataSource = null;
-            cbFunciones.DataSource = newCbList;
-            cbFunciones.DisplayMember = "Descripcion";
+            BindCbFunciones(newCbList);
 
             var newLbList = (List<Model.Funcion>)lbFunciones.DataSource ?? new List<Model.Funcion>();
             newLbList.RemoveAt(lbFunciones.SelectedIndex);
 
-            lbFunciones.DataSource = null;
-            lbFunciones.DataSource = newLbList;
-            lbFunciones.DisplayMember = "Descripcion";
+            BindLbFunciones(newLbList);
         }
 
     }

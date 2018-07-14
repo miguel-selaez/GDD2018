@@ -10,7 +10,7 @@ namespace FrbaHotel.Model
     public class Cliente : BaseData
     {
         public int Id { get; set; }
-        public Persona Persona{ get; set; }
+        public Persona Persona{ get; set; } 
         public int Puntos { get; set; }
         public bool Baja { get; set; }
 
@@ -21,6 +21,12 @@ namespace FrbaHotel.Model
             Persona = new Persona(row);
             Puntos = GetValue<int>("puntos");
             Baja = GetValue<bool>("baja_cl");
+        }
+
+        public Cliente(Persona persona, bool baja)
+        {
+            Persona = persona;
+            Baja = baja;
         }
 
     }

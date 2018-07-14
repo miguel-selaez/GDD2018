@@ -28,5 +28,22 @@ namespace FrbaHotel.DAO
             }
             return list;
         }
+
+        public List<Hotel> GetHoteles(string nombre, string vigencia)
+        {
+            var list = new List<Hotel>();
+
+            var query = ArmarSentenciaSP("P_Obtener_Hoteles", new[] { GetParam(nombre), GetParamVigencia(vigencia) });
+            var result = Connection.ExecuteQuery(query);
+
+            if (result.Rows.Count > 0)
+            {
+                foreach (DataRow row in result.Rows)
+                {
+                    list.Add(new Hotel(row));
+                }
+            }
+            return list;
+        }
     }
 }

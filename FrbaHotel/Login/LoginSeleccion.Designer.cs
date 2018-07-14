@@ -104,6 +104,10 @@
             this.btnContinue.UseVisualStyleBackColor = true;
             this.btnContinue.Click += new System.EventHandler(this.btnContinue_Click);
             // 
+<<<<<<< HEAD
+=======
+            // 
+>>>>>>> 56eb8fbafba252bc253249b4b2bbe7b47c5be063
             // LoginSeleccion
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);

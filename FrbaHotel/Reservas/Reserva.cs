@@ -1,6 +1,8 @@
-﻿using System;
+﻿using FrbaHotel.Exceptions;
+using System;
 using System.Collections.Generic;
 using System.ComponentModel;
+using System.Configuration;
 using System.Data;
 using System.Drawing;
 using System.Linq;
@@ -13,12 +15,192 @@ namespace FrbaHotel.Reservas
     public partial class Reserva : Form
     {
         private Model.Session _session;
+        private List<Model.Habitacion> _habitaciones;
+        private Model.Cliente _cliente;
+        private Model.Reserva _editObject;
 
         public Reserva(Model.Session _session)
         {
-            // TODO: Complete member initialization
             this._session = _session;
             InitializeComponent();
+            InitValues();
+        }
+
+        public Reserva(Model.Session _session, Model.Reserva reserva)
+        {
+            this._session = _session;
+            this._editObject = reserva;
+            InitializeComponent();
+            InitValues();
+        }
+
+        private void InitValues()
+        {
+            _habitaciones = new List<Model.Habitacion>();
+            dtInicio.Value = Tools.GetDate();
+            dtFin.Value = Tools.GetDate();
+
+            dtInicio.MinDate = Tools.GetDate();
+            dtInicio.MaxDate = Tools.GetDate().AddYears(3);
+
+            dtFin.MinDate = Tools.GetDate();
+            dtFin.MaxDate = Tools.GetDate().AddYears(3);
+
+            txtTotalReserva.Text = "0";
+            
+            var hoteles = new List<Model.Hotel>();
+            if (_session.Hotel == null)
+            {
+                hoteles = DAO.DAOFactory.HotelDAO.GetHoteles("", "Si");
+                cbHoteles.Enabled = true;
+            }
+            else {
+                hoteles.Add(_session.Hotel);
+            }
+            BindCbHoteles(hoteles);
+
+            var regimenes = DAO.DAOFactory.TipoRegimenDAO.GetRegimenesByHotel(hoteles.First().Id);
+
+            if (regimenes.Any())
+            {
+                BindCbRegimenes(regimenes);
+            }
+        }
+
+        private void BindCbRegimenes(List<Model.Regimen> regimenes)
+        {
+            cbRegimenes.DataSource = null;
+            cbRegimenes.DataSource = regimenes;
+            cbRegimenes.DisplayMember = "Descripcion";
+            cbRegimenes.SelectedIndex = 0;
+        }
+        private void BindCbHoteles(List<Model.Hotel> hoteles)
+        {
+            cbHoteles.DataSource = null;
+            cbHoteles.DataSource = hoteles;
+            cbHoteles.DisplayMember = "Nombre";
+            cbHoteles.SelectedIndex = 0;
+        }
+
+        public void AddHabitacion(Model.Habitacion selectedHabitacion)
+        {
+            _habitaciones.Add(selectedHabitacion);
+            BindHabitaciones();
+        }
+
+        private void BindHabitaciones()
+        {
+            dgHabitaciones.Rows.Clear();
+            var precios = new List<decimal>();
+
+            foreach (Model.Habitacion habitacion in _habitaciones)
+            {
+                var precioPorHabitacion = CalcularPrecio(habitacion.TipoHabitacion);
+                var index = dgHabitaciones.Rows.Add();
+                dgHabitaciones.Rows[index].Cells["Numero"].Value = habitacion.Numero.ToString();
+                dgHabitaciones.Rows[index].Cells["Piso"].Value = habitacion.Piso.ToString();
+                dgHabitaciones.Rows[index].Cells["TipoHabitacion"].Value = habitacion.TipoHabitacion.Descripcion;
+                dgHabitaciones.Rows[index].Cells["Ubicacion"].Value = habitacion.Frente == "N" ? "Interior" : "Exterior";
+                dgHabitaciones.Rows[index].Cells["Precio"].Value = precioPorHabitacion.ToString();
+                dgHabitaciones.Rows[index].Cells["Eliminar"].Value = "Eliminar";
+
+                precios.Add(precioPorHabitacion);
+            }
+
+            txtTotalReserva.Text = precios.Sum().ToString();
+        }
+
+        private decimal CalcularPrecio(Model.TipoHabitacion tipoHabitacion)
+        {
+            var regimen = (Model.Regimen)cbRegimenes.SelectedValue;
+            var hotel = (Model.Hotel) cbHoteles.SelectedValue;
+            var incremento = Decimal.Parse(ConfigurationManager.AppSettings["IncremetoEstrellas"]);
+            return (tipoHabitacion.Porcentual * regimen.Precio) + (incremento * hotel.Estrellas); 
+        }
+
+        public void SetCliente(Model.Cliente cliente) {
+            _cliente = cliente;
+            txtCliente.Text = cliente.Persona.Nombre + " " + cliente.Persona.Apellido;
+        }
+        private void btnBuscar_Click(object sender, EventArgs e)
+        {
+            var hotel = (Model.Hotel) cbHoteles.SelectedValue;
+            var buscador = new BuscarHabitacion(this, hotel, dtInicio.Value, dtFin.Value);
+            buscador.Show();
+        }
+
+        private void btnCancel_Click(object sender, EventArgs e)
+        {
+            Close();
+        }
+
+        private void btnReservar_Click(object sender, EventArgs e)
+        {
+            try
+            {
+                ValidateForm();
+                var regimen = (Model.Regimen)cbRegimenes.SelectedValue;
+                var hotel = (Model.Hotel)cbHoteles.SelectedValue;
+
+                var totalReserva = Decimal.Parse(txtTotalReserva.Text);
+
+                if (_editObject == null || _editObject.Id == 0)
+                {
+                    _editObject = new Model.Reserva(0, _session.User, hotel, regimen, _cliente, Tools.GetDate(),
+                    dtInicio.Value, dtFin.Value, totalReserva, null);
+                }
+                else
+                {
+                    _editObject.Hotel = hotel;
+                    _editObject.Regimen = regimen;
+                    _editObject.FechaInicio = dtInicio.Value;
+                    _editObject.FechaFin = dtFin.Value;
+                    _editObject.TotalReserva = totalReserva;
+                }
+                _editObject.Habitaciones = _habitaciones;
+
+                var codigo = DAO.DAOFactory.ReservaDAO.SaveOrUpdate(_editObject);
+
+                string message = "Su reserva ha sido realizada con éxito.\n Su código de reserva es : " 
+                    + codigo + ". \nGuardelo para realizar el ingreso al hotel y realizar modificaciones." ;
+                string caption = "Reserva " + codigo;
+                MessageBoxButtons buttons = MessageBoxButtons.OK;
+                var result = MessageBox.Show(message, caption, buttons);
+                if (result == System.Windows.Forms.DialogResult.OK)
+                {
+                    Close();
+                }
+            }
+            catch (Exception ex)
+            {
+                string message = ex.Message;
+                string caption = "Error:";
+                MessageBoxButtons buttons = MessageBoxButtons.OK;
+                MessageBox.Show(message, caption, buttons);
+            }
+        }
+
+        private void ValidateForm()
+        {
+            if (string.IsNullOrEmpty(txtCliente.Text) || string.IsNullOrWhiteSpace(txtCliente.Text))
+            {
+                throw new ValidateException("El cliente no puede estar vacío.");
+            }
+            if (DateTime.Compare(this.dtInicio.Value, dtFin.Value) > 0)
+            {
+                throw new ValidateException("La fecha de inicio no puede ser mayor que la de fin.");
+            }
+        }
+
+        private void cbRegimenes_SelectedIndexChanged(object sender, EventArgs e)
+        {
+            BindHabitaciones();
+        }
+
+        private void btnSelectCliente_Click(object sender, EventArgs e)
+        {
+            var listado = new AbmCliente.ListadoCliente(_session);
+            listado.Show();
         }
     }
 }

@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Data;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
@@ -8,7 +9,7 @@ namespace FrbaHotel.Model
 {
     public class Reserva : BaseData
     {
-        public int Id { get; set; }
+        public decimal Id { get; set; }
         public Usuario UsuarioCreacion { get; set; }
         public Hotel Hotel { get; set; }
         public Regimen Regimen { get; set; }
@@ -16,11 +17,21 @@ namespace FrbaHotel.Model
         public DateTime? FechaCreacion { get; set; }
         public DateTime? FechaInicio { get; set; }
         public DateTime? FechaFin { get; set; }
+        public Decimal TotalReserva { get; set; }
         public EstadoReserva Estado { get; set; }
 
-        List<Habitacion> Habitaciones;
+        private List<Habitacion> _habitaciones;
+
+        public List<Habitacion> Habitaciones { 
+            get {
+                return _habitaciones ?? (_habitaciones = new List<Habitacion>());
+            }
+            set {
+                _habitaciones = value;
+            }
+        }
         
-        public Reserva(System.Data.DataRow row)
+        public Reserva(DataRow row)
         {
             Row = row;
 
@@ -32,7 +43,21 @@ namespace FrbaHotel.Model
             FechaCreacion = GetDate("fecha_creacion");
             FechaInicio = GetDate("fecha_inicio");
             FechaFin = GetDate("fecha_fin");
+            TotalReserva = GetValue<decimal>("total_reserva");
             Estado = new EstadoReserva(row);
+        }
+        public Reserva(decimal id, Usuario usuarioCreacion, Hotel hotel, Regimen regimen, Cliente cliente, DateTime fechaCreacion,
+            DateTime fechaInicio, DateTime fechaFin, decimal totalReserva, EstadoReserva estado) {
+                Id = id;
+                UsuarioCreacion = usuarioCreacion;
+                Hotel = hotel;
+                Regimen = regimen;
+                Cliente = cliente;
+                FechaCreacion = fechaCreacion;
+                FechaInicio = fechaInicio;
+                FechaFin = FechaFin;
+                TotalReserva = totalReserva;
+                Estado = estado;
         }
     }
 }
