@@ -8,9 +8,27 @@ using System.Threading.Tasks;
 
 namespace FrbaHotel.DAO
 {
-    public class HabitacionDAO :BaseDAO<Model.Habitacion>
+    public class HabitacionDAO : BaseDAO<Model.Habitacion>
     {
         public HabitacionDAO(DBConnection con) : base(con) { }
+
+        public List<Model.Habitacion> GetHabitacionsXHotel(Hotel hotel, string vigencia)
+        {
+            var list = new List<Habitacion>();
+
+            var query = ArmarSentenciaSP("P_Obtener_Habitaciones_x_Hotel", new[] { GetParam(hotel.Id), GetParamVigencia(vigencia) });
+            var result = Connection.ExecuteQuery(query);
+
+            if (result.Rows.Count > 0)
+            {
+                foreach (DataRow row in result.Rows)
+                {
+                    list.Add(new Habitacion(row));
+                }
+            }
+
+            return list;
+        }
 
         public List<Model.Habitacion> GetHabitacionesxPedido(int hotelId, decimal tipoHabitacion, DateTime actual,DateTime desde, DateTime hasta)
         {

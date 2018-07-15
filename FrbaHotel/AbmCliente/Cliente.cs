@@ -40,22 +40,30 @@ namespace FrbaHotel.AbmCliente
         {
             dtFechaNacimiento.Value = Tools.GetDate();
             dtFechaNacimiento.MaxDate = Tools.GetDate().AddYears(18);
+            var paises = DAO.DAOFactory.PaisDAO.GetPaises();
             var tiposDocumento = DAO.DAOFactory.TipoDocumentoDAO.GetTiposDocumento("", "Si");
 
             if (tiposDocumento.Any())
             {
                 BindCbTiposDocumento(tiposDocumento);
             }
-        }
-
-        private void ValidarComponentes()
-        {
+            if (paises.Any())
+            {
+                BindCbPaises(paises, "Descripcion");
+                BindCbNacionalidad(paises, "Nacionalidad");
+            }
         }
 
         private int IndexOfBindTipoDocumento(int id)
         {
             var list = (List<Model.TipoDocumento>)cbTipoDocumento.DataSource;
             return list.FindIndex(t => t.Id == id);
+        }
+
+        private int IndexOfBindPais(int id)
+        {
+            var list = (List<Model.Pais>)cbPais.DataSource;
+            return list.FindIndex(p => p.Id == id);
         }
 
         private void BindCliente()
@@ -66,14 +74,14 @@ namespace FrbaHotel.AbmCliente
             txtNroDocumento.Text = _editObject.Persona.NumeroDocumento.ToString();
             txtMail.Text = _editObject.Persona.Mail;
             txtTelefono.Text = _editObject.Persona.Telefono;
-            txtNacionalidad.Text = _editObject.Persona.Nacionalidad.Descripcion;
+            cbNacionalidad.Text = _editObject.Persona.Nacionalidad.Descripcion;
             dtFechaNacimiento.Value = _editObject.Persona.FechaNacimiento ?? Tools.GetDate();
             txtCalle.Text = _editObject.Persona.Direccion.Calle;
             txtAltura.Text = _editObject.Persona.Direccion.NumeroCalle.ToString();
-            txtPiso.Text = _editObject.Persona.Direccion.Piso.ToString();
+            txtPiso.Text = (_editObject.Persona.Direccion.Piso == 0) ? "" : _editObject.Persona.Direccion.Piso.ToString();
             txtDepartamento.Text = _editObject.Persona.Direccion.Departamento;
             txtCiudad.Text = _editObject.Persona.Direccion.Ciudad;
-            txtPais.Text = _editObject.Persona.Direccion.Pais.Descripcion;
+            cbPais.SelectedIndex = IndexOfBindPais(_editObject.Persona.Direccion.Pais.Id);
             rbNo.Checked = _editObject.Baja;
             rbSi.Checked = !_editObject.Baja;
         }
@@ -86,23 +94,41 @@ namespace FrbaHotel.AbmCliente
             cbTipoDocumento.SelectedIndex = 0;
         }
 
+        private void BindCbPaises(List<Model.Pais> paises, string displayMember)
+        {
+            cbPais.DataSource = null;
+            cbPais.DataSource = paises;
+            cbPais.DisplayMember = displayMember;
+            cbPais.SelectedIndex = 0;
+        }
+
+        private void BindCbNacionalidad(List<Model.Pais> paises, string displayMember)
+        {
+            cbNacionalidad.DataSource = null;
+            cbNacionalidad.DataSource = paises;
+            cbNacionalidad.DisplayMember = displayMember;
+            cbNacionalidad.SelectedIndex = 0;
+        }
+
         private void btnGuardar_Click(object sender, EventArgs e)
         {
             try
             {
                 ValidateForm();
                 var vigente = rbNo.Checked ? true : false;
-
+                var altura = decimal.Parse(txtAltura.Text);
+                bool esInsert;
 
                 if (_editObject == null || _editObject.Id == 0)
                 {
+                    esInsert = true;
                     var direccion = new Model.Direccion(
                         txtCalle.Text,
-                        Decimal.Parse(txtAltura.Text),
-                        int.Parse(txtPiso.Text),
+                        decimal.Parse(txtAltura.Text),
+                        decimal.Parse(string.IsNullOrEmpty(txtPiso.Text) ? "-1" : txtPiso.Text),
                         txtDepartamento.Text,
                         txtCiudad.Text,
-                        DAO.DAOFactory.PaisDAO.GetPaises().Where(pais => pais.isName(txtPais.Text)).First());
+                        (Model.Pais)cbPais.SelectedValue);
 
                     var datosPersona = new Model.Persona(
                         txtNombre.Text,
@@ -110,35 +136,41 @@ namespace FrbaHotel.AbmCliente
                         dtFechaNacimiento.Value,
                         txtTelefono.Text,
                         (Model.TipoDocumento)cbTipoDocumento.SelectedValue,
-                        Decimal.Parse(txtNroDocumento.Text),
+                        decimal.Parse(txtNroDocumento.Text),
                         direccion,
                         txtMail.Text,
-                        DAO.DAOFactory.PaisDAO.GetPaises().Where(pais => pais.isNacionalidad(txtNacionalidad.Text)).First(),
+                        (Model.Pais)cbNacionalidad.SelectedValue,
                         false);
                     _editObject = new Model.Cliente(datosPersona, vigente);
                 }
 
                 else
                 {
+                    esInsert = false;
                     _editObject.Baja = vigente;
                     _editObject.Persona.Nombre = txtNombre.Text;
                     _editObject.Persona.Apellido = txtApellido.Text;
                     _editObject.Persona.Mail = txtMail.Text;
                     _editObject.Persona.Telefono = txtTelefono.Text;
                     _editObject.Persona.TipoDocumento = (Model.TipoDocumento)cbTipoDocumento.SelectedValue;
-                    _editObject.Persona.NumeroDocumento = Decimal.Parse(txtNroDocumento.Text);
+                    _editObject.Persona.NumeroDocumento = decimal.Parse(txtNroDocumento.Text);
                     _editObject.Persona.FechaNacimiento = dtFechaNacimiento.Value;
                     _editObject.Persona.Direccion.Calle = txtCalle.Text;
-                    _editObject.Persona.Direccion.NumeroCalle = Decimal.Parse(txtAltura.Text);
-                    _editObject.Persona.Direccion.Piso = Decimal.Parse(txtPiso.Text);
+                    _editObject.Persona.Direccion.NumeroCalle = decimal.Parse(txtAltura.Text);
+                    _editObject.Persona.Direccion.Piso = decimal.Parse(string.IsNullOrEmpty(txtPiso.Text) ? "-1" : txtPiso.Text);
                     _editObject.Persona.Direccion.Departamento = txtDepartamento.Text;
                     _editObject.Persona.Direccion.Ciudad = txtCiudad.Text;
-                    _editObject.Persona.Direccion.Pais = DAO.DAOFactory.PaisDAO.GetPaises().Where(pais => pais.isName(txtPais.Text)).First();
+                    _editObject.Persona.Direccion.Pais = (Model.Pais)cbPais.SelectedValue;
+                    _editObject.Persona.Nacionalidad = (Model.Pais)cbNacionalidad.SelectedValue;
                 }
-                DAO.DAOFactory.ClienteDAO.CreateOrUpdate(_editObject);
+                DAO.DAOFactory.ClienteDAO.CreateOrUpdate(_editObject, esInsert);
 
                 if (_listado != null)
                     _listado.UpdateClientes();
+                
+                MessageBox.Show("Se ha " + (esInsert ? "ingresado" : "actualizado") + " correctamente al cliente", "", MessageBoxButtons.OK);
+                
+
 
                 Close();
             }
@@ -177,10 +209,6 @@ namespace FrbaHotel.AbmCliente
             {
                 throw new ValidateException("El teléfono no puede estar vacío.");
             }
-            if (string.IsNullOrEmpty(txtNacionalidad.Text) || string.IsNullOrWhiteSpace(txtNacionalidad.Text))
-            {
-                throw new ValidateException("La nacionalidad no puede estar vacía.");
-            }
             if (string.IsNullOrEmpty(txtCalle.Text) || string.IsNullOrWhiteSpace(txtCalle.Text))
             {
                 throw new ValidateException("La calle no puede estar vacía.");
@@ -189,10 +217,6 @@ namespace FrbaHotel.AbmCliente
             {
                 throw new ValidateException("La altura no puede estar vacía.");
             }
-            if (string.IsNullOrEmpty(txtPais.Text) || string.IsNullOrWhiteSpace(txtPais.Text))
-            {
-                throw new ValidateException("El país no puede estar vacío.");
-            } 
             if (rbSi.Checked == false && rbNo.Checked == false)
             {
                 throw new ValidateException("Debe seleccionar la vigencia del usuario");
@@ -206,6 +230,46 @@ namespace FrbaHotel.AbmCliente
         private void btnCancelar_Click(object sender, EventArgs e)
         {
             Close();
+        }
+
+        private void txtOnlyLetters_KeyPress(object sender, KeyPressEventArgs e)
+        {
+            if (!Char.IsLetter(e.KeyChar) && e.KeyChar != (char)8)
+            {
+                e.Handled = true;
+            }
+        }
+
+        private void txtOnlyNumbers_KeyPress(object sender, KeyPressEventArgs e)
+        {
+            if (!Char.IsNumber(e.KeyChar) && e.KeyChar != (char)8)
+            {
+                e.Handled = true;
+            }
+        }
+
+        private void txtAlphaNumeric_KeyPress(object sender, KeyPressEventArgs e)
+        {
+            if (!Char.IsLetter(e.KeyChar) && !Char.IsNumber(e.KeyChar) && e.KeyChar != (char)8)
+            {
+                e.Handled = true;
+            }
+        }
+
+        private void txtAlphaNumericWithSpaces_KeyPress(object sender, KeyPressEventArgs e)
+        {
+            if (!Char.IsLetter(e.KeyChar) && !Char.IsNumber(e.KeyChar) && e.KeyChar != (char)8 && !Char.IsSeparator(e.KeyChar))
+            {
+                e.Handled = true;
+            }
+        }
+
+        private void txtMail_KeyPress(object sender, KeyPressEventArgs e)
+        {
+            if (!Char.IsLetter(e.KeyChar) && !Char.IsNumber(e.KeyChar) && e.KeyChar != (char)8 && e.KeyChar != (char)64 && e.KeyChar != (char)46 && e.KeyChar != (char)45 && e.KeyChar != (char)95)
+            {
+                e.Handled = true;
+            }
         }
     }
 }

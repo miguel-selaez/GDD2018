@@ -36,7 +36,7 @@ namespace FrbaHotel.AbmCliente
         private void InitValues()
         {
             cbVigencia.SelectedIndex = 0;
-            var tiposDocumentos = DAO.DAOFactory.TipoDocumentoDAO.GetTiposDocumento("","Si");
+            var tiposDocumentos = DAO.DAOFactory.TipoDocumentoDAO.GetTiposDocumento("", "Si");
             tiposDocumentos.Add(new Model.TipoDocumento(0, "TODOS", false));
 
             if (tiposDocumentos.Any())
@@ -69,10 +69,6 @@ namespace FrbaHotel.AbmCliente
         {
             try
             {
-                if (!Regex.IsMatch(txtNroDocumento.Text, @"[0-9]*"))
-                {
-                    throw new ValidateException("El Nro de Documento debe estar compuesto por números únicamente.");
-                }
                 dgClientes.Rows.Clear();
                 _results = GetResults();
 
@@ -87,6 +83,9 @@ namespace FrbaHotel.AbmCliente
                     dgClientes.Rows[index].Cells["Vigencia"].Value = cliente.Baja ? "No" : "Si";
                     dgClientes.Rows[index].Cells["Editar"].Value = "Seleccionar";
                 }
+
+                if (_results.Count == 0) { MessageBox.Show("Sin resultados", "Búsqueda", MessageBoxButtons.OK); }
+
             }
             catch (Exception ex)
             {
@@ -112,11 +111,12 @@ namespace FrbaHotel.AbmCliente
             {
                 var selectedCliente = _results.ElementAt(e.RowIndex);
                 if (_reserva == null)
-                {                    
+                {
                     var nuevo = new Cliente(_session, selectedCliente, this);
                     nuevo.Show();
                 }
-                else {
+                else
+                {
                     _reserva.SetCliente(selectedCliente);
                 }
             }
@@ -131,6 +131,23 @@ namespace FrbaHotel.AbmCliente
         {
             var nuevo = new Cliente(_session);
             nuevo.Show();
+        }
+
+        private void txtMail_KeyPress(object sender, KeyPressEventArgs e)
+        {
+            if (!Char.IsLetter(e.KeyChar) && !Char.IsNumber(e.KeyChar) && e.KeyChar != (char)8 && e.KeyChar != (char)64 && e.KeyChar != (char)46 && e.KeyChar != (char)45 && e.KeyChar != (char)95)
+            {
+                e.Handled = true;
+            }
+        }
+
+        private void txtOnlyNumbers_KeyPress(object sender, KeyPressEventArgs e)
+        {
+            if (!Char.IsNumber(e.KeyChar) && e.KeyChar != (char)8)
+            {
+                e.Handled = true;
+
+            }
         }
     }
 }

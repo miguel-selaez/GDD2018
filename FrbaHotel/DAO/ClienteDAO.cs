@@ -5,6 +5,7 @@ using System.Text;
 using System.Threading.Tasks;
 using System.Data;
 using FrbaHotel.Model;
+using FrbaHotel.Exceptions;
 
 namespace FrbaHotel.DAO
 {
@@ -12,22 +13,50 @@ namespace FrbaHotel.DAO
     {
         public ClienteDAO(DBConnection con) : base(con) { }
 
-        public void CreateOrUpdate(Cliente cliente)
+        public void CreateOrUpdate(Cliente cliente, bool esInsert)
+        {
+            if (esInsert)
+            {
+                if (!ExisteCliente(cliente.Persona.Mail))
+                    GuardarCliente(cliente);
+                else
+                {
+                    throw new ClienteException("Existe un cliente registrado con el mail ingresado.");
+                }
+            }
+            else
+                GuardarCliente(cliente);
+        }
+
+        private void GuardarCliente(Cliente cliente)
         {
             var personaQuery = DAOFactory.PersonaDAO.CreateOrUpdateScript(cliente.Persona);
 
             var query = personaQuery;
             query += "DECLARE @id_cliente int;";
             query += ArmarSentenciaSP("P_Guardar_Cliente", new[] {
-                GetParam(cliente.Id),
-                "@id_persona",
-                GetParam(cliente.Baja),
-                "@id_cliente output"
-            });
-            
+                        GetParam(cliente.Id),
+                        "@id_persona",
+                        GetParam(cliente.Baja),
+                        "@id_cliente output"
+                    });
+
             query = IncluirEnTransaccion(query);
 
             Connection.ExecuteQuery(query);
+        }
+
+        public bool ExisteCliente(string mail)
+        {
+            var query = "DECLARE @v_flag bit;";
+            query += ArmarSentenciaSP("P_Validar_Mail_CLiente", new[] { GetParam(mail), "@v_flag output" } );
+            query += "SELECT @v_flag;";
+
+            var result = Connection.ExecuteSingleResult(query);
+            if (result.Equals("False"))
+                return false;
+            else
+                return true;
         }
 
         public List<Cliente> GetClientes(string tipoDocumento, decimal numeroDocumento, string mail, string vigencia)

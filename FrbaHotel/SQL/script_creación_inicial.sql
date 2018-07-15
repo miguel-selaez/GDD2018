@@ -337,7 +337,7 @@ BEGIN
 	IF @id IS NULL OR @id = 0
 	BEGIN 
 		INSERT INTO NPM.Direccion (calle, nro_calle, piso, departamento, ciudad, id_pais)
-		VALUES (@calle, @nro_calle, @piso, @departamento, @ciudad, @id_pais)
+		VALUES (@calle, @nro_calle, CASE WHEN @piso < 0 THEN NULL ELSE @piso END, @departamento, @ciudad, @id_pais)
 
 		SELECT @id_out = @@IDENTITY
 	END 
@@ -347,7 +347,7 @@ BEGIN
 		SET 
 			calle = @calle, 
 			nro_calle = @nro_calle,
-			piso = @piso,
+			piso = CASE WHEN @piso < 0 THEN NULL ELSE @piso END,
 			departamento = @departamento, 
 			ciudad = @ciudad,
 			id_pais = @id_pais
@@ -1323,7 +1323,42 @@ BEGIN
 	
 END
 GO
-
+IF EXISTS (SELECT 1 FROM sysobjects WHERE name='P_Obtener_Habitaciones_x_Hotel')
+	DROP PROCEDURE NPM.P_Obtener_Habitaciones_x_Hotel
+GO 	
+CREATE PROCEDURE [NPM].[P_Obtener_Habitaciones_x_Hotel] 
+	@v_id_hotel int,
+	@baja bit
+AS
+BEGIN 
+SELECT 
+	numero,
+	piso,
+	frente,
+	descripcion_th,
+	'' as descripcion
+FROM 
+	NPM.Habitacion h INNER JOIN 
+	NPM.Tipo_Habitacion th ON h.id_tipo_habitacion = th.id_tipo_habitacion
+WHERE 
+	h.id_hotel = @v_id_hotel
+ORDER BY 
+	h.numero, h.piso 
+END
+GO
+IF EXISTS (SELECT 1 FROM sysobjects WHERE name='P_Validar_Mail_CLiente')
+	DROP PROCEDURE NPM.P_Validar_Mail_CLiente
+GO 
+CREATE PROCEDURE [NPM].[P_Validar_Mail_CLiente]
+	@v_mail nvarchar(255),
+	@v_flag bit = 0 out
+AS
+BEGIN
+	SET NOCOUNT ON
+	SET @v_flag = ISNULL((SELECT TOP 1 1 FROM NPM.Persona p WHERE p.mail = @v_mail),0)
+	RETURN @v_flag
+END
+GO
 
 print (CONCAT('INSERTS ', CONVERT(VARCHAR, GETDATE(), 114)))
 ---------------------------------- INSERTS ------------------------------

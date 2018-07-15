@@ -30,7 +30,7 @@ namespace FrbaHotel.Model
             Pais = new Pais(row);
         }
 
-        public Direccion(string calle, decimal numeroCalle, int piso, string departamento, string ciudad, Pais pais) {
+        public Direccion(string calle, decimal numeroCalle, decimal piso, string departamento, string ciudad, Pais pais) {
             Calle = calle;
             NumeroCalle = numeroCalle;
             Piso = piso;
