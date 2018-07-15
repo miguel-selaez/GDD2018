@@ -34,5 +34,22 @@ namespace FrbaHotel.DAO
             }
             return list;
         }
+
+        public List<HabitacionReservada> GetHabitacionesByReserva(decimal reservaId)
+        {
+            var list = new List<HabitacionReservada>();
+
+            var query = ArmarSentenciaSP("P_Obtener_Habitaciones_x_Reserva", new[] { GetParam(reservaId) });
+            var result = Connection.ExecuteQuery(query);
+
+            if (result.Rows.Count > 0)
+            {
+                foreach (DataRow row in result.Rows)
+                {
+                    list.Add(new HabitacionReservada(row));
+                }
+            }
+            return list;
+        }
     }
 }

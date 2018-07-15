@@ -15,7 +15,7 @@ namespace FrbaHotel.Reservas
     public partial class Reserva : Form
     {
         private Model.Session _session;
-        private List<Model.Habitacion> _habitaciones;
+        private List<Model.HabitacionReservada> _habitaciones;
         private Model.Cliente _cliente;
         private Model.Reserva _editObject;
 
@@ -32,11 +32,40 @@ namespace FrbaHotel.Reservas
             this._editObject = reserva;
             InitializeComponent();
             InitValues();
+            BindReserva();
+        }
+
+        private void BindReserva()
+        {
+            _cliente = _editObject.Cliente;
+            btnSelectCliente.Enabled = false;
+            txtCliente.Text = _editObject.Cliente.Persona.Nombre + " " + _editObject.Cliente.Persona.Apellido;
+            cbHoteles.SelectedIndex = IndexOfHoteles(_editObject.Hotel.Id);
+            cbRegimenes.SelectedIndex = IndexOfRegimenes(_editObject.Regimen.Id);
+            txtTotalReserva.Text = _editObject.TotalReserva.ToString("0.00");
+
+            _habitaciones = _editObject.Habitaciones;
+            BindHabitaciones();
+
+            dtInicio.Value = _editObject.FechaInicio ?? Tools.GetDate();
+            dtFin.Value = _editObject.FechaFin ?? Tools.GetDate();
+        }
+
+        private int IndexOfRegimenes(int id)
+        {
+            var list = (List<Model.Regimen>)cbRegimenes.DataSource;
+            return list.FindIndex(t => t.Id == id);
+        }
+
+        private int IndexOfHoteles(int id)
+        {
+            var list = (List<Model.Hotel>)cbHoteles.DataSource;
+            return list.FindIndex(t => t.Id == id);
         }
 
         private void InitValues()
         {
-            _habitaciones = new List<Model.Habitacion>();
+            _habitaciones = new List<Model.HabitacionReservada>();
             dtInicio.Value = Tools.GetDate();
             dtFin.Value = Tools.GetDate();
 
@@ -84,30 +113,28 @@ namespace FrbaHotel.Reservas
 
         public void AddHabitacion(Model.Habitacion selectedHabitacion)
         {
-            _habitaciones.Add(selectedHabitacion);
+            var nueva = new Model.HabitacionReservada(selectedHabitacion, 0);
+            _habitaciones.Add(nueva);
             BindHabitaciones();
         }
 
         private void BindHabitaciones()
         {
             dgHabitaciones.Rows.Clear();
-            var precios = new List<decimal>();
 
-            foreach (Model.Habitacion habitacion in _habitaciones)
+            foreach (Model.HabitacionReservada habitacion in _habitaciones)
             {
-                var precioPorHabitacion = CalcularPrecio(habitacion.TipoHabitacion);
+                habitacion.TotalHabitacion = CalcularPrecio(habitacion.Habitacion.TipoHabitacion);
                 var index = dgHabitaciones.Rows.Add();
-                dgHabitaciones.Rows[index].Cells["Numero"].Value = habitacion.Numero.ToString();
-                dgHabitaciones.Rows[index].Cells["Piso"].Value = habitacion.Piso.ToString();
-                dgHabitaciones.Rows[index].Cells["TipoHabitacion"].Value = habitacion.TipoHabitacion.Descripcion;
-                dgHabitaciones.Rows[index].Cells["Ubicacion"].Value = habitacion.Frente == "N" ? "Interior" : "Exterior";
-                dgHabitaciones.Rows[index].Cells["Precio"].Value = precioPorHabitacion.ToString("0.00");
+                dgHabitaciones.Rows[index].Cells["Numero"].Value = habitacion.Habitacion.Numero.ToString();
+                dgHabitaciones.Rows[index].Cells["Piso"].Value = habitacion.Habitacion.Piso.ToString();
+                dgHabitaciones.Rows[index].Cells["TipoHabitacion"].Value = habitacion.Habitacion.TipoHabitacion.Descripcion;
+                dgHabitaciones.Rows[index].Cells["Ubicacion"].Value = habitacion.Habitacion.Frente == "N" ? "Interior" : "Exterior";
+                dgHabitaciones.Rows[index].Cells["Precio"].Value = habitacion.TotalHabitacion.ToString("0.00");
                 dgHabitaciones.Rows[index].Cells["Eliminar"].Value = "Eliminar";
-
-                precios.Add(precioPorHabitacion);
             }
 
-            txtTotalReserva.Text = precios.Sum().ToString();
+            txtTotalReserva.Text = _habitaciones.Sum(h => h.TotalHabitacion).ToString("0.00");
         }
 
         private decimal CalcularPrecio(Model.TipoHabitacion tipoHabitacion)
@@ -174,9 +201,9 @@ namespace FrbaHotel.Reservas
                 }
                 _editObject.Habitaciones = _habitaciones;
 
-                var codigo = DAO.DAOFactory.ReservaDAO.SaveOrUpdate(_editObject);
+                var codigo = DAO.DAOFactory.ReservaDAO.SaveOrUpdate(_editObject, _session.User, Tools.GetDate());
 
-                string message = "Su reserva ha sido realizada con éxito.\n Su código de reserva es : " 
+                string message = "Su reserva ha sido guardada con éxito.\n Su código de reserva es : " 
                     + codigo + ". \nGuardelo para realizar el ingreso al hotel y realizar modificaciones." ;
                 string caption = "Reserva " + codigo;
                 MessageBoxButtons buttons = MessageBoxButtons.OK;

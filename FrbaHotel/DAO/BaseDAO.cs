@@ -1,6 +1,7 @@
 ﻿using FrbaHotel.Model;
 using System;
 using System.Collections.Generic;
+using System.Globalization;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
@@ -71,7 +72,7 @@ namespace FrbaHotel.DAO
         }
         public string GetParam(decimal param)
         {
-            return param.ToString();
+            return param.ToString("0.00", CultureInfo.InvariantCulture);
         }
         public string GetParamVigencia(string param) {
             return param == "Todos"
@@ -117,6 +118,14 @@ namespace FrbaHotel.DAO
             return param != null && param.Id > 0 ? param.Id.ToString() : "null"; ;
         }
         public string GetParam(Habitacion param)
+        {
+            return param != null && param.Id > 0 ? param.Id.ToString() : "null"; ;
+        }
+        public string GetParam(HabitacionReservada param)
+        {
+            return param != null && param.Habitacion.Id > 0 ? param.Habitacion.Id.ToString() : "null"; ;
+        }
+        public string GetParam(Reserva param)
         {
             return param != null && param.Id > 0 ? param.Id.ToString() : "null"; ;
         }

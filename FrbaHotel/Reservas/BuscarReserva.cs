@@ -44,8 +44,18 @@ namespace FrbaHotel.Reservas
                     throw new ValidateException("El código no puede estar vacío.");
                 }
 
-                dgHabitaciones.Rows.Clear();
                 _result = GetResult();
+                if (_result == null)
+                {
+                    BindReserva();
+                    BindHabitaciones();
+                }
+                else {
+                    string message = "El código que ingreso no corresponde con ninguno en nuestro sistema. \n Vuelva a intentar.";
+                    string caption = "Reserva";
+                    MessageBoxButtons buttons = MessageBoxButtons.OK;
+                    MessageBox.Show(message, caption, buttons);
+                }
             }
             catch (Exception ex)
             {
@@ -56,27 +66,72 @@ namespace FrbaHotel.Reservas
             }
         }
 
+        private void BindReserva()
+        {
+            txtCliente.Text = _result.Cliente.Persona.Nombre + " " +_result.Cliente.Persona.Apellido;
+            txtHotel.Text = _result.Hotel.Nombre;
+            txtRegimen.Text = _result.Regimen.Descripcion;
+            txtTotalReserva.Text = _result.TotalReserva.ToString("0.00");
+            txtEstado.Text = _result.Estado.Descipcion;
+
+            dtInicio.Value = _result.FechaInicio ?? Tools.GetDate();
+            dtFin.Value = _result.FechaFin ?? Tools.GetDate();
+
+            btnModificar.Enabled = 
+                (_result.Estado.Descipcion == "CORRECTA" || _result.Estado.Descipcion == "MODIFICADA")
+                && _result.FechaInicio > Tools.GetDate();
+            btnEstadia.Enabled =
+                (_result.Estado.Descipcion == "CORRECTA"
+                || _result.Estado.Descipcion == "MODIFICADA"
+                || _result.Estado.Descipcion == "CON INGRESO")
+                && Tools.GetDate() >= _result.FechaInicio
+                && Tools.GetDate() <= _result.FechaFin;
+            btnCancelar.Enabled = btnModificar.Enabled;
+        }
+
         private void BindHabitaciones()
         {
             dgHabitaciones.Rows.Clear();
             var precios = new List<decimal>();
 
-            foreach (Model.Habitacion habitacion in _result.Habitaciones)
+            foreach (Model.HabitacionReservada habitacion in _result.Habitaciones)
             {
                 var index = dgHabitaciones.Rows.Add();
-                dgHabitaciones.Rows[index].Cells["Numero"].Value = habitacion.Numero.ToString();
-                dgHabitaciones.Rows[index].Cells["Piso"].Value = habitacion.Piso.ToString();
-                dgHabitaciones.Rows[index].Cells["TipoHabitacion"].Value = habitacion.TipoHabitacion.Descripcion;
-                dgHabitaciones.Rows[index].Cells["Ubicacion"].Value = habitacion.Frente == "N" ? "Interior" : "Exterior";
-                dgHabitaciones.Rows[index].Cells["Precio"].Value = "";//.ToString("0.00");
+                dgHabitaciones.Rows[index].Cells["Numero"].Value = habitacion.Habitacion.Numero.ToString();
+                dgHabitaciones.Rows[index].Cells["Piso"].Value = habitacion.Habitacion.Piso.ToString();
+                dgHabitaciones.Rows[index].Cells["TipoHabitacion"].Value = habitacion.Habitacion.TipoHabitacion.Descripcion;
+                dgHabitaciones.Rows[index].Cells["Ubicacion"].Value = habitacion.Habitacion.Frente == "N" ? "Interior" : "Exterior";
+                dgHabitaciones.Rows[index].Cells["Precio"].Value = habitacion.TotalHabitacion.ToString("0.00");
             }
-
-            txtTotalReserva.Text = precios.Sum().ToString();
         }
 
         private Model.Reserva GetResult()
         {
-            throw new NotImplementedException();
+            var reservaId = decimal.Parse(txtCodigo.Text);
+            return DAO.DAOFactory.ReservaDAO.GetReservaByCode(reservaId);
+        }
+
+        private void btnAtras_Click(object sender, EventArgs e)
+        {
+            Close();
+        }
+
+        private void btnCancelar_Click(object sender, EventArgs e)
+        {
+            var form = new CancelarReserva.CancelarReserva(_session, _result);
+            form.Show();
+        }
+
+        private void btnEstadia_Click(object sender, EventArgs e)
+        {
+            var form = new RegistrarEstadia.Estadia(_session, _result);
+            form.Show();
+        }
+
+        private void btnModificar_Click(object sender, EventArgs e)
+        {
+            var form = new Reservas.Reserva(_session, _result);
+            form.Show();
         }
     }
 }

@@ -16,7 +16,18 @@ namespace FrbaHotel.Model
         public Usuario UsuarioSalida { get; set; }
         public DateTime? FechaSalida { get; set; }
 
-        List<Cliente> Huespedes;
+        private List<Cliente> _clientes;
+        public List<Cliente> Huespedes
+        {
+            get
+            {
+                return _clientes ?? (_clientes = DAO.DAOFactory.ClienteDAO.GetClientesxEstadia(Id));
+            }
+            set
+            {
+                _clientes = value;
+            }
+        }
 
         public Estadia(DataRow row)
         {
@@ -28,6 +39,15 @@ namespace FrbaHotel.Model
             FechaIngreso = GetDate("fecha_ingreso");
             UsuarioSalida = new Usuario(row);
             FechaSalida = GetDate("fecha_salida");
+        }
+
+        public Estadia(int id, Reserva reserva, Usuario usuarioIngreso, DateTime? fechaIngreso,
+            Usuario usuarioSalida, DateTime? fechaSalida) {
+                Id = id;
+                Reserva = reserva;
+                UsuarioIngreso = usuarioIngreso;
+                FechaIngreso = fechaIngreso;
+                FechaSalida = fechaSalida;
         }
     }
 }

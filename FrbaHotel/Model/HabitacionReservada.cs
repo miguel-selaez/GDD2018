@@ -9,16 +9,19 @@ namespace FrbaHotel.Model
 {
     public class HabitacionReservada : BaseData
     {
-        public Hotel Hotel { get; set; }
+        public Habitacion Habitacion { get; set; }
         public decimal TotalHabitacion { get; set; }
 
         public HabitacionReservada(DataRow row) {
-            Hotel = new Hotel(row);
+            Row = row;
+
+            Habitacion = new Habitacion(row);
             TotalHabitacion = GetValue<decimal>("total_habitacion");
         }
 
-        public HabitacionReservada(Hotel hotel, decimal total) {
-            Hotel = hotel;
+        public HabitacionReservada(Habitacion habitacion, decimal total)
+        {
+            Habitacion = habitacion;
             TotalHabitacion = total;
         }
     }

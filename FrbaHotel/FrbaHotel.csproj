@@ -149,6 +149,7 @@
     <Compile Include="DAO\DAOFactory.cs" />
     <Compile Include="DAO\DBConnection.cs" />
     <Compile Include="DAO\DireccionDAO.cs" />
+    <Compile Include="DAO\EstadiaDAO.cs" />
     <Compile Include="DAO\HabitacionDAO.cs" />
     <Compile Include="DAO\ItemFacturaDAO.cs" />
     <Compile Include="DAO\PaisDAO.cs" />
@@ -238,12 +239,6 @@
     <Compile Include="RegistrarEstadia\Estadia.Designer.cs">
       <DependentUpon>Estadia.cs</DependentUpon>
     </Compile>
-    <Compile Include="RegistrarEstadia\ListadoEstadia.cs">
-      <SubType>Form</SubType>
-    </Compile>
-    <Compile Include="RegistrarEstadia\ListadoEstadia.Designer.cs">
-      <DependentUpon>ListadoEstadia.cs</DependentUpon>
-    </Compile>
     <Compile Include="Reservas\BuscarHabitacion.cs">
       <SubType>Form</SubType>
     </Compile>
@@ -281,6 +276,9 @@
     <EmbeddedResource Include="AbmUsuario\Usuario.resx">
       <DependentUpon>Usuario.cs</DependentUpon>
     </EmbeddedResource>
+    <EmbeddedResource Include="CancelarReserva\CancelarReserva.resx">
+      <DependentUpon>CancelarReserva.cs</DependentUpon>
+    </EmbeddedResource>
     <EmbeddedResource Include="Inicio.resx">
       <DependentUpon>Inicio.cs</DependentUpon>
     </EmbeddedResource>
@@ -299,6 +297,9 @@
       <AutoGen>True</AutoGen>
       <DependentUpon>Resources.resx</DependentUpon>
     </Compile>
+    <EmbeddedResource Include="RegistrarEstadia\Estadia.resx">
+      <DependentUpon>Estadia.cs</DependentUpon>
+    </EmbeddedResource>
     <EmbeddedResource Include="Reservas\BuscarHabitacion.resx">
       <DependentUpon>BuscarHabitacion.cs</DependentUpon>
     </EmbeddedResource>

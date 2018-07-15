@@ -6,6 +6,7 @@ using System.Data;
 using System.Drawing;
 using System.Linq;
 using System.Text;
+using System.Text.RegularExpressions;
 using System.Threading.Tasks;
 using System.Windows.Forms;
 
@@ -277,6 +278,42 @@ namespace FrbaHotel.AbmUsuario
             if (rdSi.Checked == false && rdNo.Checked == false)
             {
                 throw new ValidateException("Debe seleccionar la vigencia del usuario");
+            }
+            if (string.IsNullOrEmpty(txtNombre.Text) || string.IsNullOrWhiteSpace(txtNombre.Text))
+            {
+                throw new ValidateException("El nombre no puede estar vacío.");
+            }
+            if (string.IsNullOrEmpty(txtApellido.Text) || string.IsNullOrWhiteSpace(txtApellido.Text))
+            {
+                throw new ValidateException("El apellido no puede estar vacío.");
+            }
+            if (string.IsNullOrEmpty(txtNumeroDocumento.Text) || string.IsNullOrWhiteSpace(txtNumeroDocumento.Text))
+            {
+                throw new ValidateException("El Nro de Documento no puede estar vacío.");
+            }
+            if (!Regex.IsMatch(txtNumeroDocumento.Text, @"[0-9]+"))
+            {
+                throw new ValidateException("El Nro de Documento debe estar compuesto por números únicamente.");
+            }
+            if (string.IsNullOrEmpty(txtMail.Text) || string.IsNullOrWhiteSpace(txtMail.Text))
+            {
+                throw new ValidateException("El mail no puede estar vacío.");
+            }
+            if (string.IsNullOrEmpty(txtTelefono.Text) || string.IsNullOrWhiteSpace(txtTelefono.Text))
+            {
+                throw new ValidateException("El teléfono no puede estar vacío.");
+            }
+            if (string.IsNullOrEmpty(txtCalle.Text) || string.IsNullOrWhiteSpace(txtCalle.Text))
+            {
+                throw new ValidateException("La calle no puede estar vacía.");
+            }
+            if (string.IsNullOrEmpty(txtNumeroCalle.Text) || string.IsNullOrWhiteSpace(txtNumeroCalle.Text))
+            {
+                throw new ValidateException("La altura no puede estar vacía.");
+            }
+            if (DateTime.Compare(dtFechaNacimiento.Value, Tools.GetDate()) > 0)
+            {
+                throw new ValidateException("La fecha de nacimiento no puede ser mayor a la actual");
             }
         }
 

@@ -29,33 +29,9 @@
         private void InitializeComponent()
         {
             System.ComponentModel.ComponentResourceManager resources = new System.ComponentModel.ComponentResourceManager(typeof(Inicio));
-            this.btnReservas = new System.Windows.Forms.Button();
-            this.btnLogin = new System.Windows.Forms.Button();
             this.mainMenu = new System.Windows.Forms.MenuStrip();
+            this.lblTitulo = new System.Windows.Forms.Label();
             this.SuspendLayout();
-            // 
-            // btnReservas
-            // 
-            this.btnReservas.BackColor = System.Drawing.SystemColors.Control;
-            this.btnReservas.Font = new System.Drawing.Font("Calibri", 12F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            this.btnReservas.Location = new System.Drawing.Point(304, 90);
-            this.btnReservas.Name = "btnReservas";
-            this.btnReservas.Size = new System.Drawing.Size(103, 30);
-            this.btnReservas.TabIndex = 0;
-            this.btnReservas.Text = "Reservas";
-            this.btnReservas.UseVisualStyleBackColor = true;
-            this.btnReservas.Click += new System.EventHandler(this.btnClientes_Click);
-            // 
-            // btnLogin
-            // 
-            this.btnLogin.Font = new System.Drawing.Font("Calibri", 12F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            this.btnLogin.Location = new System.Drawing.Point(304, 185);
-            this.btnLogin.Name = "btnLogin";
-            this.btnLogin.Size = new System.Drawing.Size(103, 30);
-            this.btnLogin.TabIndex = 1;
-            this.btnLogin.Text = "Inciar Sesión";
-            this.btnLogin.UseVisualStyleBackColor = true;
-            this.btnLogin.Click += new System.EventHandler(this.btnLogin_Click);
             // 
             // mainMenu
             // 
@@ -65,13 +41,23 @@
             this.mainMenu.TabIndex = 2;
             this.mainMenu.Text = "menuStrip1";
             // 
+            // lblTitulo
+            // 
+            this.lblTitulo.AutoSize = true;
+            this.lblTitulo.Font = new System.Drawing.Font("Calibri", 15F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+            this.lblTitulo.ForeColor = System.Drawing.Color.Firebrick;
+            this.lblTitulo.Location = new System.Drawing.Point(274, 149);
+            this.lblTitulo.Name = "lblTitulo";
+            this.lblTitulo.Size = new System.Drawing.Size(202, 24);
+            this.lblTitulo.TabIndex = 29;
+            this.lblTitulo.Text = "Bienvenido FrabaHotel";
+            // 
             // Inicio
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
             this.ClientSize = new System.Drawing.Size(716, 322);
-            this.Controls.Add(this.btnLogin);
-            this.Controls.Add(this.btnReservas);
+            this.Controls.Add(this.lblTitulo);
             this.Controls.Add(this.mainMenu);
             this.Font = new System.Drawing.Font("Calibri", 8.25F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
             this.Icon = ((System.Drawing.Icon)(resources.GetObject("$this.Icon")));
@@ -84,9 +70,8 @@
 
         #endregion
 
-        private System.Windows.Forms.Button btnReservas;
-        private System.Windows.Forms.Button btnLogin;
         private System.Windows.Forms.MenuStrip mainMenu;
+        private System.Windows.Forms.Label lblTitulo;
     }
 }
 

@@ -35,17 +35,17 @@
             this.txtCliente = new System.Windows.Forms.TextBox();
             this.label1 = new System.Windows.Forms.Label();
             this.dgHabitaciones = new System.Windows.Forms.DataGridView();
+            this.Numero = new System.Windows.Forms.DataGridViewTextBoxColumn();
+            this.Piso = new System.Windows.Forms.DataGridViewTextBoxColumn();
+            this.TipoHabitacion = new System.Windows.Forms.DataGridViewTextBoxColumn();
+            this.Ubicacion = new System.Windows.Forms.DataGridViewTextBoxColumn();
+            this.Precio = new System.Windows.Forms.DataGridViewTextBoxColumn();
             this.dtFin = new System.Windows.Forms.DateTimePicker();
             this.label4 = new System.Windows.Forms.Label();
             this.label3 = new System.Windows.Forms.Label();
             this.label2 = new System.Windows.Forms.Label();
             this.dtInicio = new System.Windows.Forms.DateTimePicker();
             this.label16 = new System.Windows.Forms.Label();
-            this.Numero = new System.Windows.Forms.DataGridViewTextBoxColumn();
-            this.Piso = new System.Windows.Forms.DataGridViewTextBoxColumn();
-            this.TipoHabitacion = new System.Windows.Forms.DataGridViewTextBoxColumn();
-            this.Ubicacion = new System.Windows.Forms.DataGridViewTextBoxColumn();
-            this.Precio = new System.Windows.Forms.DataGridViewTextBoxColumn();
             this.txtRegimen = new System.Windows.Forms.TextBox();
             this.txtHotel = new System.Windows.Forms.TextBox();
             this.txtCodigo = new System.Windows.Forms.TextBox();
@@ -55,6 +55,8 @@
             this.btnEstadia = new System.Windows.Forms.Button();
             this.btnCancelar = new System.Windows.Forms.Button();
             this.btnAtras = new System.Windows.Forms.Button();
+            this.label5 = new System.Windows.Forms.Label();
+            this.txtEstado = new System.Windows.Forms.TextBox();
             ((System.ComponentModel.ISupportInitialize)(this.dgHabitaciones)).BeginInit();
             this.SuspendLayout();
             // 
@@ -71,7 +73,7 @@
             // 
             // txtTotalReserva
             // 
-            this.txtTotalReserva.Location = new System.Drawing.Point(340, 111);
+            this.txtTotalReserva.Location = new System.Drawing.Point(392, 140);
             this.txtTotalReserva.Name = "txtTotalReserva";
             this.txtTotalReserva.ReadOnly = true;
             this.txtTotalReserva.Size = new System.Drawing.Size(124, 20);
@@ -80,7 +82,7 @@
             // lblTotal
             // 
             this.lblTotal.AutoSize = true;
-            this.lblTotal.Location = new System.Drawing.Point(289, 114);
+            this.lblTotal.Location = new System.Drawing.Point(288, 147);
             this.lblTotal.Name = "lblTotal";
             this.lblTotal.Size = new System.Drawing.Size(34, 13);
             this.lblTotal.TabIndex = 91;
@@ -115,66 +117,12 @@
             this.Ubicacion,
             this.Precio});
             this.dgHabitaciones.Enabled = false;
-            this.dgHabitaciones.Location = new System.Drawing.Point(12, 175);
+            this.dgHabitaciones.Location = new System.Drawing.Point(12, 213);
             this.dgHabitaciones.MultiSelect = false;
             this.dgHabitaciones.Name = "dgHabitaciones";
             this.dgHabitaciones.SelectionMode = System.Windows.Forms.DataGridViewSelectionMode.FullRowSelect;
-            this.dgHabitaciones.Size = new System.Drawing.Size(573, 192);
+            this.dgHabitaciones.Size = new System.Drawing.Size(621, 168);
             this.dgHabitaciones.TabIndex = 87;
-            // 
-            // dtFin
-            // 
-            this.dtFin.Enabled = false;
-            this.dtFin.Format = System.Windows.Forms.DateTimePickerFormat.Short;
-            this.dtFin.Location = new System.Drawing.Point(367, 141);
-            this.dtFin.Name = "dtFin";
-            this.dtFin.Size = new System.Drawing.Size(95, 20);
-            this.dtFin.TabIndex = 85;
-            // 
-            // label4
-            // 
-            this.label4.AutoSize = true;
-            this.label4.Location = new System.Drawing.Point(289, 147);
-            this.label4.Name = "label4";
-            this.label4.Size = new System.Drawing.Size(72, 13);
-            this.label4.TabIndex = 84;
-            this.label4.Text = "Fecha de Fin:";
-            // 
-            // label3
-            // 
-            this.label3.AutoSize = true;
-            this.label3.Location = new System.Drawing.Point(289, 85);
-            this.label3.Name = "label3";
-            this.label3.Size = new System.Drawing.Size(91, 13);
-            this.label3.TabIndex = 83;
-            this.label3.Text = "Tipo de Régimen:";
-            // 
-            // label2
-            // 
-            this.label2.AutoSize = true;
-            this.label2.Location = new System.Drawing.Point(13, 82);
-            this.label2.Name = "label2";
-            this.label2.Size = new System.Drawing.Size(35, 13);
-            this.label2.TabIndex = 81;
-            this.label2.Text = "Hotel:";
-            // 
-            // dtInicio
-            // 
-            this.dtInicio.Enabled = false;
-            this.dtInicio.Format = System.Windows.Forms.DateTimePickerFormat.Short;
-            this.dtInicio.Location = new System.Drawing.Point(102, 140);
-            this.dtInicio.Name = "dtInicio";
-            this.dtInicio.Size = new System.Drawing.Size(95, 20);
-            this.dtInicio.TabIndex = 80;
-            // 
-            // label16
-            // 
-            this.label16.AutoSize = true;
-            this.label16.Location = new System.Drawing.Point(13, 146);
-            this.label16.Name = "label16";
-            this.label16.Size = new System.Drawing.Size(83, 13);
-            this.label16.TabIndex = 79;
-            this.label16.Text = "Fecha de Inicio:";
             // 
             // Numero
             // 
@@ -206,9 +154,63 @@
             this.Precio.Name = "Precio";
             this.Precio.ReadOnly = true;
             // 
+            // dtFin
+            // 
+            this.dtFin.Enabled = false;
+            this.dtFin.Format = System.Windows.Forms.DateTimePickerFormat.Short;
+            this.dtFin.Location = new System.Drawing.Point(392, 175);
+            this.dtFin.Name = "dtFin";
+            this.dtFin.Size = new System.Drawing.Size(95, 20);
+            this.dtFin.TabIndex = 85;
+            // 
+            // label4
+            // 
+            this.label4.AutoSize = true;
+            this.label4.Location = new System.Drawing.Point(290, 183);
+            this.label4.Name = "label4";
+            this.label4.Size = new System.Drawing.Size(72, 13);
+            this.label4.TabIndex = 84;
+            this.label4.Text = "Fecha de Fin:";
+            // 
+            // label3
+            // 
+            this.label3.AutoSize = true;
+            this.label3.Location = new System.Drawing.Point(288, 114);
+            this.label3.Name = "label3";
+            this.label3.Size = new System.Drawing.Size(91, 13);
+            this.label3.TabIndex = 83;
+            this.label3.Text = "Tipo de Régimen:";
+            // 
+            // label2
+            // 
+            this.label2.AutoSize = true;
+            this.label2.Location = new System.Drawing.Point(13, 82);
+            this.label2.Name = "label2";
+            this.label2.Size = new System.Drawing.Size(35, 13);
+            this.label2.TabIndex = 81;
+            this.label2.Text = "Hotel:";
+            // 
+            // dtInicio
+            // 
+            this.dtInicio.Enabled = false;
+            this.dtInicio.Format = System.Windows.Forms.DateTimePickerFormat.Short;
+            this.dtInicio.Location = new System.Drawing.Point(103, 176);
+            this.dtInicio.Name = "dtInicio";
+            this.dtInicio.Size = new System.Drawing.Size(95, 20);
+            this.dtInicio.TabIndex = 80;
+            // 
+            // label16
+            // 
+            this.label16.AutoSize = true;
+            this.label16.Location = new System.Drawing.Point(14, 182);
+            this.label16.Name = "label16";
+            this.label16.Size = new System.Drawing.Size(83, 13);
+            this.label16.TabIndex = 79;
+            this.label16.Text = "Fecha de Inicio:";
+            // 
             // txtRegimen
             // 
-            this.txtRegimen.Location = new System.Drawing.Point(393, 82);
+            this.txtRegimen.Location = new System.Drawing.Point(392, 111);
             this.txtRegimen.Name = "txtRegimen";
             this.txtRegimen.ReadOnly = true;
             this.txtRegimen.Size = new System.Drawing.Size(124, 20);
@@ -250,45 +252,68 @@
             // 
             // btnModificar
             // 
-            this.btnModificar.Location = new System.Drawing.Point(510, 374);
+            this.btnModificar.Location = new System.Drawing.Point(558, 388);
             this.btnModificar.Name = "btnModificar";
             this.btnModificar.Size = new System.Drawing.Size(75, 23);
             this.btnModificar.TabIndex = 98;
             this.btnModificar.Text = "Modificar";
             this.btnModificar.UseVisualStyleBackColor = true;
+            this.btnModificar.Click += new System.EventHandler(this.btnModificar_Click);
             // 
             // btnEstadia
             // 
-            this.btnEstadia.Location = new System.Drawing.Point(429, 373);
+            this.btnEstadia.Location = new System.Drawing.Point(477, 387);
             this.btnEstadia.Name = "btnEstadia";
             this.btnEstadia.Size = new System.Drawing.Size(75, 23);
             this.btnEstadia.TabIndex = 99;
             this.btnEstadia.Text = "Check In";
             this.btnEstadia.UseVisualStyleBackColor = true;
+            this.btnEstadia.Click += new System.EventHandler(this.btnEstadia_Click);
             // 
             // btnCancelar
             // 
-            this.btnCancelar.Location = new System.Drawing.Point(309, 374);
+            this.btnCancelar.Location = new System.Drawing.Point(357, 388);
             this.btnCancelar.Name = "btnCancelar";
             this.btnCancelar.Size = new System.Drawing.Size(114, 23);
             this.btnCancelar.TabIndex = 100;
             this.btnCancelar.Text = "Cancelar Reserva";
             this.btnCancelar.UseVisualStyleBackColor = true;
+            this.btnCancelar.Click += new System.EventHandler(this.btnCancelar_Click);
             // 
             // btnAtras
             // 
-            this.btnAtras.Location = new System.Drawing.Point(228, 374);
+            this.btnAtras.Location = new System.Drawing.Point(276, 388);
             this.btnAtras.Name = "btnAtras";
             this.btnAtras.Size = new System.Drawing.Size(75, 23);
             this.btnAtras.TabIndex = 101;
             this.btnAtras.Text = "Atrás";
             this.btnAtras.UseVisualStyleBackColor = true;
+            this.btnAtras.Click += new System.EventHandler(this.btnAtras_Click);
+            // 
+            // label5
+            // 
+            this.label5.AutoSize = true;
+            this.label5.Location = new System.Drawing.Point(14, 147);
+            this.label5.Name = "label5";
+            this.label5.Size = new System.Drawing.Size(43, 13);
+            this.label5.TabIndex = 102;
+            this.label5.Text = "Estado:";
+            // 
+            // txtEstado
+            // 
+            this.txtEstado.Location = new System.Drawing.Point(62, 144);
+            this.txtEstado.Name = "txtEstado";
+            this.txtEstado.ReadOnly = true;
+            this.txtEstado.Size = new System.Drawing.Size(210, 20);
+            this.txtEstado.TabIndex = 103;
             // 
             // BuscarReserva
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
-            this.ClientSize = new System.Drawing.Size(597, 409);
+            this.ClientSize = new System.Drawing.Size(651, 422);
+            this.Controls.Add(this.txtEstado);
+            this.Controls.Add(this.label5);
             this.Controls.Add(this.btnAtras);
             this.Controls.Add(this.btnCancelar);
             this.Controls.Add(this.btnEstadia);
@@ -347,5 +372,7 @@
         private System.Windows.Forms.Button btnEstadia;
         private System.Windows.Forms.Button btnCancelar;
         private System.Windows.Forms.Button btnAtras;
+        private System.Windows.Forms.Label label5;
+        private System.Windows.Forms.TextBox txtEstado;
     }
 }

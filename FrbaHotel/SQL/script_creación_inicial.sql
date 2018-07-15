@@ -188,9 +188,9 @@ GO
 
 CREATE TABLE NPM.Hotel(
 	id_hotel int NOT NULL IDENTITY,
-	nombre nvarchar(50) NOT NULL,
+	nombre_ho nvarchar(50) NOT NULL,
 	mail nvarchar(50) NULL,
-	telefono nvarchar(10) NULL,
+	telefono_ho nvarchar(10) NULL,
 	id_direccion int NOT NULL,
 	estrellas numeric(18,0) NOT NULL,
 	fecha_creacion datetime NOT NULL,
@@ -243,15 +243,8 @@ GO
 
 CREATE TABLE NPM.Reserva_Modificada(
 	id_reserva numeric(18,0) NOT NULL,
-	id_usuario int NOT NULL,
-	id_hotel int NOT NULL,
-	id_regimen int NOT NULL,
-	fecha_modificacion datetime NOT NULL,
-	fecha_inicio datetime NOT NULL,
-	fecha_fin datetime NOT NULL,
-	cant_noches int NOT NULL,
-	habitaciones int NOT NULL,
-	PRIMARY KEY (id_reserva, fecha_modificacion)
+	id_usuario_modificacion int NOT NULL,
+	fecha datetime NOT NULL
 )
 
 GO
@@ -260,8 +253,8 @@ CREATE TABLE NPM.Reserva_Cancelada(
 	id_reserva numeric(18,0) NOT NULL,
 	motivo nvarchar(255),
 	fecha_cancelacion datetime NOT NULL,
-	id_usuario int NOT NULL,
-	PRIMARY KEY (id_reserva, fecha_cancelacion)
+	id_usuario int NULL,
+	PRIMARY KEY (id_reserva)
 )
 
 GO
@@ -363,9 +356,6 @@ END
 GO 
 
 --LISTAR CONSUMO
-USE GD1C2018;
-GO
-
 IF EXISTS (SELECT 1 FROM sysobjects WHERE name='P_Listar_Consumos')
 	DROP PROCEDURE NPM.P_Listar_Consumos
 GO 	
@@ -422,13 +412,10 @@ GO
 ---------------------------------------------------------------------------------------
 
 
-
-USE GD1C2018;
-GO
-IF EXISTS (SELECT 1 FROM sysobjects WHERE name='NPM.Registrar_Consumo')
-	DROP PROCEDURE NPM.Registrar_Consumo
+IF EXISTS (SELECT 1 FROM sysobjects WHERE name='P_Registrar_Consumo')
+	DROP PROCEDURE NPM.P_Registrar_Consumo
 GO 	
-CREATE PROCEDURE NPM.Registrar_Consumo
+CREATE PROCEDURE NPM.P_Registrar_Consumo
 	@estadia int,
 @producto nvarchar(255),
 @nro_habit numeric(18,0),
@@ -447,67 +434,61 @@ BEGIN
 		    from NPM.estadia
 	            where id_estadia = @estadia)
 
-	if @var > 0
-BEGIN
-select @reserva = id_reserva from NPM.Estadia where id_estadia = @estadia  
-select @consumible = id_consumible from NPM.Consumible where descripcion_cb = @producto
-select @habitacion = id_habitacion from NPM.Habitacion_Reservada where id_reserva = @reserva
+	IF @var > 0
+	BEGIN
+		select @reserva = id_reserva from NPM.Estadia where id_estadia = @estadia  
+		select @consumible = id_consumible from NPM.Consumible where descripcion_cb = @producto
+		select @habitacion = id_habitacion from NPM.Habitacion_Reservada where id_reserva = @reserva
 
    
-INSERT INTO NPM.Consumo
-VALUES(@estadia,@consumible,@habitacion,@reserva,@cantidad)
-END
+		INSERT INTO NPM.Consumo
+		VALUES(@estadia,@consumible,@habitacion,@reserva,@cantidad)
+	END
 RETURN 'Consumo Guardado'
 END
 GO
 
 -------------------------------------------------------------------------------------
 
-
-USE GD1C2018;
-GO
-
-IF EXISTS (SELECT 1 FROM sysobjects WHERE name='NPM.Facturar_Consumo')
-	DROP PROCEDURE NPM.Facturar_Consumo
+IF EXISTS (SELECT 1 FROM sysobjects WHERE name='P_Facturar_Consumo')
+	DROP PROCEDURE NPM.P_Facturar_Consumo
 GO 	
-CREATE PROCEDURE NPM.Facturar_Consumo
-@estadia int
+CREATE PROCEDURE NPM.P_Facturar_Consumo
+	@estadia int
 AS
 BEGIN
 
-declare @nro_factura numeric(18,0);
-declare @var int;
+	declare @nro_factura numeric(18,0);
+	declare @var int;
 
-set @var = (select case 
+	set @var = (select case 
 			when fecha_salida is null then id_estadia
 			else 0
 		        end
 		    from NPM.estadia
 	            where id_estadia = @estadia)
-if @var > 0
-BEGIN
+	IF @var > 0
+	BEGIN
+		set @nro_factura = (select max(id_factura)+1 from NPM.Factura)
 
-	set @nro_factura = (select max(id_factura)+1 from NPM.Factura)
-
-	select c.id_consumo,case
-		when reg.descripcion_r = 'All inclusive' then 'descuento por regimen de estadia'
-		else NULL
-		end,case 
-		when reg.descripcion_r = 'All inclusive' then 0
-		else (con.precio * c.cantidad)
-		end, @nro_factura
-	from NPM.Reserva r
-	join NPM.Consumo c on c.id_reserva = r.id_reserva
-	join NPM.Consumible con on con.id_consumible = c.id_consumible
-	join NPM.Estadia e on e.id_estadia = @var and e.id_reserva = r.id_reserva 
-	join NPM.Regimen reg on reg.id_regimen = r.id_regimen
+		select c.id_consumo,
+			case
+				when reg.descripcion_r = 'All inclusive' then 'descuento por regimen de estadia'
+				else NULL
+			end,
+			case 
+				when reg.descripcion_r = 'All inclusive' then 0
+				else (con.precio * c.cantidad)
+			end,
+			@nro_factura
+		from NPM.Reserva r
+		join NPM.Consumo c on c.id_reserva = r.id_reserva
+		join NPM.Consumible con on con.id_consumible = c.id_consumible
+		join NPM.Estadia e on e.id_estadia = @var and e.id_reserva = r.id_reserva 
+		join NPM.Regimen reg on reg.id_regimen = r.id_regimen
 	END
+	RETURN;
 END
-GO
-
-
---HOTEL
-USE GD1C2018;
 GO
 
 IF EXISTS (SELECT 1 FROM sysobjects WHERE name='P_Alta_Hotel')
@@ -528,7 +509,7 @@ AS
 BEGIN 
 	IF @id IS NULL
 	BEGIN 
-		INSERT INTO NPM.Hotel (nombre,mail,telefono,id_direccion,estrellas,fecha_creacion,baja_ho)
+		INSERT INTO NPM.Hotel (nombre_ho,mail,telefono_ho,id_direccion,estrellas,fecha_creacion,baja_ho)
 		VALUES (@nombre,@mail,@telefono,@id_direccion,@estrellas,@fecha_creacion,@baja)
 
 		SELECT @id_out = @@IDENTITY
@@ -537,9 +518,9 @@ BEGIN
 	BEGIN 
 		UPDATE NPM.Hotel 
 		SET 
-			nombre = @nombre, 
+			nombre_ho = @nombre, 
 			mail = @mail,
-			telefono = @telefono,
+			telefono_ho = @telefono,
 			id_direccion = @id_direccion, 
 			estrellas = @estrellas,
 			fecha_creacion = @fecha_creacion,
@@ -691,9 +672,9 @@ AS
 BEGIN 
 	SELECT 
 		H.id_hotel,
-		H.nombre, 
+		H.nombre_ho, 
 		H.mail,
-		H.telefono, 
+		H.telefono_ho, 
 		H.estrellas,
 		CONVERT(varchar(10), H.fecha_creacion, 112) as 'fecha_creacion',
 		H.baja_ho,
@@ -711,7 +692,7 @@ BEGIN
 		HU.id_usuario = @id
 		AND H.baja_ho = 0
 	ORDER BY
-		H.Nombre
+		H.nombre_ho
 
 END
 
@@ -913,9 +894,9 @@ AS
 BEGIN 
 	SELECT 
 		H.id_hotel,
-		H.nombre,
+		H.nombre_ho,
 		H.mail,
-		H.telefono,
+		H.telefono_ho,
 		H.estrellas,
 		NPM.FX_Mostrar_Fecha(H.fecha_creacion) as 'fecha_creacion',
 		H.baja_ho,
@@ -928,10 +909,10 @@ BEGIN
 		LEFT JOIN NPM.Pais as pa
 			ON pa.id_pais = d.id_pais
 	WHERE
-		(H.nombre like '%'+ @nombre + '%' OR @nombre IS NULL)
+		(H.nombre_ho like '%'+ @nombre + '%' OR @nombre IS NULL)
 		AND (H.baja_ho = @baja OR @baja IS NULL)
 	ORDER BY
-		H.nombre
+		H.nombre_ho
 
 END
 
@@ -1258,6 +1239,28 @@ END
 
 GO
 
+IF EXISTS (SELECT 1 FROM sysobjects WHERE name='P_Obtener_Habitaciones_x_Reserva')
+	DROP PROCEDURE NPM.P_Obtener_Habitaciones_x_Reserva
+GO 	
+
+CREATE PROCEDURE NPM.P_Obtener_Habitaciones_x_Reserva 
+	@id_reserva numeric(18,0)
+AS
+BEGIN 
+	SELECT 
+		Ha.*,
+		HR.total_habitacion
+	FROM 
+		NPM.Habitacion as Ha
+		INNER JOIN NPM.Habitacion_Reservada as HR
+			ON Ha.id_habitacion = HR.id_habitacion
+	WHERE
+		HR.id_reserva = @id_reserva;
+
+END
+
+GO
+
 IF EXISTS (SELECT 1 FROM sysobjects WHERE name='FX_Generar_Id_Reserva')
 	DROP FUNCTION NPM.FX_Generar_Id_Reserva
 GO 	
@@ -1287,18 +1290,19 @@ CREATE PROCEDURE NPM.P_Guardar_Reserva
 	@fecha_inicio datetime,
 	@fecha_fin datetime,
 	@total_reserva numeric(18,2),
-	@id_estado_reserva int,
+	@usuario_mod int,
+	@fecha_mod datetime,
 	@id_out int out
 AS
 BEGIN 
 	IF @id = 0
 	BEGIN 
+		SELECT @id_out = NPM.FX_Generar_Id_Reserva();
+
 		INSERT INTO NPM.Reserva
 		VALUES 
-		(NPM.FX_Generar_Id_Reserva(), @id_usuario, @id_hotel, @id_regimen, @id_cliente,
+		(@id_out, @id_usuario, @id_hotel, @id_regimen, @id_cliente,
 		 @fecha_creacion, @fecha_inicio, @fecha_fin, @total_reserva,1)
-
-		SELECT @id_out = @@IDENTITY
 	END 
 	ELSE 
 	BEGIN 
@@ -1308,21 +1312,189 @@ BEGIN
 			id_regimen = @id_regimen,
 			fecha_inicio = @fecha_inicio,
 			fecha_fin = @fecha_fin,
-			total_reserva = @total_reserva
+			total_reserva = @total_reserva,
+			id_estado = 2
 		WHERE 
 			id_reserva = @id;
 
 		SELECT @id_out = @id;
+		
+		INSERT INTO Reserva_Modificada(id_reserva, id_usuario_modificacion, fecha)
+		VALUES (@id_out, @usuario_mod, @fecha_mod);
+		
 	END
 
 	DELETE NPM.Habitacion_Reservada
-	WHERE id_reserva = @id;
+	WHERE id_reserva = @id_out;
 		
 	RETURN @id_out;
 	
 END
 GO
 
+IF EXISTS (SELECT 1 FROM sysobjects WHERE name='P_Cancelar_Rerserva')
+	DROP PROCEDURE NPM.P_Cancelar_Rerserva
+GO 	
+
+CREATE PROCEDURE NPM.P_Cancelar_Rerserva 
+	@id_reserva numeric(18,0),
+	@motivo nvarchar(255), 
+	@fecha numeric(18,2),
+	@id_usuario int,
+	@id_rol int
+AS
+BEGIN 
+	INSERT INTO NPM.Reserva_Cancelada(id_reserva, motivo, fecha_cancelacion, id_usuario)
+	VALUES (@id_reserva, @motivo, @fecha, @id_usuario)
+
+	UPDATE NPM.Reserva
+	SET id_estado = 
+	CASE 
+		WHEN @id_rol = 2 THEN 3
+		WHEN @id_rol = 3 THEN 4
+		ELSE 5
+	END
+	WHERE id_reserva = @id_reserva;
+
+END
+
+GO
+
+IF EXISTS (SELECT 1 FROM sysobjects WHERE name='P_Guardar_Huesped_x_Estadia')
+	DROP PROCEDURE NPM.P_Guardar_Huesped_x_Estadia
+GO 	
+
+CREATE PROCEDURE NPM.P_Guardar_Huesped_x_Estadia 
+	@id_cliente int,
+	@id_estadia int	
+AS
+BEGIN 
+	INSERT INTO NPM.Huesped_x_Estadia(id_cliente, id_estadia)
+	VALUES (@id_cliente, @id_estadia)
+END
+
+GO
+
+IF EXISTS (SELECT 1 FROM sysobjects WHERE name='P_Obtener_Huespedes_x_Estadia')
+	DROP PROCEDURE NPM.P_Obtener_Huespedes_x_Estadia
+GO 	
+
+CREATE PROCEDURE NPM.P_Obtener_Huespedes_x_Estadia 
+	@id_estadia int	
+AS
+BEGIN 
+	SELECT 
+		C.*,
+		P.*
+	FROM
+		NPM.Cliente as C
+		INNER JOIN NPM.Persona as P
+			ON C.id_persona = P.id_persona
+		INNER JOIN NPM.Huesped_x_Estadia as HE
+			ON C.id_cliente = HE.id_cliente
+	WHERE 
+		HE.id_estadia = @id_estadia
+	ORDER BY
+		P.Nombre
+END
+GO
+
+IF EXISTS (SELECT 1 FROM sysobjects WHERE name='P_Obtener_Reserva')
+	DROP PROCEDURE NPM.P_Obtener_Reserva
+GO 	
+CREATE PROCEDURE NPM.P_Obtener_Reserva 
+	@id_reserva numeric(18,0)
+AS
+BEGIN 
+	SELECT 
+		R.[id_reserva],
+		R.[id_usuario_creacion],
+		R.[id_hotel],
+		R.[id_regimen],
+		R.[id_cliente],
+		NPM.FX_Mostrar_Fecha(R.[fecha_creacion]) as 'fecha_creacion', 
+		NPM.FX_Mostrar_Fecha([fecha_inicio]) as 'fecha_inicio',
+		NPM.FX_Mostrar_Fecha([fecha_fin]) as 'fecha_fin',
+		R.[total_reserva],
+		R.[id_estado],
+		Ho.nombre_ho,
+		P.nombre, 
+		P.apellido,
+		Re.descripcion_r,
+		ER.descripcion_er
+	FROM
+		NPM.Reserva	as R
+		INNER JOIN NPM.Hotel as Ho
+			ON R.id_hotel = Ho.id_hotel
+		INNER JOIN NPM.Cliente as C
+			ON R.id_cliente = C.id_cliente
+		INNER JOIN NPM.Persona as P
+			ON C.id_persona = P.id_persona
+		INNER JOIN NPM.Estado_Reserva as ER
+			ON R.id_estado = ER.id_estado
+		INNER JOIN NPM.Regimen as Re
+			ON R.id_regimen = Re.id_regimen
+	WHERE 
+		R.id_reserva = @id_reserva
+END
+GO
+
+IF EXISTS (SELECT 1 FROM sysobjects WHERE name='P_Guardar_Estadia')
+	DROP PROCEDURE NPM.P_Guardar_Estadia
+GO 	
+
+CREATE PROCEDURE NPM.P_Guardar_Estadia 
+	@id int, 
+	@id_reserva int,
+	@id_usuario_ing int,
+	@fecha_ing datetime,
+	@id_usuario_salida int,
+	@fecha_salida datetime
+AS
+BEGIN 
+	IF @id = 0
+	BEGIN 
+		INSERT INTO NPM.Estadia(id_estadia, id_reserva, id_usuario_ingreso, fecha_ingreso, id_usuario_salida, fecha_salida)
+		VALUES (@id, 
+				@id_reserva,
+				@id_usuario_ing,
+				@fecha_ing,
+				@id_usuario_salida,
+				@fecha_salida)
+
+		SELECT id_out = @@IDENTITY
+	END 
+	ELSE 
+	BEGIN 
+		UPDATE NPM.Estadia 
+		SET 
+			id_usuario_salida = @id_usuario_salida,
+			fecha_salida = @fecha_salida
+		WHERE 
+			id_estadia = @id;
+
+		SELECT id_out = @id;
+	END
+END
+
+GO
+
+IF EXISTS (SELECT 1 FROM sysobjects WHERE name='P_Obtener_Estadia_x_Reserva')
+	DROP PROCEDURE NPM.P_Obtener_Estadia_x_Reserva
+GO 	
+
+CREATE PROCEDURE NPM.P_Obtener_Estadia_x_Reserva 
+	@id_reserva numeric(18,0)	
+AS
+BEGIN 
+	SELECT 
+		*
+	FROM
+		NPM.Estadia
+	WHERe
+		id_reserva = @id_reserva;
+END
+GO
 
 print (CONCAT('INSERTS ', CONVERT(VARCHAR, GETDATE(), 114)))
 ---------------------------------- INSERTS ------------------------------
@@ -1795,7 +1967,13 @@ SELECT DISTINCT
 	1 id_usuario_salida,
 	DATEADD(dd,Estadia_Cant_Noches,Estadia_Fecha_Inicio) fecha_salida
 INTO #Estadia
-FROM gd_esquema.Maestra WHERE Estadia_Cant_Noches IS NOT NULL AND Estadia_Fecha_Inicio IS NOT NULL AND Item_Factura_Cantidad IS NULL AND Consumible_Codigo IS NULL AND Factura_Nro IS NULL
+FROM gd_esquema.Maestra
+WHERE 
+	Estadia_Cant_Noches IS NOT NULL 
+	AND Estadia_Fecha_Inicio > CONVERT(datetime, '20180601', 112)
+	AND Item_Factura_Cantidad IS NULL 
+	AND Consumible_Codigo IS NULL 
+	AND Factura_Nro IS NULL
 
 INSERT INTO NPM.Estadia 
 SELECT * FROM #Estadia
@@ -2130,6 +2308,7 @@ GO
 
 ALTER TABLE [NPM].[Reserva_Modificada] CHECK CONSTRAINT [FK_Reserva_Modificada_Reserva]
 GO
+
 
 -- ROLES X USUARIO
 ALTER TABLE [NPM].[Roles_x_Usuario]  WITH CHECK ADD  CONSTRAINT [FK_Roles_x_Usuario_Rol] FOREIGN KEY([id_rol])

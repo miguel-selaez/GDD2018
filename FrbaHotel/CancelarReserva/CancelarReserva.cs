@@ -13,12 +13,23 @@ namespace FrbaHotel.CancelarReserva
     public partial class CancelarReserva : Form
     {
         private Model.Session _session;
+        private Model.Reserva _reserva;
 
-        public CancelarReserva(Model.Session _session)
+        public CancelarReserva(Model.Session session, Model.Reserva reserva)
         {
-            // TODO: Complete member initialization
-            this._session = _session;
+            _session = session;
+            _reserva = reserva;
             InitializeComponent();
+        }
+
+        private void btnAtras_Click(object sender, EventArgs e)
+        {
+
+        }
+
+        private void btnCancelar_Click(object sender, EventArgs e)
+        {
+
         }
     }
 }

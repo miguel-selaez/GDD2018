@@ -17,6 +17,7 @@ namespace FrbaHotel.AbmCliente
         private Model.Session _session;
         private List<Model.Cliente> _results;
         private Reservas.Reserva _reserva;
+        private RegistrarEstadia.Estadia _estadia;
 
         public ListadoCliente(Model.Session _session)
         {
@@ -29,6 +30,14 @@ namespace FrbaHotel.AbmCliente
         {
             this._session = _session;
             this._reserva = reserva;
+            InitializeComponent();
+            InitValues();
+        }
+
+        public ListadoCliente(Model.Session _session, RegistrarEstadia.Estadia estadia)
+        {
+            this._session = _session;
+            this._estadia = estadia;
             InitializeComponent();
             InitValues();
         }
@@ -111,13 +120,20 @@ namespace FrbaHotel.AbmCliente
             if (e.RowIndex >= 0)
             {
                 var selectedCliente = _results.ElementAt(e.RowIndex);
-                if (_reserva == null)
-                {                    
+                if (_reserva != null)
+                {
+                    _reserva.SetCliente(selectedCliente);
+                    this.Close();
+                }
+                else if (_estadia != null)
+                {
+                    _estadia.AddCliente(selectedCliente);
+                    this.Close();
+                }
+                else
+                {
                     var nuevo = new Cliente(_session, selectedCliente, this);
                     nuevo.Show();
-                }
-                else {
-                    _reserva.SetCliente(selectedCliente);
                 }
             }
         }

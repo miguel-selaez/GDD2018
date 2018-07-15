@@ -71,19 +71,19 @@ namespace FrbaHotel
                     break;
                 case "ABM RESERVA":
                     itemMenu.Text = "Reserva";
-                    ToolStripMenuItem listadoReserva = new ToolStripMenuItem("Listado", null, new EventHandler(listadoReserva_Click));
+                    ToolStripMenuItem listadoReserva = new ToolStripMenuItem("Buscar Reservar", null, new EventHandler(listadoReserva_Click));
                     itemMenu.DropDownItems.Add(listadoReserva);
 
-                    ToolStripMenuItem nuevaReserva = new ToolStripMenuItem("Nuevo", null, new EventHandler(nuevaReserva_Click));
+                    ToolStripMenuItem nuevaReserva = new ToolStripMenuItem("Nueva", null, new EventHandler(nuevaReserva_Click));
                     itemMenu.DropDownItems.Add(nuevaReserva);
 
-                    ToolStripMenuItem cancelaReserva = new ToolStripMenuItem("Cancelar", null, new EventHandler(cancelaReserva_Click));
+                    ToolStripMenuItem cancelaReserva = new ToolStripMenuItem("Cancelaciones", null, new EventHandler(cancelaReserva_Click));
                     itemMenu.DropDownItems.Add(cancelaReserva);
                     break;
                 case "REGISTRAR ESTADIA":
                     itemMenu.Text = "Estadia";
-                    ToolStripMenuItem listadoEstadia = new ToolStripMenuItem("Listado", null, new EventHandler(listadoEstadia_Click));
-                    itemMenu.DropDownItems.Add(listadoEstadia);
+                    //ToolStripMenuItem listadoEstadia = new ToolStripMenuItem("Listado", null, new EventHandler(listadoEstadia_Click));
+                    //itemMenu.DropDownItems.Add(listadoEstadia);
 
                     ToolStripMenuItem nuevaEstadia = new ToolStripMenuItem("Check-In", null, new EventHandler(nuevaEstadia_Click));
                     itemMenu.DropDownItems.Add(nuevaEstadia);
@@ -146,7 +146,7 @@ namespace FrbaHotel
 
         private void cancelaReserva_Click(object sender, EventArgs e)
         {
-            var cancelacion = new CancelarReserva.CancelarReserva(_main.session);
+            var cancelacion = new Reservas.BuscarReserva(_main.session);
             
             cancelacion.Show();
         }
@@ -188,16 +188,16 @@ namespace FrbaHotel
 
         private void nuevaEstadia_Click(object sender, EventArgs e)
         {
-            var nuevo = new RegistrarEstadia.Estadia(_main.session);
+            var nuevo = new Reservas.BuscarReserva(_main.session);
             
             nuevo.Show();
         }
 
         private void listadoEstadia_Click(object sender, EventArgs e)
         {
-            var listado = new RegistrarEstadia.ListadoEstadia(_main.session);
+            //var listado = new RegistrarEstadia.ListadoEstadia(_main.session);
             
-            listado.Show();
+            //listado.Show();
         }
 
         private void nuevaReserva_Click(object sender, EventArgs e)

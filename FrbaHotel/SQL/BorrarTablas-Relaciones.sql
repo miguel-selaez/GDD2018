@@ -110,6 +110,9 @@ GO
 ALTER TABLE [NPM].[Reserva]  DROP CONSTRAINT [FK_Reserva_Regimen_x_Hotel] 
 GO
 
+ALTER TABLE [NPM].[Reserva]  DROP  CONSTRAINT [FK_Reserva_Usuario] 
+GO
+
 -- RESERVA CANCELADA
 ALTER TABLE [NPM].[Reserva_Cancelada]  DROP CONSTRAINT [FK_Reserva_Cancelada_Reserva]
 GO
@@ -117,8 +120,6 @@ GO
 ALTER TABLE [NPM].[Reserva_Cancelada]  DROP CONSTRAINT [FK_Reserva_Cancelada_Usuario]
 GO
 
-ALTER TABLE [NPM].[Reserva]  DROP  CONSTRAINT [FK_Reserva_Usuario] 
-GO
 
 -- RESERVA MODIFICADA
 ALTER TABLE [NPM].[Reserva_Modificada]  DROP CONSTRAINT [FK_Reserva_Modificada_Reserva] 

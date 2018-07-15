@@ -46,5 +46,22 @@ namespace FrbaHotel.DAO
             }
             return list;
         }
+
+        public List<Cliente> GetClientesxEstadia(int estadiaId)
+        {
+            var list = new List<Cliente>();
+
+            var query = ArmarSentenciaSP("P_Obtener_Huespedes_x_Estadia", new[] { GetParam(estadiaId) });
+            var result = Connection.ExecuteQuery(query);
+
+            if (result.Rows.Count > 0)
+            {
+                foreach (DataRow row in result.Rows)
+                {
+                    list.Add(new Cliente(row));
+                }
+            }
+            return list;
+        }
     }
 }

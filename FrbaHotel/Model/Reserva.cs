@@ -20,11 +20,12 @@ namespace FrbaHotel.Model
         public Decimal TotalReserva { get; set; }
         public EstadoReserva Estado { get; set; }
 
-        private List<Habitacion> _habitaciones;
+        private List<HabitacionReservada> _habitaciones;
 
-        public List<Habitacion> Habitaciones { 
+        public List<HabitacionReservada> Habitaciones
+        { 
             get {
-                return _habitaciones ?? (_habitaciones = new List<Habitacion>());
+                return _habitaciones ?? (_habitaciones = DAO.DAOFactory.HabitacionDAO.GetHabitacionesByReserva(Id));
             }
             set {
                 _habitaciones = value;
@@ -35,7 +36,7 @@ namespace FrbaHotel.Model
         {
             Row = row;
 
-            Id = GetValue<int>("id_reserva");
+            Id = GetValue<decimal>("id_reserva");
             UsuarioCreacion = new Usuario(row);
             Hotel = new Hotel(row);
             Regimen = new Regimen(row);
@@ -55,7 +56,7 @@ namespace FrbaHotel.Model
                 Cliente = cliente;
                 FechaCreacion = fechaCreacion;
                 FechaInicio = fechaInicio;
-                FechaFin = FechaFin;
+                FechaFin = fechaFin;
                 TotalReserva = totalReserva;
                 Estado = estado;
         }
