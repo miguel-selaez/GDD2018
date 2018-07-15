@@ -53,3 +53,6 @@ C:\Users\jean pierre\Desktop\gdd1\GDD2018\FrbaHotel\bin\Debug\FrbaHotel.pdb
 C:\Users\jean pierre\Desktop\gdd1\GDD2018\FrbaHotel\obj\Debug\FrbaHotel.RegistrarConsumible.Consumos.resources
 =======
 >>>>>>> 56eb8fbafba252bc253249b4b2bbe7b47c5be063
+C:\Users\jean pierre\Desktop\tpgdd\GDD2018\FrbaHotel\bin\Debug\FrbaHotel.exe.config
+C:\Users\jean pierre\Desktop\tpgdd\GDD2018\FrbaHotel\obj\Debug\FrbaHotel.exe
+C:\Users\jean pierre\Desktop\tpgdd\GDD2018\FrbaHotel\obj\Debug\FrbaHotel.pdb
