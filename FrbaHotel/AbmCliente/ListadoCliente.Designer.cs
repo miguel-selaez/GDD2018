@@ -30,6 +30,13 @@
         {
             System.ComponentModel.ComponentResourceManager resources = new System.ComponentModel.ComponentResourceManager(typeof(ListadoCliente));
             this.dgClientes = new System.Windows.Forms.DataGridView();
+            this.Apellido = new System.Windows.Forms.DataGridViewTextBoxColumn();
+            this.Nombre = new System.Windows.Forms.DataGridViewTextBoxColumn();
+            this.Mail = new System.Windows.Forms.DataGridViewTextBoxColumn();
+            this.Tipo_Documento = new System.Windows.Forms.DataGridViewTextBoxColumn();
+            this.Nro_Documento = new System.Windows.Forms.DataGridViewTextBoxColumn();
+            this.Vigencia = new System.Windows.Forms.DataGridViewTextBoxColumn();
+            this.Editar = new System.Windows.Forms.DataGridViewButtonColumn();
             this.btnBuscar = new System.Windows.Forms.Button();
             this.btnLimpiar = new System.Windows.Forms.Button();
             this.txtNroDocumento = new System.Windows.Forms.TextBox();
@@ -41,13 +48,6 @@
             this.label1 = new System.Windows.Forms.Label();
             this.cbVigencia = new System.Windows.Forms.ComboBox();
             this.cbTipoDocumento = new System.Windows.Forms.ComboBox();
-            this.Apellido = new System.Windows.Forms.DataGridViewTextBoxColumn();
-            this.Nombre = new System.Windows.Forms.DataGridViewTextBoxColumn();
-            this.Mail = new System.Windows.Forms.DataGridViewTextBoxColumn();
-            this.Tipo_Documento = new System.Windows.Forms.DataGridViewTextBoxColumn();
-            this.Nro_Documento = new System.Windows.Forms.DataGridViewTextBoxColumn();
-            this.Vigencia = new System.Windows.Forms.DataGridViewTextBoxColumn();
-            this.Editar = new System.Windows.Forms.DataGridViewButtonColumn();
             this.btnNuevo = new System.Windows.Forms.Button();
             ((System.ComponentModel.ISupportInitialize)(this.dgClientes)).BeginInit();
             this.SuspendLayout();
@@ -71,6 +71,48 @@
             this.dgClientes.Size = new System.Drawing.Size(744, 178);
             this.dgClientes.TabIndex = 27;
             this.dgClientes.CellContentClick += new System.Windows.Forms.DataGridViewCellEventHandler(this.dgClientes_CellContentClick);
+            // 
+            // Apellido
+            // 
+            this.Apellido.HeaderText = "Apellido";
+            this.Apellido.Name = "Apellido";
+            this.Apellido.ReadOnly = true;
+            // 
+            // Nombre
+            // 
+            this.Nombre.HeaderText = "Nombre";
+            this.Nombre.Name = "Nombre";
+            this.Nombre.ReadOnly = true;
+            // 
+            // Mail
+            // 
+            this.Mail.HeaderText = "Mail";
+            this.Mail.Name = "Mail";
+            this.Mail.ReadOnly = true;
+            // 
+            // Tipo_Documento
+            // 
+            this.Tipo_Documento.HeaderText = "Tipo Documento";
+            this.Tipo_Documento.Name = "Tipo_Documento";
+            this.Tipo_Documento.ReadOnly = true;
+            // 
+            // Nro_Documento
+            // 
+            this.Nro_Documento.HeaderText = "Nro. Documento";
+            this.Nro_Documento.Name = "Nro_Documento";
+            this.Nro_Documento.ReadOnly = true;
+            // 
+            // Vigencia
+            // 
+            this.Vigencia.HeaderText = "Vigencia";
+            this.Vigencia.Name = "Vigencia";
+            this.Vigencia.ReadOnly = true;
+            // 
+            // Editar
+            // 
+            this.Editar.HeaderText = "Seleccionar";
+            this.Editar.Name = "Editar";
+            this.Editar.ReadOnly = true;
             // 
             // btnBuscar
             // 
@@ -98,6 +140,7 @@
             this.txtNroDocumento.Name = "txtNroDocumento";
             this.txtNroDocumento.Size = new System.Drawing.Size(100, 20);
             this.txtNroDocumento.TabIndex = 22;
+            this.txtNroDocumento.KeyPress += new System.Windows.Forms.KeyPressEventHandler(this.txtOnlyNumbers_KeyPress);
             // 
             // txtMail
             // 
@@ -105,6 +148,7 @@
             this.txtMail.Name = "txtMail";
             this.txtMail.Size = new System.Drawing.Size(100, 20);
             this.txtMail.TabIndex = 20;
+            this.txtMail.KeyPress += new System.Windows.Forms.KeyPressEventHandler(this.txtMail_KeyPress);
             // 
             // label6
             // 
@@ -174,48 +218,6 @@
             this.cbTipoDocumento.Name = "cbTipoDocumento";
             this.cbTipoDocumento.Size = new System.Drawing.Size(100, 21);
             this.cbTipoDocumento.TabIndex = 31;
-            // 
-            // Apellido
-            // 
-            this.Apellido.HeaderText = "Apellido";
-            this.Apellido.Name = "Apellido";
-            this.Apellido.ReadOnly = true;
-            // 
-            // Nombre
-            // 
-            this.Nombre.HeaderText = "Nombre";
-            this.Nombre.Name = "Nombre";
-            this.Nombre.ReadOnly = true;
-            // 
-            // Mail
-            // 
-            this.Mail.HeaderText = "Mail";
-            this.Mail.Name = "Mail";
-            this.Mail.ReadOnly = true;
-            // 
-            // Tipo_Documento
-            // 
-            this.Tipo_Documento.HeaderText = "Tipo Documento";
-            this.Tipo_Documento.Name = "Tipo_Documento";
-            this.Tipo_Documento.ReadOnly = true;
-            // 
-            // Nro_Documento
-            // 
-            this.Nro_Documento.HeaderText = "Nro. Documento";
-            this.Nro_Documento.Name = "Nro_Documento";
-            this.Nro_Documento.ReadOnly = true;
-            // 
-            // Vigencia
-            // 
-            this.Vigencia.HeaderText = "Vigencia";
-            this.Vigencia.Name = "Vigencia";
-            this.Vigencia.ReadOnly = true;
-            // 
-            // Editar
-            // 
-            this.Editar.HeaderText = "Seleccionar";
-            this.Editar.Name = "Editar";
-            this.Editar.ReadOnly = true;
             // 
             // btnNuevo
             // 

@@ -158,6 +158,7 @@
     <Compile Include="DAO\TipoDocumentoDAO.cs" />
     <Compile Include="DAO\TipoHabitacionDAO.cs" />
     <Compile Include="DAO\TipoRegimenDAO.cs" />
+    <Compile Include="Exceptions\ClienteException.cs" />
     <Compile Include="Exceptions\DBConnectionException.cs" />
     <Compile Include="DAO\FuncionDAO.cs" />
     <Compile Include="DAO\HotelDAO.cs" />
@@ -263,6 +264,9 @@
     </EmbeddedResource>
     <EmbeddedResource Include="AbmCliente\ListadoCliente.resx">
       <DependentUpon>ListadoCliente.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="AbmHabitacion\Habitacion.resx">
+      <DependentUpon>Habitacion.cs</DependentUpon>
     </EmbeddedResource>
     <EmbeddedResource Include="AbmRol\ListadoRol.resx">
       <DependentUpon>ListadoRol.cs</DependentUpon>
